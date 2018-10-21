@@ -1,0 +1,100 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title id="ttl">forms and input binding</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <input v-model="msg" placeholder="enter message" type="text">
+            
+            <p>{{msg}}</p>
+        </div>
+        <hr>
+        <div>
+            <input type="checkbox" v-model="checked">
+            <p> {{checked}} </p>
+        </div>
+        <hr>
+        
+        <!-- check box group-->
+        <div>
+            <input type="checkbox" value="mike" v-model="checkedNames">
+            <input type="checkbox" value="ancc" v-model="checkedNames">
+            <input type="checkbox" value="asdas" v-model="checkedNames">
+            <input type="checkbox" value="332s" v-model="checkedNames">
+            
+            
+            <p> {{checkedNames}} </p>
+        </div>
+        <hr>
+        
+        
+        <!-- radio button-->
+        <div>
+            <input type="radio" value="1" v-model="radioPicks">
+            <input type="radio" value="2" v-model="radioPicks">
+            <input type="radio" value="3" v-model="radioPicks">
+            <input type="radio" value="5" v-model="radioPicks">
+            
+            
+            <p>you picked:: {{radioPicks}} </p>
+        </div>
+        <hr>
+        
+        
+        <!--single select drop down-->
+        <div>
+             <select v-model="selected">
+                 <option>one</option>
+                 <option>two</option>
+                 <option>three</option>
+ 
+
+             </select>
+
+             <p>you selected:: {{selected}} </p>
+        </div>
+        <hr>
+
+
+                <!--multi select drop down-->
+                <div>
+                        <select multiple v-model="selectedOpt">
+                            <option v-for="option in options" v-bind:value="option.value">{{option.text}}</option>
+            
+           
+                        </select>
+           
+                        <p>you selected:: {{selectedOpt}} </p>
+                   </div>
+                   <hr>
+    </div>
+    
+    <script>
+        let app = new Vue({
+            el:"#app",
+            data:{ 
+                msg:'Hello world',
+                checked:false,
+                checkedNames:[],  // arraya >> because multiplease check boxes can be selected togother
+                radioPicks:'' ,  // not an array >> only one radio button can be clicked
+                selected:'',
+                selectedOpt:'', // still will work as an array
+                options:[
+                    {text:"one",value:'a'},
+                    {text:"two",value:'b'},
+                    {text:"three",value:'c'}
+                ],
+                
+            }
+        })
+        
+        
+    </script>
+</body>
+</html>
+
+

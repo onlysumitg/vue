@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">{{title}}</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+{{msg}}  
+{{users}}
+<ul>
+    <li v-for="user in users">
+        {{user.name}} {{user}}
+        {{user.email}} 
+    </li>
+</ul>
+    <!-- with index-->
+    <ul>
+    <li v-for="(user, indx) in users">
+           {{indx}} -{{user.name}}  
+        </li>
+    </ul>
+                 
+<hr>
+        <!-- v-for with object-->
+            
+                <div v-for="(value,key, indx) in singleUser">
+                       {{indx}} - {{key}} - {{value}} 
+                    </div>
+                 
+<hr>
+         <!-- range-->
+         <div v-for="n in 10">
+                {{n}}
+             </div>   
+             
+<hr>
+    <div v-if="status">  <!-- show this div  only when status = true -->
+        status is true
+    </div>
+    <div v-else>  <!-- show this div  only when status = true -->
+        status is not true
+    </div>
+<hr>
+
+<div v-if="status2=='active'">  <!-- show this div  only when status = true -->
+    status2 is active
+</div>
+<div v-else-if="status2=='expired'">  <!-- show this div  only when status = true -->
+    status2 is expired
+</div>
+<div v-else>  <!-- show this div  only when status = true -->
+    status2 is not active
+</div>
+<hr>
+
+ 
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world',
+        users:[
+            {name:"a",email:"a@a.com"},
+            {name:"b",email:"b@b.com"},
+            {name:"c",email:"c@c.com"}
+        ],
+        singleUser:{
+            name:"c",
+            email:"c@c.com"
+        },
+        status:false,
+        status2:"expired"
+        
+    }
+})
+
+let title = new Vue({
+    el:"#ttl",
+    data:{
+        title:'Sumit',
+         
+    }
+})
+</script>
+</body>
+</html>
+
+

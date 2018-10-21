@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">events</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+ 
+        <hr>
+<button v-on:click="count+=1">
+    {{count}}
+</button>
+<hr>
+
+<!-- call function on event  with or without parameters-->
+<div>
+<button v-on:click="greet('hellloooo', $event)">  
+        click me
+    </button>
+
+</div>
+    <hr>
+
+<!-- input  fields     -->
+<div>
+    <input type ="text" v-on:keyup="keypress2" />
+
+</div>
+<hr>
+<div>
+                <!-- v-on:keypress.enter /tab/shift   -->
+        <input type ="text" v-on:keyup="keypress($event)" v-on:keypress.enter="enterkeyfunction"/>
+    
+    </div>
+
+
+    <!-- forms-->
+    <hr>
+    <div>
+        <form v-on:submit="formSubmit">
+                <input v-model="msg" type ="text"/>
+                <input type="submit" value="submit"/>
+        </form>
+ 
+    </div>
+
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world',
+        count:0
+        
+    },
+
+    methods:{
+        greet:function(greeting,event){
+            alert(greeting );
+            console.log(event);
+            console.log(event.target.tagName);
+            console.log(event.target.className)
+        },
+        keypress2:function()
+        {
+            console.log("pressed");
+
+        },
+        keypress:function(event)
+        {
+            console.log(event.target.value);
+
+        },
+        enterkeyfunction:function(){
+            console.log("enter key pressed");
+        },
+
+        formSubmit()
+        {
+            alert(this.msg)
+        }
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

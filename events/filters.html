@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">filters:: function that accept a value .. process it.. return the new value</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+         {{msg | uppercase}}  
+     <p>
+         <!-- can apply multiple filters together-->
+            {{msg |uppercase | capitalCase}}  </p>
+       </div>
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'hello world'
+        
+    },
+
+    filters:{
+        uppercase: function(value)
+        {
+            if (!value) return"";
+            return value.toString().toUpperCase();
+        },
+        capitalCase: function(value)
+        {
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        },
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">{{title}}</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<style>
+.active{
+    color: green;
+    font-size: 20px
+}
+
+.error{
+    color:red;
+    font-size: 20px
+}
+</style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- apply the class "active" if "isActive" property is true-->
+        <div v-bind:class="{active:isActive }">apply the class "active" if "isActive" property is true</div>
+ 
+        <div v-bind:class="[activeClass,errorClass]">multiple classes binding</div>
+
+        <div v-bind:style="baseStyle ">{{baseStyle}}</div>
+
+        <div v-bind:style="[baseStyle,errorStyle] ">{{errorStyle}}</div>
+
+        <div v-bind:style="{color:activeColor, fontSize:fontSize+'px' } ">activeColor = {{activeColor}}    >> fontsize={{fontSize}}</div>
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        isActive:true,
+        
+        activeClass:'active',
+        errorClass:'error',
+        activeColor:'blue',
+        fontSize:24,
+        baseStyle:{
+            color:'peru',   // need actual css keys
+        fontSize:'50px'
+        },
+        
+        errorStyle:{
+            color:'red',   // need actual css keys
+        fontSize:'50px'
+        }
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">transition effect: change dom like add remove elements</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<style>
+h1{
+    color: blueviolet
+}
+
+.fade-enter-active,.fade-leave-active
+{
+    transition: opacity .5s;
+}
+
+.fade-enter,.fade-leave-active
+{
+     opacity:0;
+}
+</style>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="show = !show"> click me</button>
+        <transition name = 'fade'>
+            <h1 v-if="show">helloooo</h1>
+        </transition>
+ 
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world',
+        show: true
+        
+    }
+})
+ 
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">{{title}}</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+{{msg}} {{msg2}} 
+{{user.name}}
+
+<span v-text="user.dob"></span>  <!== same as  {{user.dob}} ==>
+<br>
+<span v-text="user.msg"></span> 
+<br>
+<span v-html="user.msg"></span> 
+
+<br>
+<span v-once>{{msg2}}</span> <!== value for msg2 will not update here after first time ==>
+<br>
+<a v-bind:href="msg">{{url}}</a>  <!== can not use {{ syntax }} for attributes ==>
+<a v-bind:href="msg">{{data2.phone}}</a>  <!== can not use {{ syntax }} for attributes ==>
+
+<br>
+
+<hr>
+<h2>{{user.age+2}}</h2> <!== js expression inside {{ syntax }} allowed ==>
+<h2>{{user.name.length}}</h2>
+<h2>{{foo?"YES":"NO"}}</h2>
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{                         // should all be in side the data?
+    
+        msg:'Hello world',
+        msg2:"hiii",
+        user:{
+            name:"sumit goyal",
+            dob:"1233-123-123",
+            msg:"<h1>hi there</h1>",
+            age:10
+
+        },
+        url:"google.com",
+        data2:{
+            phone:"1231"
+        },
+        foo:true
+    }
+})
+
+let title = new Vue({
+    el:"#ttl",
+    data:{
+        title:'Sumit',
+         
+    }
+})
+</script>
+</body>
+</html>
+
+

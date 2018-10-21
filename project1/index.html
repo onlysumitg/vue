@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">Ask me anything</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+
+ </head>
+
+<body>
+    <div id="app">
+        <div class="container">
+                
+            <h1>ask question</h1>
+            <input v-model="question">
+            <hr>
+            <h2>{{answer}}</h2>
+            <hr>
+            <img v-bind:src="image">
+        </div>
+ 
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        question:'',
+        answer:'',
+        image:''
+        
+    },
+    watch:{
+        question: function(newQ){
+            this.answer='waiting for you to stop typing';
+            this.getAnswers();
+
+        },
+
+
+    },
+
+
+        methods:{
+        getAnswers: _.debounce(
+            function(){
+                let vm=this
+                if(this.question.indexOf('?')===-1)
+                {
+                    vm.answer ="where is the ?"
+                    return
+                }
+
+                vm.answer="thinkingggg,,,,,,";
+
+                axios.get('https://yesno.wtf/api')
+                .then(function(responce){
+                    vm.answer=_.capitalize(responce.data.answer)
+                    vm.image = responce.data.image
+                })
+                .catch(function(erro){
+                    vm.answer = erro;
+                })
+            },500 // 2nd parameter for _.debounce
+
+        )
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

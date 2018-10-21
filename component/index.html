@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">components</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+{{msg}}  
+<hr>
+<simple-counter></simple-counter>
+
+<hr>
+<hello messg1="hi ssssss"></hello>
+
+<hr>
+<hello></hello>
+
+<hr>
+<hello v-bind:pro2="5"></hello>   <!-- better to use v-bind for numeric properties-->
+    </div>
+
+<script>
+
+     Vue.component('simple-counter',{    // register the component at global level
+     template:"<button v-on:click='counter +=1'>{{counter}}</button>",  // every component need a template
+     data:function(){
+         return {
+             counter:0
+         }
+     }
+ })
+
+// register component locallly
+
+var hello = {
+    name: 'hello',
+   // props:['messg1'], simple way
+   
+   props:{    // propery with data types >>> default values
+    messg1:{
+           type:String,
+           default: "hi there"
+
+       },
+
+       pro2:{
+           type: Number,
+           default:5
+       },
+
+        pro3:{          // multiplea data types
+           type: [Number,String],    // number or string
+           default:5
+       },
+
+       pro4:{   /// Object data type
+           
+           default: function(){
+                return "I am a function"
+           }
+       },
+
+    pro5:{
+           type:function(){},
+           default: function(){
+                return {text:'Goodbye'}
+           }
+       }
+   },
+    template :"<h1>{{pro4.text}}</h1>",
+    data (){
+        return {
+            messg2:'Hello world'
+        }
+    }
+}
+ 
+
+let app = new Vue({
+    el:"#app",
+    components:{
+        hello
+    },
+    data:{ 
+        msg:'Hello ===='
+        
+    },
+
+
+    
+});
+
+
+</script>
+</body>
+</html>
+
+
