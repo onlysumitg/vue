@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">Vue key modifier</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+{{msg}}  
+<hr>
+<input v-on:keyup="alertMe">
+<hr>
+<!--    EVENT WITH KEY MODIFIER    -->
+<input v-on:keyup.enter="alertMe"> <!-- now alert me will be call on when keyup is for enter key-->
+
+<hr>
+<!--    EVENT WITH chained KEY MODIFIER    -->
+<input v-on:keyup.enter.space="alertMe"> <!-- now alert me will be call on when keyup is for enter or space key-->
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world'
+        
+    },
+    methods:{
+        alertMe:function(){
+            alert("okk");
+        }
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

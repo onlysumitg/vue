@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">{{title}}</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<style>
+    .demo{
+    width:100px;
+    height:100px;
+    background-color: gray;
+    display:inline-block;
+    margin:10px;
+}
+.green{
+    background-color: green;
+     
+}
+
+.red{
+    background-color:red;
+   
+}
+
+.blue{
+    background-color:blue;
+    
+}
+
+</style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="demo"   
+             @click="attachedRed = !attachedRed"
+             :class="{red:attachedRed}"   ></div>
+             <!-- 1st way :: directly providing an js object >> class name with a predicate
+                  v-bind:class{ClassNameNeedToAttach: true/false condition to confirm shouldAttachOrNpt }
+
+                  FOR mULTIPLE Classes
+
+            :class="{red:attachedRed, blue:trueFalse}
+            -->
+            <hr>
+        <div class="demo" :class="divClasses"></div>
+        <!--  2nd way :: method or computed propert
+
+        -->
+        <hr>
+        <div class="demo" :class="colorPro">
+            <input v-model="colorPro">
+        </div>
+        <!-- 3rd way :: directly attacting class name to div using propert
+            to attach multiple classes use js array :class="[colorPro, class2,class3]"
+
+            CAN USE MIXED Syntax
+             :class="[colorPro, {class2:predicate like 1st way},class3]
+        -->
+
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        attachedRed:false,
+        colorPro:"green"
+       
+    },
+
+    computed:{
+        divClasses:function(){
+                return {
+                    red:this.attachedRed,
+                    blue:!this.attachedRed
+                }
+        }
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

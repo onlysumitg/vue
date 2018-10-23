@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">title here</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!--
+
+            v-if/else >> completly deattach the element from the dom
+            >> its not like show and hide...
+            >> is delete /add the element from the dom
+
+            >> check v-show
+                >> just to show--hide
+
+        -->
+        
+        <p v-if="show"> shoe me </p>
+        <p v-else> shoe me </p>
+        <!--
+            v-else >>> is always else for the last v-if just before v-else
+        -->
+
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world',
+        show:true
+        
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

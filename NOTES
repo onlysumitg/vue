@@ -1,0 +1,56 @@
+Use core JS with VUE
+1. we can write and JS statemetn in side {{ }} or Vue directive v-*
+    just a single statment is allowerd
+    no if or loops allowerd
+    but XX ? x : y is allowerd
+
+===================================================================
+
+short hands
+
+v-on:  >> @   example  v-on:click  == @clock
+v-bind:href  >> :href  >> just remove the v-bind
+
+
+====================== $mount and the el =================
+
+let vm = new Vue({
+    el:"#app",  ///this el propery tell Vue which element it need to attach
+            /// Vue always pick just first one element which match with this selector
+            // even if there are multiple element in dom for this selector
+})
+
+>> 1. this is same as 
+let vm = new Vue( {...}});
+vm.$mount('#app') >> in case you want to attach vue to the element based on some condition
+
+>> 2. same as this
+let vm = new Vue( {...}});
+vm.$mount()  // start the vue
+document.getElementById('#app').appendClild(vm.$el) 
+
+
+==================================================================
+
+VUE-CLI  
+Start a project
+1. $ vue init webpack-simple vue-cli
+    >> init : initialize project
+    >> webpack-simple : template name .. check vue cli github
+    >> vue-cli : project name
+
+2. open terminal to the new folder created by the last command
+
+3.$ npm intall
+    >> down load all the required dependencies based on data in package.json
+
+4. $ npm run dev 
+    >> run the development server
+    >> keep it running
+    >> it will keep compiling all the required files automatically as soon as we change a file
+
+
+
+
+
+

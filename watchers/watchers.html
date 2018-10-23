@@ -22,8 +22,9 @@ let app = new Vue({
     },
 
     watch:{
-        firstName:function(val)
-        {
+        firstName:function(val)    // here we watch a property to change and take some action on change(like calling server)
+        {                          // in computed properties we compute a value base on change
+                                         
             this.fullName= val+' ' + this.lastName
         },
         lastName:function(val)

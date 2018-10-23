@@ -7,17 +7,18 @@
 
 <body>
     <div id="app">
-{{selectedFrequency}}  
-{{frequency[selectedFrequency]}}
+        <h1> hello to me first</h1>"
+        <button>sd  </button>
     </div>
 
 <script>
 let app = new Vue({
     el:"#app",
+    template:"<h1> hello to me</h1>",  // this will be replace the content  in side the #app div. 
     data:{ 
         msg:'Hello world',
         selectedFrequency: "B",
-        frequency: {"W":"Weekly", "B":"Bi-Weekly", "T":"Semi-Monthly", "M":"Monthly"},
+        
     }
 })
 

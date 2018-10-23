@@ -1,0 +1,37 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">$refs : to get the direct access on the html element</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button  @click="clicked" ref="myButton">this is my button</button>
+        <!-- 
+            ref : is not a html attribute. its for vue js
+            "myButton" :  is just a name for this ref
+        -->
+    </div>
+
+<script>
+let app = new Vue({
+    el:"#app",
+    data:{ 
+        msg:'Hello world',
+        
+    },
+    methods:{
+        clicked:function(){
+            console.log(this.$refs);  // this.$refs >> contains a reference to all elements which have "ref" attribute
+            console.log(this.$refs.myButton.innerHTML);
+        }
+    }
+})
+
+ 
+</script>
+</body>
+</html>
+
+

@@ -7,8 +7,9 @@
 
 <body>
     <div id="app">
-{{selectedFrequency}}  
-{{frequency[selectedFrequency]}}
+        
+        <p>  </p>
+
     </div>
 
 <script>
@@ -16,8 +17,8 @@ let app = new Vue({
     el:"#app",
     data:{ 
         msg:'Hello world',
-        selectedFrequency: "B",
-        frequency: {"W":"Weekly", "B":"Bi-Weekly", "T":"Semi-Monthly", "M":"Monthly"},
+        show:true
+        
     }
 })
 
