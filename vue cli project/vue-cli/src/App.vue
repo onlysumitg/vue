@@ -1,28 +1,48 @@
 <template>
   <div id="app">
+    <!-- from Home.vue -->
     <app-server-state></app-server-state>
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+
+<!-- from Home2.vue -->
+<new-server-state></new-server-state>
+
+<user></user>
+
+<hr>
+
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<!-- SLOTS                         -->
+<slots1>
+  <h1> sumit goyal</h1>
+</slots1>
+<!-- NAMED SLOTS == -->
+ <namedslots>
+<h2 slot="title">this is title</h2>
+<p slot="body">this is body..........</p>
+<p>send this data to default slot</p>
+ </namedslots>
+
   </div>
 </template>
 
 <script>
+import user from "./components/commnucation/User.vue"
+
+import slots1 from "./components/commnucation/Slots1.vue"
+import namedslots from "./components/commnucation/Slots2.vue"
+
+
 export default {
   name: 'app',
+  components:{
+    user,
+    slots1,
+    namedslots
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'

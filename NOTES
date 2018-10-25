@@ -51,6 +51,92 @@ Start a project
 
 
 
+======================= COMPONENTS ================== *****  IMP ******
+
+    Compnents names are case senstive
+        components:{
+        "iServerStatus": my_ServerStatus    (key:valye)
+                ==>> iServerStatus (without quotes) :my_ServerStatus
+                ==> or simply ==>  my_ServerStatus  (no key) (key = value)
+                                        ==> this is same as my_ServerStatus:my_ServerStatus
+        }
+        >> iServerStatus  == i-server-status
+        >> Servers = servers  ( as DOM is case insenstive ) (but JS is case senstive)
 
 
 
+    ==== Style inside the components
+
+    >> by default all the sytle css is global
+    >> to limit the scope to the component leve Use "scoped"
+        >>> <style  scoped>
+
+ ****** COMMNUCTION between componets ********
+        >>>> code >> \vue\vue cli project\vue-cli\src\components\commnucation
+
+    PARENT CHILD
+        WAY 1: Props and events
+                1. parent can send data to child >> using child props
+                2. child can send data to parent using >> this.$emit() >> broadcast event
+                        >> event Vue() instance has an $emit() method
+            
+
+        WAY 2: props and callback functions
+                1.  from parent send a function (pointer to the function) to child as property
+                2.  child will execute that function.   
+
+        WAY 3: SLOTS
+                1. Props are like attributes to html elements like <a href=".."></a> where href is the attributes
+                2. but SLOTS are like values
+                       in parent > <child> SLOTS values </child>
+                3. SLOTS are better when passing data like html itself.
+                        >> we dont need to convert HTML into string
+                        >> <child>
+                                <DIV>....</DIV>
+                                  <p>....</p> <a>...</a> 
+                            </child>
+                               
+                               
+
+
+    BETWEEN SIBLINGS
+       1. sibling(s) can not talk to each other directly
+               this is the path  we need to take to commnucate between child 1 and child 2   
+               
+            >>--> child 1 >> parent >> child 2    
+
+       2. event bus: central object to pass data any where in the application
+            >> this is instance of Vue()
+                    eventBus = new Vue()
+                    >> because eventBus is instance of Vue() >> it has its own $emit() methods
+                            >>event Vue() instance has an $emit() method
+            >>> code >> \vue\vue cli project\vue-cli\src\main.js        
+
+
+
+
+===================================================================================
+=============               v-model modifiers 
+===================================================================================
+
+>> vue cli project\vue-cli\src\components\forms\forms1.vue
+
+1. v-model.lazy >> update Vue property only after onblur
+2. v-model.trim >> trim the value
+3. v-model.number >> convert the value into numbers 
+
+
+ === Custom input ===
+  
+  >>> vue cli project\vue-cli\src\components\forms\myCustomInput.vue
+
+  <input type="text"  v-model.trim="msg">
+
+  same as
+
+  <input type="text"
+        v-bind:value="msg"              // Vue bind propery "msg" using v-bind >> so change in property also change in field value
+        @input ="msg = $event.target.value"    // no Vue listen to the @input (@change) dom event >> and update the event value to the property
+    >    
+
+  >> so to create a customer input component >> we have to replicate this logic  
