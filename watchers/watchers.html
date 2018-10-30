@@ -30,7 +30,16 @@ let app = new Vue({
         lastName:function(val)
         {
             this.fullName= this.firstName+' ' + val
-        }
+        },
+
+products: {
+      handler: function(after, before) {
+        console.log("======================before=================");
+        console.log(before);
+        console.log("======================after=================");
+      },
+      deep: true
+    },
     }
 })
 

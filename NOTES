@@ -140,3 +140,47 @@ Start a project
     >    
 
   >> so to create a customer input component >> we have to replicate this logic  
+
+  ======================================================================
+      DIRECTIVES  (v-if   v-for  v-text)
+=============================================================================
+
+1. Can create our own custom directive  
+    >> register globaly in main.js   >> v-mydirective
+        Vue.directive('mydirective',{config})
+              >> {config} >> configuration using life cycle hooks
+                    >> Directive life cycle has 5 hooks which we need to implement in the configuration function
+        >> Life cycle hooks
+
+        1. bind(el,binding,vnode) >> once directive is attached to the component
+                >> el : element
+                >> binding :                   (read only)
+                >> vnode  : node in virtual dom    (read only)  
+        2. inserted(el,binding,vnode) >> as soon as component is inserted in dom
+        3. updated(el,binding,vnode,oldVnode) >> component is updated (with out children)
+                >> oldVnode ( read only )      
+        4. componentUpdated(el,binding,vnode,oldVnode) >> component is updated (with children)
+        5. unbind(el,binding,vnode) : directive is removed from component
+          
+
+===============================================================================
+==    MIXIN
+===============================================================================
+// Mixins >
+// >>> have the same life cycle hooks as any Vue()
+//    >>> when used in a Vue Component 
+//    >>> Mixin hooks are executed filteredFruits
+
+//  >>> this allow component to override the elements of Mixins 
+//    
+
+Mixin >> got merged with the components  (its not shared with the components) 
+       >> so you can use "this" inside the Mixin
+        >> "this" ==> current component where mixin is being used 
+
+GLOBAL MIXIN (hard used) : as this will be merged to all the components of the application
+
+>> in main.js  >>> no name needed as its Global
+    Vue.mixin({
+        created(){}
+    })
