@@ -27,33 +27,32 @@
  </namedslots>
 
   </div>
-</template>
+</template> 
 
 <script>
-import user from "./components/commnucation/User.vue"
+import user from "./components/commnucation/User.vue";
 
-import slots1 from "./components/commnucation/Slots1.vue"
-import namedslots from "./components/commnucation/Slots2.vue"
-
+import slots1 from "./components/commnucation/Slots1.vue";
+import namedslots from "./components/commnucation/Slots2.vue";
 
 export default {
-  name: 'app',
-  components:{
+  name: "app",
+  components: {
     user,
     slots1,
     namedslots
   },
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+      msg: "Welcome to Your Vue.js App"
+    };
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -61,7 +60,8 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 

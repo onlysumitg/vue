@@ -44,12 +44,28 @@ Start a project
 3.$ npm intall
     >> down load all the required dependencies based on data in package.json
 
-4. $ npm run dev 
+4. npm install --save vue-resource
+    >> --save >> means create a production dependency
+
+5. npm  install --save vue-router
+        >> check main.js    
+            >> import  
+
+6. npm  install --save vuex
+        >> check main.js    
+            >> import  
+
+7. npm install --save--dev babel-preset-stage-2
+        >> babel used to convert v5 code into v6
+        >> this will give option "..." to use with mapGetters/mapMutations in vueX             
+
+99. $ npm run dev 
     >> run the development server
     >> keep it running
     >> it will keep compiling all the required files automatically as soon as we change a file
 
 
+  
 
 ======================= COMPONENTS ================== *****  IMP ******
 

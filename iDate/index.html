@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title id="ttl">iDate</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./iDate.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>Todos:</h2>
+       
+        <input v-model="dateVal">
+        <br>
+        {{dateVal}}
+       <br>
+        
+        <input v-model="dateFmt">
+        <br>
+        {{dateFmt}}
+        <br>
+       
+       <hr>
+       {{"x " + results}}
+       <ol>
+         <li v-for="r in results">{{r}}</li>
+       </ol>
+       <button @click="checkDate">Run</button>
+       
+       
+       
+      </div>
+
+<script>
+
+  new Vue({
+  el: "#app",
+  data: {
+  		dateVal:"",
+      dateFmt:"",
+      results:[]
+  },
+  methods: {
+  	toggle: function(todo){
+    	todo.done = !todo.done
+    },
+    checkDate(){
+        var xDate =  new  iDate(this.dateVal,this.dateFmt);
+       this.results= xDate.result;
+       xDate.toUSA();
+        
+       this.dateFmt = xDate.format;
+      this.dateVal = xDate.toString();
+    },
+
+
+  }
+})
+
+
+</script>
+</body>
+</html>
+
+

@@ -1,8 +1,8 @@
 {
-  "name": "vue-cli",
-  "description": "A Vue.js project",
+  "name": "vue_x_state_management",
+  "description": "vue x for state managment",
   "version": "1.0.0",
-  "author": "Sumit",
+  "author": "sumit",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -10,9 +10,9 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "babel-preset-stage-2": "^6.24.1",
     "vue": "^2.5.11",
-    "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.1"
+    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",

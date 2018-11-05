@@ -6,7 +6,9 @@
 
     <hr>
 
-    <!-- in userDetails.Vue >> 
+    <!--   IMPORTANT  
+        
+        in userDetails.Vue >> 
         >> we defined a propert "name"
         >> that property will work as attribue
         >>    for we have to use v-bind:name (or short cut :name)  to pass this value -->
@@ -22,45 +24,41 @@
    <user-edit></user-edit>
     </div>
 </template>
-<script> 
-
+<script>
 // how many components we are exporting from here
 // >> in this case only one and that one is default by every import
 //  >> check main.js
 
-import userDetails from "./UserDetails.vue"
+import userDetails from "./UserDetails.vue";
 
-import userEdit from "./UserEdit.vue"
+import userEdit from "./UserEdit.vue";
 
 export default {
-    components:{
-        userDetails, // same as user-details
-        userEdit    // same as user-edit
-    }
-    ,
-    data: function(){
-        return {
-            name:'Critial'
-        }
-
+  components: {
+    userDetails, // same as user-details
+    userEdit // same as user-edit
+  },
+  data: function() {
+    return {
+      name: "Critial"
+    };
+  },
+  methods: {
+    changeName() {
+      this.name = "This is my new name";
     },
-    methods:{
-        changeName(){
-            this.name="This is my new name"
-        },
-        myCallBack(){
-            this.name =this.name+" calling back"
-        }
+    myCallBack() {
+      this.name = this.name + " calling back";
     }
-}
+  }
+};
 </script>
 <style scoped>
-div{
-    background-color: pink;
+div {
+  background-color: pink;
 
-    width: 100%;
-    height:500px;
+  width: 100%;
+  height: 500px;
 }
-
 </style>
 
