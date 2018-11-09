@@ -57,7 +57,16 @@ Start a project
 
 7. npm install --save--dev babel-preset-stage-2
         >> babel used to convert v5 code into v6
-        >> this will give option "..." to use with mapGetters/mapMutations in vueX             
+        >> this will give option "..." to use with mapGetters/mapMutations in vueX  
+
+8. npm install --save axios       
+
+9.npm install vue-cookie --save
+
+
+npm i --save @fortawesome/fontawesome-svg-core 
+  npm i --save @fortawesome/free-solid-svg-icons 
+   npm i --save @fortawesome/vue-fontawesome
 
 99. $ npm run dev 
     >> run the development server
