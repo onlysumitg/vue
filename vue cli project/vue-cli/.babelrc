@@ -1,6 +1,15 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-3"
+  "presets": [["env", { "modules": false }], "stage-3"],
+
+  "plugins": [
+    [
+      "prismjs",
+      {
+        "languages": ["plsql", "sql"],
+        "plugins": ["line-numbers"],
+        "theme": "twilight",
+        "css": true
+      }
+    ]
   ]
 }

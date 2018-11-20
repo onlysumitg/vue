@@ -63,10 +63,22 @@ Start a project
 
 9.npm install vue-cookie --save
 
+npm install --save vue-sessionstorage
+
+
+npm install --save vue-good-table
+
+
 
 npm i --save @fortawesome/fontawesome-svg-core 
   npm i --save @fortawesome/free-solid-svg-icons 
    npm i --save @fortawesome/vue-fontawesome
+
+
+npm install babel-plugin-prismjs --save
+
+npm install --save-dev vue-ace-editor
+
 
 99. $ npm run dev 
     >> run the development server

@@ -16,41 +16,36 @@
     </div>
 </template>
 <script>
-  
-
 export default {
+  data: function() {
+    return {
+      user: "",
+      password: ""
+    };
+  },
+  methods: {
+    checkLogin() {
+      var vm = this;
+      this.runWebService(
+        "/a/gettoken",
+        {
+          user: vm.user,
+          password: vm.password
+        },
+        function() {},
+        function(responce) {
+          // console.log("responce")
+          // console.log(responce)
+          //window.$cookies.set("QSQL_TOKEN", responce.data.token);
 
-       
-
-    data :function(){
-        return {
-                user:"",
-                password:""
-        }
-    },
-    methods:{
-        checkLogin(){
-
-                var vm = this;
-             this.runWebService("/a/gettoken",
-            {
-                user:vm.user,
-                password:vm.password
-            },
-            function(){
-             },
-            function(responce){
-                // console.log("responce")
-                // console.log(responce)
-                window.$cookies.set("QSQL_TOKEN" ,responce.data.token)
-                 if(responce.data.token.length>=0) vm.$router.push({ path: "/servers" });
-            },
-            function(error){
-               
-            },
-            );
-        }
+          vm.$session.set("QSQL_TOKEN", responce.data.token);
+          if (responce.data.token.length >= 0)
+            vm.$router.push({ path: "/servers" });
+        },
+        function(error) {}
+      );
     }
-}
+  }
+};
 </script>
 

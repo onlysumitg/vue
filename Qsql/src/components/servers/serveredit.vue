@@ -44,57 +44,57 @@
 </template>
 <script>
 export default {
-  props:{
-        selectedServer:{
-      type:Object,
+  props: {
+    selectedServer: {
+      type: Object,
       required: false
     }
   },
-  data:function(){
+  data: function() {
     return {
-      processing:false
-    }
+      processing: false
+    };
   },
 
-  methods:{
-    saveServers(){
+  methods: {
+    saveServers() {
       var vm = this;
-      this.runWebService("s/save",vm.selectedServer,
-       function(){
-         vm.processing = true;
-       },
-       function(respons){
-         console.log(respons)
-         vm.processing = false;
-         if(respons.data.status=='s')
-         {
-       
-         }
-       },
-       function(error){
+      this.runWebService(
+        "s/test",
+        vm.selectedServer,
+        function() {
+          vm.processing = true;
+        },
+        function(respons) {
+          console.log(respons);
           vm.processing = false;
-       }
-       );
-
+          if (respons.data.status == "s") {
+            // go to next screen
+            vm.$session.set("currentserver", vm.selectedServer.id);
+          }
+        },
+        function(error) {
+          vm.processing = false;
+        }
+      );
     },
-    deleteServers(){
+    deleteServers() {
       var vm = this;
-      this.runWebService("s/delete",vm.selectedServer,
-       function(){},
-       function(respons){
-         console.log(respons)
-         if(respons.data.status=='s')
-         {
+      this.runWebService(
+        "s/delete",
+        vm.selectedServer,
+        function() {},
+        function(respons) {
+          console.log(respons);
+          if (respons.data.status == "s") {
             // reload the list
-         }
-       },
-       function(error){}
-       );
-
+          }
+        },
+        function(error) {}
+      );
     }
-
   }
-}
+};
 </script>
 
 

@@ -1,15 +1,11 @@
 <template>
-  <div id="app">
-     <div class="container-fluid fill">
+  <div id="app" class="fill">
+     <div class="containerx fill">
                 <router-view></router-view> <!-- this is the default container -->
 
      
 
-        <div class="row no-gutter fixed-bottom">
-              <div class="col-12 border-top">
-                asda
-              </div>
-        </div>
+      
 
 
      </div>
@@ -17,12 +13,9 @@
 </template>
 
 <script>
- 
 export default {
   name: "app",
-  components: {
- 
-  },
+  components: {},
   data() {
     return {
       msg: "Welcome to Your Vue.js App"
@@ -31,14 +24,27 @@ export default {
 };
 </script>
 
-<style>
+<style  >
+html {
+  height: 100%;
+}
+html,
+body {
+  margin: 0px;
+  min-height: 100%;
+  width: 100%;
+}
+.containerx {
+  height: 100%;
+  width: 100%;
+}
 #app {
+  height: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  min-height: 100%;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 h1,
