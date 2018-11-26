@@ -1,14 +1,15 @@
 <template>
-    <div class="row no-gutter mt-5"> 
-        <div class="col-4 offset-4 border p-3">
- <router-view></router-view>
-         </div>
+  <div class="md-layout">
+    <div class="md-layout-item"></div>
+    <div class="md-layout-item">
+        
+        <router-view></router-view>
     </div>
+    <div class="md-layout-item"></div>
+  </div>
+ 
 </template>
 
 <script>
-   
-export default {
- 
-};
+export default {};
 </script>

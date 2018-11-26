@@ -1,46 +1,51 @@
 <template>
-    
+
   <div class="h-100">
-    <form>
-      <div class="form-group">
-        <label for="servername">Server Name</label>
-        <input type="text" class="form-control" id="servername" v-model="selectedServer.serverName"  placeholder="Enter server name">
-      </div>
+    <md-card>
+      <md-card-header>
+        <div class="md-title">Server details</div>
+      </md-card-header>
 
-      <div class="form-row  ">
-          <div class="col-8">
-              <div class="form-group"> 
-                  <label for="serverip">Server IP*</label>
-                  <input type="text" class="form-control" id="serverip" v-model="selectedServer.serverIP" placeholder="Enter server IP">
-              </div>
-          </div>
-          <div class="col-4 align-self-center">
-        <div class="d-flex ml-1 ">
-          <div class="content-container">
-            <input type="checkbox" id="checkbox-bank" name="checkbox-bank" v-model="selectedServer.ssl" class="large align-middle checkbox-custom">
-            <label class="checkbox-custom-label" for="checkbox-bank">SSL</label>
-             
-          </div>
-        </div>
-      </div>
-    </div>
-                    <div class="form-group">
-      <label for="username">User Name</label>
-      <input type="text" class="form-control" id="username" v-model="selectedServer.userName" placeholder="Enter server name">
+      <md-card-content>
+        <form novalidate class="md-layout">
+          <md-field>
+            <label>Server Name</label>
+            <md-input v-model="selectedServer.serverName" id="servername"></md-input>
+          </md-field>
+
+          <md-field md-inline>
+            <label>Server IP</label>
+            <md-input v-model="selectedServer.serverIP" id="serverip"></md-input>
+
+          </md-field>
+          <md-switch md-inline v-model="selectedServer.ssl" class="md-primary">SSL</md-switch>
+
+          <md-field>
+            <label>User</label>
+            <md-input v-model="selectedServer.userName" id="serveruser"></md-input>
+          </md-field>
+
+          <md-field>
+            <label>Password</label>
+            <md-input v-model="selectedServer.password" type="password" required></md-input>
+          </md-field>
+
+        </form>
+      </md-card-content>
+
+      <md-card-actions>
+        <md-button class="md-accent" @click="deleteServers">Delete</md-button>
+        <md-button :disabled="processing" @click="saveServers" class="md-primary">
+          <md-progress-spinner v-show="processing" :md-diameter="12" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
+          Connect
+        </md-button>
+      </md-card-actions>
+    </md-card>
+
+
   
-    </div>
+  </div>
 
-      <div class="form-group">
-      <label for="userpassword">Password</label>
-      <input type="password" class="form-control" v-model="selectedServer.password"  id="userpassword" placeholder="Password">
-    </div>
-<font-awesome-icon :disabled="processing" icon="trash-alt" @click="deleteServers" />
-
- 
-<button type="button" :disabled="processing" @click="saveServers" class="btn btn-dark float-right">Connect<span v-show="processing" class="p-1"><font-awesome-icon icon="spinner" spin /></span></button>
-              </form>
-          </div>
- 
 </template>
 <script>
 export default {
@@ -71,6 +76,9 @@ export default {
           if (respons.data.status == "s") {
             // go to next screen
             vm.$session.set("currentserver", vm.selectedServer.id);
+            vm.$router.push({
+              path: "/sql"
+            });
           }
         },
         function(error) {

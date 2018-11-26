@@ -1,24 +1,33 @@
 <template>
-    <div class="h-100">
-              <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-default">Search</span>
-  </div>
-  <input type="text" v-model="search" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-</div>
-             <div @click="selectServer(server)"  class="card" v-for="server in filteredServerList" :key="server.id">
-               <div class="card-body">
-     <h6 class="card-subtitle mb-2">{{server.serverName}}</h6>
-             
-                 <p class="card-text"><small class="text-muted">{{server.userName}}@{{server.serverIP}}</small>
-                 <span v-if="server.ssl" class="badge badge-pill badge-dark float-right">SSL</span>
-                 </p>
-                 
-</div>
-                  
-             </div>
-       
+  <div class="h-100">
+     <md-card>
+ 
+      <md-card-content>
+
+    
+        <md-field>
+      <label>Search</label>
+       <md-input v-model="search"></md-input>
+    </md-field>
+
+    <div @click="selectServer(server)" class="card" v-for="server in filteredServerList" :key="server.id">
+       <md-card md-with-hover>
+           <md-ripple>
+                     <md-card-header>
+          <div class="md-body-1">{{server.serverName}}</div>
+          <div class="md-subhead">{{server.userName}}@{{server.serverIP}}</div>
+        </md-card-header>
+              <md-card-content>
+                <md-badge  v-if="server.ssl" class="md-square" style="margin-right: 10px" md-content="SSL" />
+              </md-card-content> 
+           </md-ripple>
+       </md-card>
+ 
+
     </div>
+      </md-card-content>
+     </md-card>
+  </div>
 </template>
 <script>
 export default {
@@ -80,7 +89,7 @@ export default {
     }
   }
 };
-</script >
+</script>
 <style scoped>
 .card:hover {
   background-color: rgb(230, 230, 230);

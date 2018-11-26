@@ -1,5 +1,8 @@
 import axios from "axios";
 
+import "./vkbeautify";
+
+
 window._ = require("lodash");
 window.Popper = require("popper.js").default;
 

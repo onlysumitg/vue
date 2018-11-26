@@ -1,15 +1,17 @@
 <template>
-<div class="row no-gutter">
-         <div class="col-3 border-right">
-             <serverlist  @selectedserver="selectedServer = $event"></serverlist>
-         </div>
-        <div class="col-5">
-            <serveredit :selectedServer="selectedServer"></serveredit>
-         </div>
-        <div class="col-4">
-            <serverlibl :selectedServer="selectedServer"></serverlibl>
-         </div>
- </div>
+ 
+   <div class="md-layout md-gutter">
+    <div class="md-layout-item">
+       <serverlist  @selectedserver="selectedServer = $event"></serverlist>
+    </div>
+    <div class="md-layout-item">
+       <serveredit :selectedServer="selectedServer"></serveredit>
+    </div>
+    <div class="md-layout-item">
+      <serverlibl :selectedServer="selectedServer"></serverlibl>
+    </div>
+  </div>
+
 </template>
 <script>
 import serverlist from "./serverlist";

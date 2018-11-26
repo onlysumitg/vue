@@ -1,36 +1,27 @@
 <template>
-                 <div class="" style="height:600px">
+  <div class="" style="height:600px">
 
-            <div class="btnc">
-                                        <button @click="emitSQLToRun(true)" class="btn mr-2">Run Selected</button>
- <button  @click="emitSQLToRun(false)" class="btn">Run All</button>
-                  </div>
- 
-                  
-                 <codeeditor id="editor" ref="editor" v-model="value" :value="value"  @init="editorInit"
-                  lang="sql" :options="options" theme="crimson_editor" width="100%" height="100%" >
-                  </codeeditor>
+    <div class="btnc">
+      <button @click="emitSQLToRun(true)" class="btn mr-2">Run Selected</button>
+      <button @click="emitSQLToRun(false)" class="btn">Run All</button>
+    </div>
 
-    <!-- show save query dialof -->  
-    <b-modal id="modalPrevent"
-             ref="modal"
-             title="Save Query"
-             v-model="modalShow"
-             @ok="saveQueryToDB"
-             @shown="clearName">
+
+    <codeeditor id="editor" ref="editor" v-model="value" :value="value" @init="editorInit" lang="sql" :options="options"
+      theme="crimson_editor" width="100%" height="100%">
+    </codeeditor>
+
+    <!-- show save query dialof -->
+    <b-modal id="modalPrevent" ref="modal" title="Save Query" v-model="modalShow" @ok="saveQueryToDB" @shown="clearName">
       <form @submit.stop.prevent="handleSubmit">
         {{modalErrorMessage}}
-        <b-form-input type="text"
-                      placeholder="Title*"
-                      v-model="queryHeading"></b-form-input>
-                      <br>
-            <b-form-input type="text"
-                      placeholder="Description*"
-                      v-model="queryDesc"></b-form-input>
+        <b-form-input type="text" placeholder="Title*" v-model="queryHeading"></b-form-input>
+        <br>
+        <b-form-input type="text" placeholder="Description*" v-model="queryDesc"></b-form-input>
       </form>
     </b-modal>
 
-             </div>
+  </div>
 </template>
 <script>
 export default {
@@ -108,11 +99,11 @@ export default {
     clearName() {},
 
     emitSQLToRun(seletedOnly) {
-      this.$emit("runsql", "");
+      //alert("ok");
       if (seletedOnly) {
-        this.$emit("runsql", this.$refs.editor.editor.getSelectedText());
+        eventBus.$emit("runsql", this.$refs.editor.editor.getSelectedText());
       } else {
-        this.$emit("runsql", this.value);
+        eventBus.$emit("runsql", this.value);
       }
     },
     editorInit: function() {
@@ -125,7 +116,10 @@ export default {
       var vm2 = this;
       this.$refs.editor.editor.commands.addCommand({
         name: "runSelected",
-        bindKey: { win: "Alt-R", mac: "Command-R" },
+        bindKey: {
+          win: "Alt-R",
+          mac: "Command-R"
+        },
         exec: function(editor) {
           vm2.emitSQLToRun(true);
         }
@@ -133,7 +127,10 @@ export default {
 
       this.$refs.editor.editor.commands.addCommand({
         name: "runAll",
-        bindKey: { win: "Alt-A", mac: "Command-A" },
+        bindKey: {
+          win: "Alt-A",
+          mac: "Command-A"
+        },
         exec: function(editor) {
           vm2.emitSQLToRun(false);
         }
@@ -141,7 +138,10 @@ export default {
 
       this.$refs.editor.editor.commands.addCommand({
         name: "save",
-        bindKey: { win: "Alt-S", mac: "Command-S" },
+        bindKey: {
+          win: "Alt-S",
+          mac: "Command-S"
+        },
         exec: function(editor) {
           vm2.modalErrorMessage = "";
           vm2.modalShow = true;
