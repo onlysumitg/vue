@@ -5,6 +5,7 @@ export const AppMixin = {
   mounted() {
     this.initialize();
     this.setupListeners();
+
   },
   beforeDestroy() {
     this.turnOffListeners();

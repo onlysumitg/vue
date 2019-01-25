@@ -1,5 +1,4 @@
 <template>
- 
   <div class="h-100">
     <md-card>
       <md-card-header>
@@ -7,20 +6,18 @@
       </md-card-header>
 
       <md-card-content>
-        <form novalidate  >
-
-
-            <div v-for="(lib,index) in selectedServer.libl" :key="lib+''+index"  >
-             
-            <input type="text" class="localField" v-model.lazy="selectedServer.libl[index]" :id="lib+''+index" />
-         </div>
-
+        <form novalidate>
+          <div v-for="(lib,index) in selectedServer.libl" :key="lib+''+index">
+            <input
+              type="text"
+              class="localField"
+              v-model.lazy="selectedServer.libl[index]"
+              :id="lib+''+index"
+            >
+          </div>
         </form>
       </md-card-content>
     </md-card>
-
-
-
   </div>
 </template>
 <script>

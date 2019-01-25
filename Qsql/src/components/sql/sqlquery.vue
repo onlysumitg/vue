@@ -1,18 +1,32 @@
 <template>
-  <div class="" style="height:600px">
-
+  <div class style="height:600px">
     <div class="btnc">
       <button @click="emitSQLToRun(true)" class="btn mr-2">Run Selected</button>
       <button @click="emitSQLToRun(false)" class="btn">Run All</button>
     </div>
 
-
-    <codeeditor id="editor" ref="editor" v-model="value" :value="value" @init="editorInit" lang="sql" :options="options"
-      theme="crimson_editor" width="100%" height="100%">
-    </codeeditor>
+    <codeeditor
+      id="editor"
+      ref="editor"
+      v-model="value"
+      :value="value"
+      @init="editorInit"
+      lang="sql"
+      :options="options"
+      theme="crimson_editor"
+      width="100%"
+      height="100%"
+    ></codeeditor>
 
     <!-- show save query dialof -->
-    <b-modal id="modalPrevent" ref="modal" title="Save Query" v-model="modalShow" @ok="saveQueryToDB" @shown="clearName">
+    <b-modal
+      id="modalPrevent"
+      ref="modal"
+      title="Save Query"
+      v-model="showSaveQueryDialog"
+      @ok="saveQueryToDB"
+      @shown="clearName"
+    >
       <form @submit.stop.prevent="handleSubmit">
         {{modalErrorMessage}}
         <b-form-input type="text" placeholder="Title*" v-model="queryHeading"></b-form-input>
@@ -21,6 +35,15 @@
       </form>
     </b-modal>
 
+    <!--____________________________  save query  ___________________________ -->
+    <!-- <md-dialog-prompt
+      :md-active.sync="showSaveQueryDialog"
+      v-model="queryHeading"
+      md-title="Enter a Title"
+      md-input-maxlength="100"
+      md-input-placeholder="Title*"
+      md-confirm-text="Done"
+    />-->
   </div>
 </template>
 <script>
@@ -42,15 +65,16 @@ export default {
       value: "",
       queryHeading: "",
       queryDesc: "",
-      modalShow: false,
+      showSaveQueryDialog: false,
       modalErrorMessage: "",
       options: {
-        minLines: 200,
+        minLines: 500,
         wrap: true,
         autoScrollEditorIntoView: false,
         showPrintMargin: false,
         fontSize: 14,
-        showGutter: true
+        showGutter: true,
+        enableBasicAutocompletion: true
       }
     };
   },
@@ -61,6 +85,8 @@ export default {
       alert(this.$refs.editor.editor.getSelectedText());
     },
     saveQueryToDB(evt) {
+      this.showSaveQueryDialog = false;
+
       this.modalErrorMessage = "";
       evt.preventDefault();
       if (
@@ -70,6 +96,7 @@ export default {
         this.modalErrorMessage = "Both Fields are required";
       } else {
         this.handleSubmit();
+        eventBus.$emit("updateSavedSQL", true);
       }
     },
 
@@ -100,11 +127,20 @@ export default {
 
     emitSQLToRun(seletedOnly) {
       //alert("ok");
+      var sqldata3 = {};
+      sqldata3.serverId = this.$session.get("currentserver");
+      sqldata3.requestIdToProcess = "";
+      sqldata3.requestIdToClose = "";
+
       if (seletedOnly) {
         eventBus.$emit("runsql", this.$refs.editor.editor.getSelectedText());
+
+        sqldata3.sqlsqlToRun = this.$refs.editor.editor.getSelectedText();
       } else {
         eventBus.$emit("runsql", this.value);
+        sqldata3.sqlsqlToRun = this.value;
       }
+      eventBus.$emit("runsql3", sqldata3);
     },
     editorInit: function() {
       require("vue2-ace-editor/node_modules/brace/ext/language_tools"); //language extension prerequsite...
@@ -144,7 +180,7 @@ export default {
         },
         exec: function(editor) {
           vm2.modalErrorMessage = "";
-          vm2.modalShow = true;
+          vm2.showSaveQueryDialog = true;
         }
       });
     }

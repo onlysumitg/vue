@@ -1,15 +1,10 @@
 <template>
   <div id="app" class="fill">
-     <div class="containerx fill">
-                <router-view></router-view> <!-- this is the default container -->
-
-     
-
-      
-
-
-     </div>
+    <div class="containerx fill">
+      <router-view></router-view>
+      <!-- this is the default container -->
     </div>
+  </div>
 </template>
 
 <script>
@@ -33,6 +28,7 @@ body {
   margin: 0px;
   min-height: 100%;
   width: 100%;
+  background-color: #fafafa;
 }
 .containerx {
   height: 100%;

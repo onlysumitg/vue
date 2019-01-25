@@ -89,3 +89,38 @@ new Vue({
   router: router,
   render: h => h(App)
 });
+
+let topTitle = new Vue({
+  el: "#topTitle",
+  data: {
+    title: "QSQL"
+  },
+
+
+  methods: {
+    initialize() {
+      this.title = this.$session.get("currentservername");
+    },
+
+    setupListeners() {
+
+      eventBus.$on("updatetitle", data => {
+        // alert(data);
+        this.title = data;
+
+        if (this.title.trim() === "") {
+          this.title = "QSQL"
+        }
+      });
+
+
+    },
+    //-----------------------------------------------
+    turnOffListeners() {
+
+      eventBus.$off("updatetitle");
+      this.title = "QSQL"
+    },
+
+  }
+});

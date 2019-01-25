@@ -1,5 +1,4 @@
 <template>
-
   <div class="h-100">
     <md-card>
       <md-card-header>
@@ -16,7 +15,6 @@
           <md-field md-inline>
             <label>Server IP</label>
             <md-input v-model="selectedServer.serverIP" id="serverip"></md-input>
-
           </md-field>
           <md-switch md-inline v-model="selectedServer.ssl" class="md-primary">SSL</md-switch>
 
@@ -29,23 +27,22 @@
             <label>Password</label>
             <md-input v-model="selectedServer.password" type="password" required></md-input>
           </md-field>
-
         </form>
       </md-card-content>
 
       <md-card-actions>
         <md-button class="md-accent" @click="deleteServers">Delete</md-button>
         <md-button :disabled="processing" @click="saveServers" class="md-primary">
-          <md-progress-spinner v-show="processing" :md-diameter="12" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
-          Connect
+          <md-progress-spinner
+            v-show="processing"
+            :md-diameter="12"
+            :md-stroke="2"
+            md-mode="indeterminate"
+          ></md-progress-spinner>Connect
         </md-button>
       </md-card-actions>
     </md-card>
-
-
-  
   </div>
-
 </template>
 <script>
 export default {
@@ -76,6 +73,8 @@ export default {
           if (respons.data.status == "s") {
             // go to next screen
             vm.$session.set("currentserver", vm.selectedServer.id);
+            vm.$session.set("currentservername", vm.selectedServer.serverName);
+            eventBus.$emit("updatetitle", vm.selectedServer.serverName);
             vm.$router.push({
               path: "/sql"
             });

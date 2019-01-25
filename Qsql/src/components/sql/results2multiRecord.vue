@@ -1,0 +1,319 @@
+<template>
+  <div class="page-container">
+    <md-card md-with-hover v-if="(alertMessage.length > 0)">
+      <md-card-header>
+        <div class="md-title">{{alertHeading}}</div>
+      </md-card-header>
+
+      <md-card-content>{{alertMessage}}</md-card-content>
+
+      <md-card-actions>
+        <md-button @click="alertMessage=''">close</md-button>
+      </md-card-actions>
+    </md-card>
+
+    <div>
+      <table class="i-table table table-striped table-bordered table-sm table-hover">
+        <thead>
+          <tr>
+            <th v-if="columns.length>0">#</th>
+            <th v-for="(col,indx) in columns" v-if="isColumnVisible(indx)" :key="'c'+indx">
+              {{col.label.trim()}}
+              <span
+                v-if="col.label.trim()!=col.name.trim()"
+                class="md-caption"
+              >[{{col.name.trim()}}]</span>
+              <br>
+              <span
+                v-if="sqldata.multiTable && col.tableName.trim().length >0 "
+                class="md-caption"
+              >[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
+              <span
+                v-if="sqldata.multiTable && col.tableName.trim().length <=0 "
+                class="md-caption"
+              >-</span>
+            </th>
+          </tr>
+        </thead>
+        <!-- data -->
+        <tbody>
+          <tr
+            md-selectable="single"
+            class="md-primary"
+            @dblclick="setCurrentRecord(indx) "
+            v-for="(row,indx) in rows"
+            :key="'c'+indx"
+          >
+            <td>{{indx+1}}</td>
+            <td
+              v-for="(valx,indxx, colIndx) in row"
+              v-if="isColumnVisible(colIndx)"
+              :key="'r'+indxx"
+            >{{valx}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="md-caption">{{endOfData}}</div>
+    </div>
+
+    <md-progress-bar class="md-accent" v-if="loading" md-mode="indeterminate"></md-progress-bar>
+  </div>
+</template>
+<script>
+export default {
+  components: {},
+  props: {
+    initialData: {
+      type: Object,
+      required: false
+    }
+  },
+  created() {
+    //alert("okk1");
+    var vm = this;
+    window.addEventListener("scroll", () => {
+      //  alert("okk");
+      vm.bottom = vm.bottomVisible();
+    });
+  },
+  computed: {
+    //---------------------------------
+    endOfData: function() {
+      if (!this.hasMoreData) {
+        return "End of Data.";
+      }
+      return "";
+    }
+
+    //---------------------------------
+  },
+  watch: {
+    bottom: function(bottom) {
+      if (bottom && this.hasMoreData && this.sqldata.sql.length > 0) {
+        this.runSQL(false);
+      }
+    }
+  },
+
+  methods: {
+    initialize() {
+      this.sqldata = this.initialData;
+      this.rows = this.initialData.data;
+      this.columns = this.initialData.columns;
+      this.hasMoreData = this.initialData.hasMoreData;
+      this.alertMessage = this.initialData.error;
+    },
+    isColumnVisible(index) {
+      try {
+        if (this.columns[index].visible == true) {
+          return true;
+        }
+      } catch (e) {
+        return true;
+      }
+      return false;
+    },
+
+    //---------------------------------------------
+    setCurrentRecord(val) {
+      //alert(val);
+      this.currentRecord = val;
+      if (this.currentRecord <= 0) {
+        this.currentRecord = 0;
+      }
+      if (this.currentRecord >= this.rows.length) {
+        this.currentRecord = this.rows.length - 1;
+      }
+
+      var data = {};
+      data.rows = this.rows;
+      data.columns = this.columns;
+      data.currentRecord = this.currentRecord;
+      data.multiTable = this.sqldata.multiTable;
+
+      eventBus.$emit("runsql3SingleRecordData", data);
+    },
+
+    //---------------------------------------------
+    bottomVisible() {
+      const scrollY = window.scrollY;
+      const visible = document.documentElement.clientHeight;
+      const pageHeight = document.documentElement.scrollHeight - 400;
+      const bottomOfPage = visible + scrollY >= pageHeight;
+      return bottomOfPage || pageHeight < visible;
+      // return this.bottom;
+    },
+
+    runSQL: function(newCall = true) {
+      this.showMessage = false;
+      var vm = this;
+      this.runWebService(
+        "r/sql3",
+        {
+          serverId: vm.sqldata.serverId,
+          sql: vm.sqldata.sql,
+          requestIdToProcess: vm.sqldata.processId,
+          requestIdToClose: ""
+        },
+        function() {
+          vm.loading = true;
+          if (newCall) {
+            vm.alertMessage = "";
+            vm.rows = [];
+            vm.sqldata = [];
+          }
+        },
+        function(responce) {
+          vm.loading = false;
+          vm.requestIdToClose = "";
+          vm.requestIdToProcess = "";
+          //  alert("kkk;");
+          //  console.log("KK: ");
+          //  console.log("KK: " + Object.keys(responce.data.sqldata)[0]);
+
+          vm.sqldata =
+            responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+
+          eventBus.$emit("updateHistorySQL", true);
+          console.log("vm.sqldata.data " + vm.sqldata);
+
+          switch (vm.sqldata.status) {
+            case "s": {
+              vm.columns = vm.sqldata.columns;
+              console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
+              if (vm.rows.length > 0) {
+                vm.rows = vm.rows.concat(vm.sqldata.data);
+              } else {
+                vm.rows = vm.sqldata.data;
+              }
+
+              /// check if it has more fata
+              if (vm.sqldata.data.length <= 0) {
+                vm.hasMoreData = false;
+              } else {
+                vm.hasMoreData = vm.sqldata.hasMoreData;
+              }
+
+              vm.requestIdToProcess = responce.data.requestId;
+              vm.alertMessage = vm.sqldata.error;
+
+              break;
+            } // end sucess
+            case "e": {
+              vm.alertMessage = vm.sqldata.error;
+              vm.hasMoreData = false;
+              break;
+            }
+
+            case "u": {
+              vm.alertMessage = vm.sqldata.error;
+              vm.hasMoreData = false;
+              break;
+            }
+            default: {
+              vm.alertMessage = "Somthing is not right";
+              vm.hasMoreData = false;
+            }
+          }
+        },
+        function(error) {
+          vm.loading = false;
+          vm.requestIdToClose = "";
+          vm.requestIdToProcess = "";
+          vm.hasMoreData = false;
+        }
+      );
+    }
+  },
+
+  data() {
+    return {
+      sqlToRun: "",
+      rightMClass: ["modal", "right", "fade"],
+      currentRecord: 0,
+
+      sqldata: [],
+      columns: [],
+      rows: [],
+      currentCol: {},
+
+      loading: false,
+      animate: true,
+
+      alertMessage: "",
+      alertHeading: "",
+      showMessage: false,
+      mainMessage: "",
+      requestIdToProcess: "",
+      requestIdToClose: "",
+      bottom: false,
+      hasMoreData: true,
+      editorValue: "",
+
+      modifiedDatas: [],
+      modifiedData: {
+        rrn: 0,
+        row: 0,
+        column: "",
+        oldValue: "",
+        newValue: ""
+      }
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.tdClass {
+  white-space: nowrap !important;
+  word-wrap: break-word;
+}
+
+.tableClasss {
+  table-layout: fixed;
+  white-space: normal;
+}
+
+.whitespace {
+  white-space: normal;
+}
+
+.vs-sidebar {
+  max-width: 600px;
+}
+
+.footer-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+// Demo purposes only
+.md-drawer {
+  width: auto;
+  //max-width: calc(100vw - 125px);
+  background: white;
+}
+</style>
+<style>
+.md-overlay {
+  background: none;
+}
+
+.md-table-head-container {
+  height: auto;
+  padding: 0%;
+}
+
+.i-table {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.md-table .md-table-content {
+  overflow: visible;
+}
+</style>
