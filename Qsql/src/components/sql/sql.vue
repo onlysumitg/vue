@@ -116,6 +116,5 @@ export default {
 
 .md-drawer {
   width: 100%;
-  overflow: inherit;
 }
 </style>

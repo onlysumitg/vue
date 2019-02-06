@@ -1,8 +1,8 @@
 <template>
   <div class style="height:600px">
     <div class="btnc">
-      <button @click="emitSQLToRun(true)" class="btn mr-2">Run Selected</button>
-      <button @click="emitSQLToRun(false)" class="btn">Run All</button>
+      <md-button @click="emitSQLToRun(true)" class="md-primary md-raised">Run Selected</md-button>
+      <md-button @click="emitSQLToRun(false)" class="md-primary md-raised">Run All</md-button>
     </div>
 
     <codeeditor
@@ -190,18 +190,8 @@ export default {
 
 <style>
 .btnc {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 16px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  z-index: 999;
+  position: sticky;
+  top: 0;
+  margin: 5px;
 }
 </style>

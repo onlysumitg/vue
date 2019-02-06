@@ -12,29 +12,43 @@
       </md-card-actions>
     </md-card>
 
-    <div>
-      <table class="i-table table table-striped table-bordered table-sm table-hover">
+    <div style="margin:2px;">
+      <table class="table i-table table-striped table-bordered table-sm table-hover">
         <thead>
           <tr>
-            <th v-if="columns.length>0">#</th>
-            <th v-for="(col,indx) in columns" v-if="isColumnVisible(indx)" :key="'c'+indx">
+            <th class="stickyHead" v-if="columns.length>0">#</th>
+            <th
+              class="stickyHead"
+              v-for="(col,indx) in columns"
+              v-if="isColumnVisible(indx)"
+              :key="'c'+indx"
+            >
               {{col.label.trim()}}
-              <span
-                v-if="col.label.trim()!=col.name.trim()"
-                class="md-caption"
-              >[{{col.name.trim()}}]</span>
-              <br>
-              <span
-                v-if="sqldata.multiTable && col.tableName.trim().length >0 "
-                class="md-caption"
-              >[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
+              <!-- <span v-if="col.label.trim()!=col.name.trim()" class="md-caption">
+                <br>
+                [{{col.name.trim()}}]
+              </span>-->
+              <span v-if="col.label.trim()!=col.shortFieldName.trim()" class="md-caption">
+                <br>
+                [{{col.shortFieldName.trim()}}]
+              </span>
+              <span v-else>
+                <br>&nbsp;
+              </span>
+              <span v-if="sqldata.multiTable && col.tableName.trim().length >0 " class="md-caption">
+                <br>
+                [{{col.libName.trim()}}/{{col.tableName.trim()}}]
+              </span>
               <span
                 v-if="sqldata.multiTable && col.tableName.trim().length <=0 "
                 class="md-caption"
-              >-</span>
+              >
+                <br>-
+              </span>
             </th>
           </tr>
         </thead>
+
         <!-- data -->
         <tbody>
           <tr
@@ -310,10 +324,22 @@ export default {
 
 .i-table {
   white-space: nowrap;
-  overflow: visible;
+  overflow: auto;
+}
+
+.i-table2 {
+  white-space: nowrap;
+  overflow: auto;
+  position: sticky;
 }
 
 .md-table .md-table-content {
-  overflow: visible;
+  overflow: auto;
+}
+
+.stickyHead {
+  position: sticky;
+  background-color: #cfe3fa;
+  top: 0;
 }
 </style>

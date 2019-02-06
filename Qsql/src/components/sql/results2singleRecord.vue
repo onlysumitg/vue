@@ -7,7 +7,7 @@
       v-if="showSingleRecord"
       :md-active.sync="showSingleRecord"
     >
-      <div class="md-layout">
+      <div class="md-layout" style="min-width:400px; margin:10px">
         <div class="md-layout-item" style="min-width=500px">
           <md-toolbar class="md-transparent" md-elevation="0">
             <div class="md-toolbar-section-start">
@@ -23,20 +23,27 @@
             </div>
           </md-toolbar>
 
-          <table class="i-table table table-sm table-hover">
+          <table class="i-table table table-sm table-hover" style="min-width:400px;">
             <tbody>
               <tr v-for="(col,n) in columns" :key="'cc'+n" @dblclick="setCurrentColumn(col)">
                 <td>
                   {{col.label}}
                   <!-- <span v-if="col.modified">**</span> -->
-                  <div class="md-caption" v-if="col.label != col.name">[{{col.name.trim()}}]</div>
+                  <!-- <div class="md-caption" v-if="col.label != col.name">[{{col.name.trim()}}]</div> -->
+                  <div
+                    class="md-caption"
+                    v-if="col.label != col.shortFieldName"
+                  >[{{col.shortFieldName.trim()}}]</div>
+
                   <div class="md-caption">
                     [{{col.type.trim()}}] [ {{col.precision}}
-                    <span v-if="col.scale>0">,{{col.scale}}</span>
+                    <span
+                      v-if="col.scale>0"
+                    >, {{col.scale}}</span>
                     ]
                     <br>
                     <span v-if="multiTable">[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
-                    <span v-else class="md-caption">-</span>
+                    <!-- <span v-else class="md-caption">-</span> -->
                   </div>
                 </td>
                 <!-- need to make a function ??? -->
