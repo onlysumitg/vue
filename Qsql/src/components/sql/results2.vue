@@ -71,6 +71,16 @@ export default {
             true
           );
         }
+
+        var i = sessionStorage.length;
+        // alert(i);
+        while (i--) {
+          // alert("rrr");
+          var key = sessionStorage.key(i);
+          if (key.startsWith("tableexport-")) {
+            sessionStorage.removeItem(key);
+          }
+        }
       });
     },
     //-----------------------------------------------

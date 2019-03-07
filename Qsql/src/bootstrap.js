@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import * as monaco from 'monaco-editor';
 import "./vkbeautify";
 
 
@@ -7,6 +7,33 @@ window._ = require("lodash");
 window.Popper = require("popper.js").default;
 
 window.axios = axios;
+
+
+window.TableExport = require("tableexport");
+
+self.MonacoEnvironment = {
+  getWorkerUrl: function (moduleId, label) {
+    alert(moduleId)
+    if (label === 'json') {
+      return './json.worker.bundle.js';
+    }
+    if (label === 'css') {
+      return './css.worker.bundle.js';
+    }
+    if (label === 'html') {
+      return './html.worker.bundle.js';
+    }
+
+    if (label === 'typescript' || label === 'javascript') {
+      return './ts.worker.bundle.js';
+    }
+    //return './sql.worker.bundle.js';
+    return './editor.worker.bundle.js';
+  }
+}
+
+window.monacoxx = monaco.editor;
+//new TableExport(document.getElementsByTagName("table"));
 
 //window.acehtml = require("vue2-ace-editor/node_modules/brace/mode/html");
 //window.acethemechrome = require("vue2-ace-editor/node_modules/brace/theme/chrome");

@@ -1,10 +1,10 @@
 # qsql
 
-> SQL interface  for IBM I
+> SQL interface for IBM I
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -18,3 +18,5 @@ npm run build
 npm install --save vue-affix
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+npm install tableexport

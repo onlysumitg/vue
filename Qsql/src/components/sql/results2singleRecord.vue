@@ -23,7 +23,11 @@
             </div>
           </md-toolbar>
 
-          <table class="i-table table table-sm table-hover" style="min-width:400px;">
+          <table
+            class="i-table table table-sm table-hover"
+            style="min-width:400px;"
+            :id="processId"
+          >
             <tbody>
               <tr v-for="(col,n) in columns" :key="'cc'+n" @dblclick="setCurrentColumn(col)">
                 <td>
@@ -91,6 +95,22 @@
 export default {
   components: {},
 
+  updated() {
+    //alert(this.processId);
+
+    try {
+      this.table.remove();
+    } catch (e) {}
+
+    try {
+      this.table = TableExport(document.getElementById(this.processId), {
+        position: "top"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   computed: {
     //---------------------------------
     editorValue2: {
@@ -147,6 +167,7 @@ export default {
         this.currentRecord = data.currentRecord;
         this.showSingleRecord = true;
         this.multiTable = data.multiTable;
+        this.processId = data.processId + "_sing";
       });
 
       eventBus.$on("hidesinglerecord3", data => {
@@ -271,6 +292,8 @@ export default {
       xfalse: false,
       showSingleRecord: false,
       showEditor: false,
+      processId: "",
+      table: "",
 
       multiTable: false,
 
