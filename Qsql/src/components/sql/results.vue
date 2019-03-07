@@ -208,19 +208,7 @@ export default {
         console.log("Not allowed to edit this value");
         return;
       }
-      console.log(
-        this.currentCol.modified +
-          " :: " +
-          this.editorValue2Val +
-          " :: " +
-          this.currentCol.field +
-          " :: " +
-          this.currentCol.tableName +
-          " :: " +
-          this.currentCol.libName +
-          " : RRN : " +
-          this.rows[this.currentRecord]["RRN_X___1"]
-      );
+
       var vm = this;
       this.runWebService(
         "r/sqlupdate",
@@ -296,6 +284,8 @@ export default {
         if (this.sqlToRun.trim().length > 0) {
           this.runSQL(this.sqlToRun);
         }
+
+   
       });
     },
     //-----------------------------------------------

@@ -1,5 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
+import Vue from "vue";
 import App from "./App.vue";
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
@@ -49,6 +50,12 @@ import {
   faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 
+import {
+  faAngleLeft
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleRight
+} from "@fortawesome/free-solid-svg-icons";
 // import VueGoodTablePlugin from "vue-good-table";
 // import "vue-good-table/dist/vue-good-table.css";
 // Vue.use(VueGoodTablePlugin);
@@ -63,7 +70,7 @@ import {
   FontAwesomeLayersText
 } from "@fortawesome/vue-fontawesome";
 
-library.add(faSpinner, faTrashAlt);
+library.add(faSpinner, faTrashAlt, faAngleLeft, faAngleRight);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("font-awesome-layers", FontAwesomeLayers);

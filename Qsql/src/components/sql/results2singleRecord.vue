@@ -259,12 +259,12 @@ export default {
 
     //----------------------------------------------
     editorInit: function() {
-      require("vue2-ace-editor/node_modules/brace/ext/language_tools"); //language extension prerequsite...
-      require("vue2-ace-editor/node_modules/brace/mode/xml");
-      require("vue2-ace-editor/node_modules/brace/mode/json");
+      require("brace/ext/language_tools"); //language extension prerequsite...
+      require("brace/mode/xml");
+      require("brace/mode/json");
 
-      require("vue2-ace-editor/node_modules/brace/theme/crimson_editor");
-      require("vue2-ace-editor/node_modules/brace/snippets/javascript"); //snippet
+      require("brace/theme/crimson_editor");
+      require("brace/snippets/javascript"); //snippet
     },
     //---------------------------------------------
     setCurrentRecord(val) {

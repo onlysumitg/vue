@@ -13,7 +13,10 @@
     </md-card>
 
     <div style="margin:2px;">
-      <table class="table i-table table-striped table-bordered table-sm table-hover">
+      <table
+        :id="sqldata.processId"
+        class="table i-table table-striped table-bordered table-sm table-hover"
+      >
         <thead>
           <tr>
             <th class="stickyHead" v-if="columns.length>0">#</th>
@@ -91,6 +94,32 @@ export default {
       vm.bottom = vm.bottomVisible();
     });
   },
+  destroyed() {
+    try {
+      this.table.remove();
+    } catch (e) {}
+  },
+  updated() {
+    //alert(this.sqldata.processId);
+
+    try {
+      this.table.remove();
+    } catch (e) {}
+
+    try {
+      var filename = this.sqldata.heading;
+      this.table = TableExport(
+        document.getElementById(this.sqldata.processId),
+        {
+          position: "top",
+          filename: filename,
+          ignoreCols: 0
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  },
   computed: {
     //---------------------------------
     endOfData: function() {
@@ -117,6 +146,10 @@ export default {
       this.columns = this.initialData.columns;
       this.hasMoreData = this.initialData.hasMoreData;
       this.alertMessage = this.initialData.error;
+      // alert(this.sqldata.processId);
+      try {
+        this.table.remove();
+      } catch (e) {}
     },
     isColumnVisible(index) {
       try {
@@ -127,6 +160,15 @@ export default {
         return true;
       }
       return false;
+    },
+    //---------------------------------------------
+    download(tableid) {
+      console.log(tableid);
+      var table = TableExport(document.getElementById(tableid), {
+        position: "top",
+        bootstrap: "false"
+      });
+      console.log(table);
     },
 
     //---------------------------------------------
@@ -141,6 +183,7 @@ export default {
       }
 
       var data = {};
+      data.processId = this.sqldata.processId;
       data.rows = this.rows;
       data.columns = this.columns;
       data.currentRecord = this.currentRecord;
@@ -264,7 +307,7 @@ export default {
       bottom: false,
       hasMoreData: true,
       editorValue: "",
-
+      table: {},
       modifiedDatas: [],
       modifiedData: {
         rrn: 0,
