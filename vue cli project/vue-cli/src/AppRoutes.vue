@@ -1,11 +1,15 @@
 <template>
-  <div id="app"> 
-      <h1> routes </h1>
-      <Header></Header>
-      <router-view name="headerTop"></router-view>
-      <router-view></router-view> <!-- this is the default container -->
-      <router-view name="headerBottom"></router-view>
+  <div id="app">
+    <h1>routes</h1>
+    <Header></Header>
 
+    <router-view name="headerTop"></router-view>
+
+    <!-- this is the default container -->
+
+    <router-view></router-view>
+
+    <router-view name="headerBottom"></router-view>
   </div>
 </template>
 

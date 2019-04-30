@@ -26,21 +26,27 @@
       </md-tab>
     </md-tabs>-->
     <b-tabs>
-      <b-tab v-for="(value,key,index) in sqldata" :key="'c'+index" :title="value.heading">
+      <b-tab v-for="(value,key,index) in sqldata" :key="'c'+index" :title="getHeading(value)">
         <!-- {{value.sql}} -->
         <results2multiRecord :initialData="value"></results2multiRecord>
       </b-tab>
     </b-tabs>
     <results2singleRecord></results2singleRecord>
+    <results2singleRecordInsert></results2singleRecordInsert>
+    <results2singleRecordDelete></results2singleRecordDelete>
   </div>
 </template>
 <script>
 import results2multiRecord from "./results2multiRecord";
 import results2singleRecord from "./results2singleRecord";
+import results2singleRecordInsert from "./results2singleRecordInsert";
+import results2singleRecordDelete from "./results2singleRecordDelete";
 export default {
   components: {
     results2multiRecord,
-    results2singleRecord
+    results2singleRecord,
+    results2singleRecordInsert,
+    results2singleRecordDelete
   },
 
   created() {},
@@ -88,6 +94,17 @@ export default {
       eventBus.$off("runsql3");
     },
 
+    //-----------------------------
+    getHeading(sqlResultData) {
+      if (
+        _.isEmpty(sqlResultData.serverName) ||
+        sqlResultData.serverId == this.$session.get("currentserver")
+      ) {
+        return sqlResultData.heading;
+      } else {
+        return sqlResultData.serverName.trim() + " >> " + sqlResultData.heading;
+      }
+    },
     //---------------------------------------------
 
     runSQL: function(

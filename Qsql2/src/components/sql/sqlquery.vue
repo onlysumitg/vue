@@ -68,7 +68,9 @@ export default {
   watch: {
     currentSQL(valx) {
       this.value = valx;
-      this.monacoEditor.getModel().setValue(valx);
+      var currentValue = this.monacoEditor.getModel().getValue();
+      this.value = currentValue + " \n \n" + valx + " \n \n";
+      this.monacoEditor.getModel().setValue(this.value);
     }
   },
   //------------------------------------------------------------------------------------------

@@ -1,39 +1,40 @@
 <html>
+
 <head>
-<meta charset="utf-8">
-<title id="ttl">{{title}}</title>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title id="ttl">{{title}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-<style>
-    .demo{
-    width:100px;
-    height:100px;
-    background-color: gray;
-    display:inline-block;
-    margin:10px;
-}
-.green{
-    background-color: green;
-     
-}
+    <style>
+        .demo {
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            display: inline-block;
+            margin: 10px;
+        }
 
-.red{
-    background-color:red;
-   
-}
+        .green {
+            background-color: green;
 
-.blue{
-    background-color:blue;
-    
-}
+        }
 
-</style>
+        .red {
+            background-color: red;
+
+        }
+
+        .blue {
+            background-color: blue;
+
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
         <div class="demo" :style="{backgroundColor:color}"></div>
-     <!--
+        <!--
         bind style directly
 
         :style="js object with key as cssproperty name nas value as csspoperty value"
@@ -45,19 +46,19 @@
 
      -->
 
-            <hr>
-        <div class="demo" :style="myStyle" ></div>
-   <!--  
+        <hr>
+        <div class="demo" :style="myStyle"></div>
+        <!--  
        using computed propertes
    -->
         <hr>
-        <div class="demo" :style="[myStyle,{heigt:width+'px'}]" ></div>
+        <div class="demo" :style="[myStyle,{height:width+'px'}]"></div>
 
-   <!--
+        <!--
 
     MIXED syntex with array
 
-   -->     
+   -->
         <hr>
         <input v-model="colorPro">
         <input v-model="width">
@@ -65,29 +66,26 @@
 
     </div>
 
-<script>
-let app = new Vue({
-    el:"#app",
-    data:{ 
-        attachedRed:false,
-        colorPro:"green",
-        width:100
-       
-    },
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                attachedRed: false,
+                colorPro: "green",
+                width: 100
 
-    computed:{
-        myStyle:function(){
-                return {
-                    backgroundColor:this.colorPro,
-                    width: this.width +'px'
+            },
+
+            computed: {
+                myStyle: function () {
+                    return {
+                        backgroundColor: this.colorPro,
+                        width: this.width + 'px'
+                    }
                 }
-        }
-    }
-})
-
- 
-</script>
+            }
+        })
+    </script>
 </body>
+
 </html>
-
-

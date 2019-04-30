@@ -9,7 +9,7 @@ import Vue from "vue";
 
 //import App from "./AppTransition.vue"; // uncomment this for --> transitions folder
 
-import App from "./AppRoutes.vue"; // uncomment this for --> transitions folder
+import App from "./AppRoutes.vue"; // uncomment this for --> vuewRoutes folder
 
 import Home from "./Home.vue";
 import Home2 from "./Home2.vue";
@@ -21,7 +21,9 @@ import Home2 from "./Home2.vue";
 import VueResource from "vue-resource";
 import VueRouter from "vue-router";
 
-import { routes } from "./routes";
+import {
+  routes
+} from "./routes";
 //-----------------------------------------------
 
 // register component globally
@@ -95,15 +97,17 @@ Vue.use(VueResource); // check import
 
 Vue.use(VueRouter); // check import
 
-const router = new VueRouter({ 
+const router = new VueRouter({
   routes,
-  mode:'history',
-  scrollBehavior(to,from,savedPosition){
-    if(savedPosition){
+  mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
       return savedPosition;
     }
-     if(to.hash){
-       return {selector: to.hash}  // #data in userdetail/userEdit
+    if (to.hash) {
+      return {
+        selector: to.hash
+      } // #data in userdetail/userEdit
     }
     //return {x:0,y:700}  // always scroll to this position
   }
@@ -119,7 +123,7 @@ const router = new VueRouter({
 //   next(false) ==> dont continue and stay on this page
 //    next('/xx') >> go to this path
 //    next({pathObject}) :: check routes.js
-router.beforeEach((to,from,next)=>{
+router.beforeEach((to, from, next) => {
   console.log("GLOBAL >> before each");
   next();
 

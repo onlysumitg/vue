@@ -31,7 +31,7 @@
             <tbody>
               <tr v-for="(col,n) in columns" :key="'cc'+n" @dblclick="setCurrentColumn(col)">
                 <td>
-                  <Strong>{{col.label}}</Strong>
+                 <Strong> {{col.label}}</Strong>
                   <!-- <span v-if="col.modified">**</span> -->
                   <!-- <div class="md-caption" v-if="col.label != col.name">[{{col.name.trim()}}]</div> -->
                   <div
@@ -51,30 +51,7 @@
                   </div>
                 </td>
                 <!-- need to make a function ??? -->
-                <td>
-                  <!-- {{rows[currentRecord][col.label+'_'+col.id].substring(0,50)}} -->
-                  <div class="input-group">
-                    <input
-                      v-if="col.precision < 80"
-                      type="text"
-                      class="form-control"
-                      aria-describedby="basic-addon2"
-                      v-model="rows[currentRecord][col.label+'_'+col.id]"
-                      :style="[{minWidth:'500px'}]"
-                      :maxlength="getMaxLength(col)"
-                      disabled
-                    >
-                    <textarea
-                      v-else
-                      class="form-control"
-                      rows="5"
-                      v-model="rows[currentRecord][col.label+'_'+col.id]"
-                      cols="50"
-                      :maxlength="getMaxLength(col)"
-                      disabled
-                    ></textarea>
-                  </div>
-                </td>
+                <td>{{rows[currentRecord][col.label+'_'+col.id].substring(0,50)}}</td>
               </tr>
             </tbody>
           </table>
@@ -210,16 +187,6 @@ export default {
   //------------------------------------------------------------
   methods: {
     initialize() {},
-
-    //-----------------------------------------
-    getMaxLength(col) {
-      var length = col.precision;
-      if (col.scale > 0) {
-        length += 1;
-      }
-      //  alert(length);
-      return length;
-    },
     //-------------------------------------------
     IsValidJSONString(str) {
       try {

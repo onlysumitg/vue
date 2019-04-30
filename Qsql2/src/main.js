@@ -89,6 +89,7 @@ let topTitle = new Vue({
   methods: {
     initialize() {
       this.title = this.$session.get("currentservername");
+
     },
 
     setupListeners() {

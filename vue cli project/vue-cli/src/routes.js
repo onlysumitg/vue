@@ -7,43 +7,75 @@ import UserStart from "./components/vueRoutes/UserStart.vue";
 import UserDetail from "./components/vueRoutes/UserDetails.vue";
 import UserEdit from "./components/vueRoutes/UserEdit.vue";
 
-import Header from "./components/vueRoutes/header.vue";
+import Header from "./components/vueRoutes/header2.vue";
 
 import Home from "./Home.vue";
 export const routes = [
   //{ path: "", component: Home },
 
-  { path: "", name: 'Home', components:{
-    default: Home,
-    'header-top': Header,
-  } },
+  {
+    path: "",
+    name: 'Home',
+    components: {
+      default: Home,
+      'headerTop': Header,
+    }
+  },
 
   //----------------------------- Header at the bottom
-  { path: "/user/:id", components :{
-    default: user,
-    'headerBottom': Header,
-  }  },
+  {
+    path: "/user/:id",
+    components: {
+      default: user,
+      'headerBottom': Header,
+    }
+  },
 
-  
+
   //----------------------------- with child route
 
-  { path: "/user2", component: user2 , 
-  children :[
-    {path:'', component:UserStart},
-    { path: ':id', component: UserDetail ,
-     beforeEnter:(to,from,next)=>{
-       console.log("at UserDetail >> beforeEnter")
-        next();
-    }},
-    { path: ':id/edit', component: UserEdit, name:'userEdit' },
-  ]},
+  {
+    path: "/user2",
+    component: user2,
+    children: [{
+        path: '',
+        component: UserStart
+      },
+      {
+        path: ':id',
+        component: UserDetail,
+        beforeEnter: (to, from, next) => {
+          console.log("at UserDetail >> beforeEnter")
+          next();
+        }
+      },
+      {
+        path: ':id/edit',
+        component: UserEdit,
+        name: 'userEdit'
+      },
+    ]
+  },
 
-   //----------------------------- common redirect >> /redirect-me will go to user
-   {path:'/redirect-me', redirect:"/user2"},
-   {path:'/redirect-me2', redirect:{name:'Home'}},
+  //----------------------------- common redirect >> /redirect-me will go to user
+  {
+    path: '/redirect-me',
+    redirect: "/user2"
+  },
+  {
+    path: '/redirect-me2',
+    redirect: {
+      name: 'Home'
+    }
+  },
 
   // --------- everything else to to home
-   {path:'/*', redirect:{name:'Home'}},
+  {
+    path: '/*',
+    redirect: {
+      name: 'Home'
+    }
+  },
 
 ];
 //http://localhost:8080/#/

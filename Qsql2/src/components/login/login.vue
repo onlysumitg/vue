@@ -4,6 +4,7 @@
     <div class="md-layout-item">
       <router-view></router-view>
     </div>
+    <div class="md-layout-item"></div>
   </div>
 </template>
 

@@ -1,39 +1,32 @@
 <template>
+  <form novalidate class="md-layout" @submit.prevent="validateUser">
+    <md-card>
+      <md-card-header>
+        <div class="md-title">Login</div>
+      </md-card-header>
 
+      <md-card-content>
+        <md-field>
+          <label>User name</label>
+          <md-input v-model="user" required></md-input>
+        </md-field>
 
-  <md-card>
-    <md-card-header>
-      <div class="md-title">Login</div>
-    </md-card-header>
+        <md-field>
+          <label>Password</label>
+          <md-input v-model="password" type="password" required></md-input>
+        </md-field>
+      </md-card-content>
 
-    <md-card-content>
-   
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
+      <md-card-actions>
+        <md-button>Forogt password</md-button>
+        <md-button @click="checkLogin" class="md-primary">Login</md-button>
+      </md-card-actions>
 
-          <md-field>
-      <label>User name</label>
-      <md-input v-model="user" required></md-input>
-    </md-field>
-
-    <md-field>
-      <label>Password</label>
-      <md-input v-model="password" type="password" required></md-input>
-    </md-field>
-   </form>
-    </md-card-content>
-
-    <md-card-actions>
-      <md-button>Forogt password</md-button>
-      <md-button @click="checkLogin" class="md-primary">Login</md-button>
-    </md-card-actions>
-
-    <md-snackbar md-position="left" :md-duration="3000" :md-active.sync="showError">
-      <span>{{errorMessage}}</span>
-    </md-snackbar>
-
-
-  </md-card>
-
+      <md-snackbar md-position="left" :md-duration="3000" :md-active.sync="showError">
+        <span>{{errorMessage}}</span>
+      </md-snackbar>
+    </md-card>
+  </form>
 </template>
 <script>
 export default {

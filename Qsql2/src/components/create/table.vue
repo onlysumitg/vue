@@ -1,26 +1,7 @@
 <template>
   <div style="padding:10px">
     <div class="row">
-      <div class="col-sm">
-        <form novalidate class="md-layout">
-          <md-field>
-            <label>Table Name</label>
-            <md-input required></md-input>
-          </md-field>
-
-          <md-field>
-            <label>Source File</label>
-            <md-input required></md-input>
-          </md-field>
-          <md-field>
-            <label>Source File Library</label>
-            <md-input required></md-input>
-          </md-field>
-          <md-button class="md-accent">Clear</md-button>
-
-          <md-button class="md-primary">Save</md-button>
-        </form>
-      </div>
+      <div class="col-sm"></div>
       <div class="col-sm">
         <form novalidate class="md-layout">
           <md-field>
@@ -33,10 +14,32 @@
             <md-input required v-model="loadTableLib"></md-input>
           </md-field>
 
-          <md-button class="md-primary">Load</md-button>
+          <md-button @click="loadTable" class="md-primary">Load</md-button>
         </form>
       </div>
-      <div class="col-sm"></div>
+      <div class="col-sm">
+        <md-field>
+          <label>New Table Name</label>
+          <md-input required v-model="newTableName"></md-input>
+        </md-field>
+
+        <md-field>
+          <label>New Table lib</label>
+          <md-input required v-model="newTableLib"></md-input>
+        </md-field>
+
+        <md-field>
+          <label>Table Heading</label>
+          <md-input required v-model="loadTableHeading"></md-input>
+        </md-field>
+
+        <md-field>
+          <label>Table Record format</label>
+          <md-input required v-model="newTableRecordFormat"></md-input>
+        </md-field>
+
+        <md-button @click="runCreateTable" class="md-primary">Create Table</md-button>
+      </div>
 
       <div class="col-sm"></div>
     </div>
@@ -56,6 +59,7 @@
             <th scope="col">Default Value</th>
             <th scope="col">Heading</th>
             <th scope="col">Text</th>
+            <th scope="col">Key Seq</th>
           </tr>
         </thead>
         <tbody>
@@ -137,6 +141,14 @@
                 v-model="afield.text"
               >
             </td>
+            <td>
+              <input
+                style="min-width: 200px;"
+                class="form-control"
+                type="text"
+                v-model="afield.keySeq"
+              >
+            </td>
           </tr>
         </tbody>
       </table>
@@ -158,34 +170,155 @@ export default {
       this.fieldList.push(_.clone(this.field));
       this.fieldList.push(_.clone(this.field));
     },
-//-------------------------------------
-     runSQL: function(newCall = true) {
+    loadScreen() {
+      this.loadColumnsIds();
+      this.fieldList = [];
+      var vm = this;
+      _.forEach(this.rows, function(row) {
+        var currentField = _.clone(vm.field);
+        (currentField.seq = row[vm.ORDINAL_POSITION_ID] * 100),
+          (currentField.longName = row[vm.COLUMN_NAME_ID]),
+          (currentField.shortName = row[vm.SYSTEM_COLUMN_NAME_ID]),
+          (currentField.dataType = row[vm.DATA_TYPE_ID]),
+          (currentField.length = row[vm.LENGTH_ID]),
+          (currentField.scale = row[vm.NUMERIC_SCALE_ID]),
+          (currentField.isNullable = row[vm.IS_NULLABLE_ID]),
+          (currentField.defaultValue = "--"),
+          (currentField.text = row[vm.COLUMN_TEXT_ID]),
+          (currentField.heading = row[vm.COLUMN_HEADING_ID]);
+        vm.fieldList.push(currentField);
+      });
+    },
+    loadColumnsIds() {
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "ORDINAL_POSITION";
+      });
+
+      this.ORDINAL_POSITION_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "COLUMN_NAME";
+      });
+      this.COLUMN_NAME_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "SYSTEM_COLUMN_NAME";
+      });
+      this.SYSTEM_COLUMN_NAME_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "DATA_TYPE";
+      });
+      this.DATA_TYPE_ID = coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "LENGTH";
+      });
+      this.LENGTH_ID = coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "NUMERIC_SCALE";
+      });
+      this.NUMERIC_SCALE_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "COLUMN_HEADING";
+      });
+      this.COLUMN_HEADING_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+      alert(this.COLUMN_HEADING_ID);
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "COLUMN_TEXT";
+      });
+      this.COLUMN_TEXT_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "LONG_COMMENT";
+      });
+      this.LONG_COMMENT_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "IS_NULLABLE";
+      });
+      this.IS_NULLABLE_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+
+      var coll = _.find(this.columns, function(col) {
+        return col.label.trim() == "IS_IDENTITY";
+      });
+      this.IS_IDENTITY_ID =
+        coll.label.trim() + "_" + _.toString(coll.id).trim();
+    },
+    //-------------------------------------
+
+    runCreateTable: function() {
+      var vm = this;
+
+      this.runWebService(
+        "c/table",
+        {
+          serverId: vm.$session.get("currentserver"),
+          requestIdToProcess: vm.sqldata.processId,
+          tableName: vm.newTableName,
+          tableLib: vm.newTableLib,
+          tableHeading: vm.loadTableHeading,
+          tableRecordFormat: vm.newTableRecordFormat,
+          columns: vm.fieldList
+        },
+        function() {
+          vm.loading = true;
+
+          vm.alertMessage = "";
+        },
+        function(responce) {
+          vm.loading = false;
+        },
+        function(error) {
+          vm.loading = false;
+        }
+      );
+    },
+    //-------------------------------------
+    loadTable: function() {
       if (this.loading) {
         return;
       }
       this.showMessage = false;
       var vm = this;
-      if (newCall) {
-        vm.alertMessage = "";
-        vm.rows = [];
-        vm.sqldata.processId = "";
-        vm.sqldata.downloadLocation = "";
-      }
+
+      vm.rows = [];
+      vm.sqldata.processId = "";
+      vm.sqldata.downloadLocation = "";
+      vm.loadTableHeading = " ";
+      this.loadTableSql =
+        "@createtable " +
+        this.loadTableLib.trim() +
+        "." +
+        this.loadTableName.trim();
+      alert(vm.$session.get("currentserver"));
+
       this.runWebService(
         "r/sql3",
         {
-          serverId: vm.sqldata.serverId,
-          sql: vm.sqldata.sql,
+          serverId: vm.$session.get("currentserver"),
+          sql: vm.loadTableSql,
           requestIdToProcess: vm.sqldata.processId,
           requestIdToClose: ""
         },
         function() {
           vm.loading = true;
-          if (newCall) {
-            vm.alertMessage = "";
-            vm.rows = [];
-            vm.sqldata = [];
-          }
+
+          vm.alertMessage = "";
+          vm.rows = [];
+          vm.sqldata = [];
+          vm.columns = [];
         },
         function(responce) {
           vm.loading = false;
@@ -205,35 +338,20 @@ export default {
             case "s": {
               vm.columns = vm.sqldata.columns;
               console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
-              if (vm.rows.length > 0) {
-                vm.rows = vm.rows.concat(vm.sqldata.data);
-              } else {
-                vm.rows = vm.sqldata.data;
-              }
 
+              vm.rows = vm.sqldata.data;
+
+              vm.loadTableHeading = vm.sqldata.heading;
               /// check if it has more fata
-              if (vm.sqldata.data.length <= 0) {
-                vm.hasMoreData = false;
-              } else {
-                vm.hasMoreData = vm.sqldata.hasMoreData;
-              }
+
+              vm.hasMoreData = false;
 
               vm.requestIdToProcess = responce.data.requestId;
               vm.alertMessage = vm.sqldata.error;
-
+              vm.loadScreen();
               break;
             } // end sucess
-            case "e": {
-              vm.alertMessage = vm.sqldata.error;
-              vm.hasMoreData = false;
-              break;
-            }
 
-            case "u": {
-              vm.alertMessage = vm.sqldata.error;
-              vm.hasMoreData = false;
-              break;
-            }
             default: {
               vm.alertMessage = "Somthing is not right";
               vm.hasMoreData = false;
@@ -249,14 +367,40 @@ export default {
       );
     }
 
-//--------------------------------------    
+    //--------------------------------------
   },
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
       loadTableName: "",
       loadTableLib: "",
+      loadTableSql: "",
       fieldList: [],
+      loading: false,
+      loadTableHeading: "",
+      hasMoreData: true,
+
+      // row ids
+      ORDINAL_POSITION_ID: "",
+      COLUMN_NAME_ID: "",
+      SYSTEM_COLUMN_NAME_ID: "",
+      DATA_TYPE_ID: "",
+      LENGTH_ID: "",
+      NUMERIC_SCALE_ID: "",
+      COLUMN_HEADING_ID: "",
+      COLUMN_TEXT_ID: "",
+      LONG_COMMENT_ID: "",
+      IS_NULLABLE_ID: "",
+      IS_IDENTITY_ID: "",
+
+      newTableName: "",
+      newTableLib: "",
+      newTableRecordFormat: "",
+
+      // data
+      rows: [],
+      columns: {},
+      sqldata: {},
       field: {
         seq: 100,
         longName: "x",
@@ -267,7 +411,8 @@ export default {
         isNullable: false,
         defaultValue: "",
         text: "",
-        heading: ""
+        heading: "",
+        keySeq: 0
       },
 
       alloweddatatype: [

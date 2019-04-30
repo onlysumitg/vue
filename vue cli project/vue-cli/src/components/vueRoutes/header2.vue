@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ol>
+    <ul>
       <!--
                 user <router-link> in place of <a>
                     <a>send request to server
@@ -15,7 +15,7 @@
 
       <!-- with tag -->
 
-      <!--  
+      <!-- 
 
     to apply the active class
     >> by default Vue check with route start with the give "to" attrbute
@@ -25,20 +25,14 @@
 
                 >> change this behaviour using "exact attribute"
       -->
-      <router-link to="/" tag="li" active-class="active" exact>Home</router-link>
+      <router-link to="/" tag="li" active-class="active" exact>Home2</router-link>
 
       <router-link to="/user2" tag="li" active-class="active">User2</router-link>
-      <router-link to="/user/10" tag="li" active-class="active">User 10</router-link>
-      <router-link to="/user/20" tag="li" active-class="active">User 20</router-link>
-    </ol>
+    </ul>
   </div>
 </template>
-<style scoped>
+<style>
 .active {
   background-color: blueviolet;
-}
-
-li {
-  display: list-item;
 }
 </style>

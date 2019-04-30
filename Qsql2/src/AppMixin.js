@@ -36,6 +36,10 @@ export const AppMixin = {
       //      alert("ok3");
       if (this.setupAxios()) {
         beforeRun();
+        if (axios.defaults.baseURL == undefined) {
+          return;
+
+        }
         axios
           .post(url, params)
           .then(response => {
