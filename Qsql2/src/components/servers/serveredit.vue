@@ -2,35 +2,36 @@
   <div class="h-100">
     <md-card>
       <md-card-header>
-        <div class="md-title">Server details</div>
+        <div class="md-title" style="color:#448aff">Server details</div>
       </md-card-header>
 
       <md-card-content>
         <form novalidate class="md-layout">
           <md-field>
             <label>Server Name</label>
-            <md-input v-model="selectedServer.serverName" id="servername"></md-input>
+            <md-input v-model="selectedServerLocal.serverName" id="servername"></md-input>
           </md-field>
 
           <md-field md-inline>
             <label>Server IP</label>
-            <md-input v-model="selectedServer.serverIP" id="serverip"></md-input>
+            <md-input v-model="selectedServerLocal.serverIP" id="serverip"></md-input>
           </md-field>
-          <md-switch md-inline v-model="selectedServer.ssl" class="md-primary">SSL</md-switch>
+          <md-switch md-inline v-model="selectedServerLocal.ssl" class="md-primary">SSL</md-switch>
 
           <md-field>
             <label>User</label>
-            <md-input v-model="selectedServer.userName" id="serveruser"></md-input>
+            <md-input v-model="selectedServerLocal.userName" id="serveruser"></md-input>
           </md-field>
 
           <md-field>
             <label>Password</label>
-            <md-input v-model="selectedServer.password" type="password" required></md-input>
+            <md-input v-model="selectedServerLocal.password" type="password" required></md-input>
           </md-field>
         </form>
       </md-card-content>
 
       <md-card-actions>
+        <md-button class="md-accent" @click="clearServers">Clear</md-button>
         <md-button class="md-accent" @click="deleteServers">Delete</md-button>
         <md-button :disabled="processing" @click="saveServers" class="md-primary">
           <md-progress-spinner
@@ -42,6 +43,8 @@
         </md-button>
       </md-card-actions>
     </md-card>
+
+    <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
   </div>
 </template>
 <script>
@@ -54,16 +57,38 @@ export default {
   },
   data: function() {
     return {
-      processing: false
+      processing: false,
+      showError: false,
+      errorMessage: "",
+      selectedServerLocal: {
+        id: 0,
+        serverName: "",
+        serverIP: "",
+        userName: "",
+        password: "",
+        ssl: false,
+        libl: new Array(20),
+        modified: false
+      }
     };
   },
 
+  //=====================================
+
+  watch: {
+    selectedServer(newV) {
+      this.selectedServerLocal = _.clone(newV);
+    }
+  },
+  //=====================================
   methods: {
     saveServers() {
+      this.showError = false;
+      this.errorMessage = "";
       var vm = this;
       this.runWebService(
         "s/test",
-        vm.selectedServer,
+        vm.selectedServerLocal,
         function() {
           vm.processing = true;
         },
@@ -72,9 +97,13 @@ export default {
           vm.processing = false;
           if (respons.data.status == "s") {
             // go to next screen
-            vm.$session.set("currentserver", vm.selectedServer.id);
-            vm.$session.set("currentservername", vm.selectedServer.serverName);
-            eventBus.$emit("updatetitle", vm.selectedServer.serverName);
+            vm.selectedServerLocal.id = respons.data.id;
+            vm.$session.set("currentserver", respons.data.id);
+            vm.$session.set(
+              "currentservername",
+              vm.selectedServerLocal.serverName
+            );
+            eventBus.$emit("updatetitle", vm.selectedServerLocal.serverName);
 
             // setTimeout(function() {
             //   vm.getAutoCompleteData();
@@ -82,10 +111,15 @@ export default {
             vm.$router.push({
               path: "/sql"
             });
+          } else {
+            vm.showError = true;
+            vm.errorMessage = respons.data.message;
           }
         },
         function(error) {
           vm.processing = false;
+          vm.showError = true;
+          vm.errorMessage = "" + error;
         }
       );
     },
@@ -93,7 +127,7 @@ export default {
       var vm = this;
       this.runWebService(
         "r/autoc",
-        { serverId: vm.selectedServer.id },
+        { serverId: vm.selectedServerLocal.id },
         function() {},
         function(respons) {
           console.log(respons);
@@ -104,11 +138,26 @@ export default {
         function(error) {}
       );
     },
+
+    //------------------------------------------------------------
+    clearServers() {
+      // this.selectedServer = _.clone(this.selectedServer);
+      this.selectedServerLocal.id = 0;
+      this.selectedServerLocal.serverName = "";
+      this.selectedServerLocal.serverIP = "";
+      this.selectedServerLocal.userName = "";
+      this.selectedServerLocal.password = "";
+      this.selectedServerLocal.ssl = false;
+      this.selectedServerLocal.libl = new Array(20);
+      this.selectedServerLocal.modified = false;
+    },
+
+    //--------------------------------------------------------------
     deleteServers() {
       var vm = this;
       this.runWebService(
         "s/delete",
-        vm.selectedServer,
+        vm.selectedServerLocal,
         function() {},
         function(respons) {
           console.log(respons);

@@ -3,7 +3,7 @@
     <md-toolbar class="md-transparent" md-elevation="0">
       <div style="width: 80%;">
         <md-field>
-          <label>Search>></label>
+          <label>Search</label>
           <md-input v-model="search"></md-input>
         </md-field>
       </div>

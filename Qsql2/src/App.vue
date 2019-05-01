@@ -20,6 +20,10 @@ export default {
 </script>
 
 <style  >
+input:focus {
+  outline: none;
+}
+
 html {
   height: 100%;
 }
