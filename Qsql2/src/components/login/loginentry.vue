@@ -1,32 +1,37 @@
 <template>
-  <form novalidate class="md-layout" @submit.prevent="validateUser">
-    <md-card>
-      <md-card-header>
-        <div class="md-title">Login</div>
-      </md-card-header>
-
-      <md-card-content>
-        <md-field>
-          <label>User name</label>
-          <md-input v-model="user" required></md-input>
-        </md-field>
-
-        <md-field>
-          <label>Password</label>
-          <md-input v-model="password" type="password" required></md-input>
-        </md-field>
-      </md-card-content>
-
-      <md-card-actions>
-        <md-button>Forogt password</md-button>
-        <md-button @click="checkLogin" class="md-primary">Login</md-button>
-      </md-card-actions>
-
-      <md-snackbar md-position="left" :md-duration="3000" :md-active.sync="showError">
-        <span>{{errorMessage}}</span>
-      </md-snackbar>
-    </md-card>
-  </form>
+  <div class="text-center">
+    <form class="form-signin" @submit.prevent="validateUser">
+      <img class="mb-4" src="/static/avatar.png" alt width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input
+        type="text"
+        id="inputEmail"
+        class="form-control"
+        placeholder="User ID"
+        required
+        autofocus
+        v-model="user"
+      >
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input
+        type="password"
+        id="inputPassword"
+        class="form-control"
+        placeholder="Password"
+        required
+        v-model="password"
+      >
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" @click="checkLogin">Sign in</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+      <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
+    </form>
+  </div>
 </template>
 <script>
 export default {
@@ -40,12 +45,18 @@ export default {
   },
   methods: {
     validateUser() {
-      if (this.user.trim.length() <= 0 || this.password.trim.length() <= 0) {
-        vm.showError = true;
-        vm.errorMessage = "User name and password required.";
+      if (this.user.trim().length <= 0 || this.password.trim().length <= 0) {
+        this.showError = true;
+        this.errorMessage = "User name and password required.";
+        return false;
       }
+
+      return true;
     },
     checkLogin() {
+      if (!this.validateUser()) {
+        return;
+      }
       this.showError = false;
       this.errorMessage = "";
       var vm = this;
@@ -72,7 +83,6 @@ export default {
           }
         },
         function(error) {
-          console.log(error);
           vm.showError = true;
           vm.errorMessage = "" + error;
         }
@@ -81,3 +91,54 @@ export default {
   }
 };
 </script>
+<style scoped>
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+</style>
