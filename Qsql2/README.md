@@ -26,6 +26,9 @@ npm install vuetify --save
 
 npm install uiv --save
 
+npm install intersection-observer --save
+npm i vue-in-viewport-mixin --save
+
 1. Download
 2. Jobs/msgd
 3. format error messages like app

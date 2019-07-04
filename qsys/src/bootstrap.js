@@ -4,13 +4,15 @@ import papa from "papaparse";
 
 
 
-import * as monacoWithRpg from "monaco-editor";
+
+
+//import * as monacoWithRpg from "monaco-editor";
 
 import "./vkbeautify";
 
 
 window.axios = axios;
-window.monacoWithRpg = monacoWithRpg
+//window.monacoWithRpg = monacoWithRpg
 
 
 console.log("****************************************");
@@ -56,7 +58,7 @@ window.axios
 
 
 window._ = require("lodash");
-//window.popper = require("popper.js").default;
+//window.Popper = require("popper.js").default;
 
 
 window.papa = papa
