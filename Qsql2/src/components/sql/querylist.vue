@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100">
+  <div>
     <md-toolbar class="md-transparent" md-elevation="0">
       <div style="width: 80%;">
         <md-field>
@@ -14,37 +14,23 @@
       </div>
     </md-toolbar>
 
-    <!-- ====================2=================-->
-    <div @click="selectQuery(query)" v-for="query in filteredQueryList" :key="query.id">
-      <md-card v-if="query.type !='H'" md-with-hover>
-        <md-ripple>
-          <md-card-header>
-            <div class="md-subhead">{{query.heading}}</div>
-          </md-card-header>
-          <md-card-content>
+    <div class="overflowscrollyonly" style="height: calc(100vh - 150px) ">
+      <!-- ====================2=================-->
+      <div @click="selectQuery(query)" v-for="query in filteredQueryList" :key="query.id">
+        <div v-if="query.type !='H'" class="card">
+          <div class="card-header">{{query.heading}}</div>
+          <div class="card-body">
             <pre>{{query.sql}}</pre>
-          </md-card-content>
-          <md-card-actions>
-            <md-button>Delete</md-button>
-          </md-card-actions>
-        </md-ripple>
-      </md-card>
-
-      <md-card v-else md-with-hover>
-        <md-ripple>
-          <md-card-header>
-            <div class="md-subhead">{{query.savedOn}}</div>
-          </md-card-header>
-          <md-card-content>
+          </div>
+        </div>
+        <div v-else class="card">
+          <div class="card-header">{{query.savedOn}}</div>
+          <div class="card-body">
             <pre>{{query.sql}}</pre>
-          </md-card-content>
-          <md-card-actions>
-            <md-button>Delete</md-button>
-          </md-card-actions>
-        </md-ripple>
-      </md-card>
+          </div>
+        </div>
+      </div>
     </div>
-
     <!-- ======================2===============-->
   </div>
 </template>
@@ -83,14 +69,10 @@ export default {
     }
   },
   mounted() {
-    this.loadQueryList();
+    //this.loadQueryList();
   },
 
-  watch: {
-    reload(newV) {
-      //if (newV) this.loadQueryList();
-    }
-  },
+  watch: {},
   methods: {
     deleteQuery() {},
     selectQuery(query) {

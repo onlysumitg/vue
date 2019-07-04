@@ -83,7 +83,7 @@
         <div class="md-layout-item" v-show="showEditor" style="min-height:600px;">
           <md-toolbar class="md-transparent" md-elevation="0">
             <span class="md-title">{{currentCol.label}}</span>
-            <md-button v-if="currentCol.editable" @click="updateColumn()">save</md-button>
+            <md-button class="md-primary" v-if="currentCol.editable" @click="updateColumn()">save</md-button>
 
             <div class="md-toolbar-section-end">
               <md-button class="md-icon-button md-dense" @click="showEditor=false">
@@ -232,6 +232,8 @@ export default {
     //--------------------------------------------------------
     setupListeners() {
       eventBus.$on("runsql3SingleRecordData", data => {
+        // alert("got runsql3SingleRecordData");
+        // console.log(data);
         this.columns = data.columns;
         this.rows = data.rows;
         this.currentRecord = data.currentRecord;
@@ -414,7 +416,14 @@ export default {
 .md-drawer {
   width: auto;
   //max-width: calc(100vw - 125px);
+  max-height: 100vh;
   background: white;
+  overflow: hidden;
+}
+
+.md-layout-item {
+  overflow: auto;
+  max-height: 96vh;
 }
 </style>
 <style>

@@ -73,7 +73,7 @@
         <thead>
           <tr>
             <th class="stickyHead" v-if="columns.length>0">#</th>
-            <th class="stickyHead" v-if="columns.length>0 && sqldata.canInsert">Edit</th>
+            <th class="stickyHead" v-if="columns.length>0 && sqldata.editable">Edit</th>
             <th class="stickyHead" v-if="columns.length>0 && sqldata.canInsert">Copy</th>
             <th class="stickyHead" v-if="columns.length>0 && sqldata.canInsert">Delete</th>
 
@@ -120,24 +120,46 @@
             :columns="columns"
             :rows="rows"
             :canDuplicate="sqldata.canInsert"
+            :editable="sqldata.editable"
             :reload="reloadScreen"
             :masterId="sqldata.processId"
           ></results2multiRecordItem>
         </tbody>
       </table>
 
-      <div class="md-caption">{{endOfData}}</div>
+      <div v-if="!loading" class="md-caption">{{endOfData}}</div>
+      <div
+        style="width: calc(100% - 1px)"
+        class=".large-copy"
+        v-if="endOfData.trim().length<=0 && hasMoreData && !loading"
+      >
+        <lazyload @isvisiblenow="runSQL(false)" textToDisplay="Keep loading" @click="runSQL(false)"></lazyload>
+      </div>
     </div>
 
     <md-progress-bar class="md-accent" v-if="loading" md-mode="indeterminate"></md-progress-bar>
+    <button
+      style="margin:10px"
+      type="button"
+      v-if="loading"
+      @click="cancelAxiosRequest"
+      class="btn btn-danger"
+    >Cancel</button>
+    <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
   </div>
 </template>
 <script>
 import results2multiRecordItem from "./results2multiRecordItem";
-
+import lazyload from "./lazyload.vue";
 export default {
   components: {
-    results2multiRecordItem
+    results2multiRecordItem,
+    lazyload
   },
   props: {
     initialData: {
@@ -148,10 +170,10 @@ export default {
   created() {
     //alert("okk1");
     var vm = this;
-    window.addEventListener(
+    document.addEventListener(
       "scroll",
       () => {
-        //  alert("okk");
+        alert("okk");
         vm.bottom = vm.bottomVisible();
       },
       { passive: true }
@@ -201,6 +223,9 @@ export default {
   },
 
   methods: {
+    handleScroll() {
+      alert("div sxrolling");
+    },
     initialize() {
       this.sqldata = this.initialData;
       this.rows = this.initialData.data;
@@ -306,7 +331,8 @@ export default {
 
     //---------------------------------------------
     bottomVisible() {
-      const scrollY = window.scrollY;
+      alert("scrolling");
+      const scrollY = document.scrollY;
       const visible = document.documentElement.clientHeight;
       const pageHeight = document.documentElement.scrollHeight - 100;
       const bottomOfPage = visible + scrollY >= pageHeight;
@@ -385,7 +411,8 @@ export default {
 
               vm.requestIdToProcess = responce.data.requestId;
               vm.alertMessage = vm.sqldata.error;
-
+              vm.turnOffListeners();
+              vm.setupListeners();
               break;
             } // end sucess
             case "e": {
@@ -459,6 +486,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+html {
+  overflow-x: auto;
+}
+
 .tdClass {
   white-space: nowrap !important;
   word-wrap: break-word;
@@ -493,6 +524,14 @@ export default {
 }
 </style>
 <style>
+table {
+  outline: none;
+}
+
+table:focus {
+  outline: none;
+}
+
 .md-overlay {
   background: none;
 }
@@ -505,22 +544,41 @@ export default {
 .i-table {
   white-space: nowrap;
   overflow: auto;
+  outline: none;
+}
+
+.i-table:focus {
+  outline: none;
+}
+
+div:focus {
+  outline: none;
 }
 
 .i-table2 {
   white-space: nowrap;
   overflow: auto;
   position: sticky;
+  outline: none;
 }
 
 .md-table .md-table-content {
   overflow: auto;
+  outline: none;
 }
 
 .stickyHead {
   position: sticky;
   background-color: #cfe3fa;
   top: 0;
+  z-index: 7;
+}
+
+.stickyBottom {
+  position: sticky;
+
+  bottom: 0;
+  right: 0;
   z-index: 7;
 }
 </style>

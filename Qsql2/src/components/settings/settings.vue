@@ -3,11 +3,18 @@
     <ul class="list-group">
       <router-link
         class="list-group-item"
-        :to="{ name: 'servers2'}"
+        :to="{ name: 'serversettings'}"
         tag="li"
         active-class="active"
         exact
-      >Servers</router-link>
+      >Server Settings</router-link>
+      <router-link
+        class="list-group-item"
+        :to="{ name: 'usersettings'}"
+        tag="li"
+        active-class="active"
+        exact
+      >User Settings</router-link>
       <router-link
         class="list-group-item"
         :to="{ name: 'libList'}"
@@ -15,21 +22,6 @@
         active-class="active"
         exact
       >Lib List</router-link>
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'createtable'}"
-        tag="li"
-        active-class="active"
-        exact
-      >Create Table</router-link>
-
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'dbdocbase'}"
-        tag="li"
-        active-class="active"
-        exact
-      >DB Doc</router-link>
     </ul>
   </div>
 </template>

@@ -103,13 +103,19 @@ export default {
               "currentservername",
               vm.selectedServerLocal.serverName
             );
-            eventBus.$emit("updatetitle", vm.selectedServerLocal.serverName);
 
+            topTitle.title = vm.selectedServerLocal.serverName;
             // setTimeout(function() {
             //   vm.getAutoCompleteData();
             // }, 5000);
+
+            var route = "/" + respons.data.initialscreen.trim();
+            if (respons.data.initialscreen.trim().length <= 0) {
+              route = "/sql";
+            }
+
             vm.$router.push({
-              path: "/sql"
+              path: route
             });
           } else {
             vm.showError = true;

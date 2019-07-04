@@ -33,8 +33,11 @@ export default {
 <style scoped>
 input:focus {
   border-bottom: 2px solid #448aff;
+  background-color: transparent;
 }
-
+input {
+  background-color: transparent;
+}
 .localField {
   margin-top: 6px;
   padding-top: 4px;

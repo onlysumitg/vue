@@ -22,6 +22,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 to do
 
+npm install vuetify --save
+
+npm install uiv --save
+
 1. Download
 2. Jobs/msgd
 3. format error messages like app

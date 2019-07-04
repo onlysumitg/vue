@@ -1,10 +1,5 @@
 <template>
-  <div class style="height:900px">
-    <div class="btnc">
-      <md-button @click="emitSQLToRun(true)" class="md-primary md-raised">Run Selected</md-button>
-      <md-button @click="emitSQLToRun(false)" class="md-primary md-raised">Run All</md-button>
-    </div>
-
+  <div class style="height:calc(100vh - 50px)">
     <!-- <codeeditor
       id="editor"
       ref="editor"
@@ -17,7 +12,7 @@
       width="100%"
       height="100%"
     ></codeeditor>-->
-    <div id="sqleditor" style="width:100%;height:90%;border:1px solid #ccc"></div>
+    <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>
 
     <br>
     <br>
@@ -73,6 +68,7 @@ export default {
       this.monacoEditor.getModel().setValue(this.value);
     }
   },
+
   //------------------------------------------------------------------------------------------
   data: function() {
     return {
@@ -97,6 +93,19 @@ export default {
   },
   //------------------------------------------------------------------------------------------
   methods: {
+    setupListeners() {
+      eventBus.$on("beforeRouteLeave_save_sql", data => {
+        this.$session.set(
+          "currentSavedSQL",
+          this.monacoEditor.getModel().getValue()
+        );
+      });
+    },
+    //-----------------------------------------------
+    turnOffListeners() {
+      eventBus.$off("beforeRouteLeave_save_sql");
+    },
+    //--------------------------------
     initialize() {
       var vm = this;
       // setTimeout(function() {
@@ -106,13 +115,19 @@ export default {
       //   );
       // }, 9000);
 
+      var currentSQL = this.$session.get("currentSavedSQL");
+      if (currentSQL === undefined) {
+        currentSQL = "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+      }
+
       this.monacoEditor = monaco2.editor.create(
         document.getElementById("sqleditor"),
         {
-          value: "SELECT * FROM AFF_XMLLOG",
+          value: currentSQL,
           language: "sql",
           automaticLayout: true,
           wordWrap: "on",
+          theme: "vs",
           minimap: {
             enabled: false
           }
@@ -276,6 +291,8 @@ export default {
     //---------------------------------------------------
     emitSQLToRun(seletedOnly) {
       //alert("ok");
+      eventBus.$emit("beforeRouteLeave_save_sql", true);
+
       var sqldata3 = {};
       sqldata3.serverId = this.$session.get("currentserver");
       sqldata3.requestIdToProcess = "";
@@ -294,6 +311,8 @@ export default {
     //---------------------------------------------------
     emitSQLToRun2(sqltoRun) {
       //alert("ok");
+      eventBus.$emit("beforeRouteLeave_save_sql", true);
+
       var sqldata3 = {};
       sqldata3.serverId = this.$session.get("currentserver");
       sqldata3.requestIdToProcess = "";
@@ -305,13 +324,16 @@ export default {
 
       eventBus.$emit("runsql3", sqldata3);
     },
-    //---------------------------------------------------
+    //-----------------------------------------run selected----------
     monaocEditorInit: function() {
       var vm2 = this;
       this.monacoEditor.addAction({
         id: "RunSeletedSQL",
         label: "Run Selected",
-        keybindings: [monaco2.KeyMod.Alt | monaco2.KeyCode.KEY_R],
+        keybindings: [
+          monaco2.KeyCode.F1,
+          monaco2.KeyMod.Alt | monaco2.KeyCode.KEY_R
+        ],
         precondition: null,
         keybindingContext: null,
 
@@ -322,6 +344,13 @@ export default {
           // alert("ok " + value);
           //  console.log(vm2.monacoEditor.tokenize(value, "sql"));
 
+          // alert(value);
+
+          if (value.trim().length <= 0) {
+            value = meditor
+              .getModel()
+              .getLineContent(meditor.getPosition().lineNumber);
+          }
           vm2.emitSQLToRun2(value);
           return null;
         }

@@ -1,11 +1,16 @@
 /* eslint-disable */
 import axios from "axios";
 import papa from "papaparse";
+require('intersection-observer');
+
+
+import * as monacoWithRpg from "monaco-editor";
 
 import "./vkbeautify";
 
 
 window.axios = axios;
+window.monacoWithRpg = monacoWithRpg
 
 
 console.log("****************************************");
@@ -27,6 +32,7 @@ window.axios.defaults.headers.common = {
   Authorization: "sToken"
 };
 
+window.axios.defaults.baseURL = "http://localhost:7007"
 
 window.axios
   .get("https://qsql-i.firebaseio.com/url.json")
@@ -50,9 +56,9 @@ window.axios
 
 
 window._ = require("lodash");
-window.Popper = require("popper.js").default;
+//window.popper = require("popper.js").default;
 
 
 window.papa = papa
 
-window.TableExport = require("tableexport");
+//window.TableExport = require("tableexport");

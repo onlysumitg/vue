@@ -1,9 +1,13 @@
 <template>
-  <div id="app" class="fill">
-    <div class="containerx fill">
-      <router-view></router-view>
-      <!-- this is the default container -->
+  <div>
+    <router-view name="headerTop"></router-view>
+    <div id="app" class="fill">
+      <div class="containerx fill">
+        <router-view></router-view>
+        <!-- this is the default container -->
+      </div>
     </div>
+    <router-view name="speedDialMenu"></router-view>
   </div>
 </template>
 
@@ -63,5 +67,19 @@ li {
 
 a {
   color: #42b983;
+}
+html {
+  overflow: hidden !important;
+}
+
+.overflowscroll {
+  overflow: scroll !important;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+.overflowscrollyonly {
+  overflow-y: scroll !important;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 </style>

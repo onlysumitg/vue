@@ -12,11 +12,11 @@
         <button v-if="this.isModified" type="button" class="btn btn-link btn-sm">Ok</button>
       </div>-->
     </td>
-    <td v-if="canDuplicate">
+    <td v-if="editable">
       <button
         class="btn btn-sm"
         data-toggle="button"
-        v-if="canDuplicate"
+        v-if="editable"
         @click="editThis = !editThis"
         v-bind:class="{'btn-link btn-outline-secondary':!editThis , 'btn-primary':editThis}"
       >
@@ -71,7 +71,9 @@
           </span>
         </div>
 
-        <div v-if="dataRowOriginal[indxx] !=dataRow[indxx]">{{dataRowOriginal[indxx] }}</div>
+        <div v-if="dataRowOriginal[indxx] !=dataRow[indxx]">
+          <p style="word-wrap: break-word; overflow: auto">{{dataRowOriginal[indxx] }}</p>
+        </div>
       </div>
 
       <!-- Non editable values -->
@@ -104,6 +106,10 @@ export default {
       required: true
     },
     canDuplicate: {
+      type: Boolean,
+      required: true
+    },
+    editable: {
       type: Boolean,
       required: true
     },
@@ -275,7 +281,7 @@ export default {
     //---------------------------------------------
     //---------------------------------------------
     setCurrentRecord(val) {
-      //alert(val);
+      // alert(this.masterId);
       var data = {};
 
       data.currentRecord = val;
@@ -369,6 +375,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+html {
+  overflow-x: auto;
+}
+
 input {
   outline-width: 0;
 

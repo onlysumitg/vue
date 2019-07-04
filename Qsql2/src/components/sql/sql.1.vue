@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div class="no-gutter h-100 w-100 d-flex overflowscroll">
+    <div class="no-gutter h-100 w-100 d-flex">
       <div class="col-4 main-screen">
-        <md-drawer class="md-elevation-2" md-persistent="full" :md-active.sync="xtrue">
+        <md-drawer class="md-elevation-2" md-persistent="mini" :md-active.sync="xtrue">
           <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
-            <md-tab md-label="SQL" id="t0">
+            <md-tab md-label="SQL" id="t0" href="/#/sql">
               <sqlquery :currentSQL="selectedSQL"></sqlquery>
             </md-tab>
-            <md-tab md-label="Saved SQL" id="t1">
+            <md-tab md-label="Saved SQL" id="t1" href="/#/sql">
               <querylist
                 :reload="reloadSaved"
                 @selectedquery="selectedSQL = $event; tabIndex = 't0' "
                 qtype="S"
               ></querylist>
             </md-tab>
-            <md-tab md-label="History" id="t2">
+            <md-tab md-label="History" id="t2" href="/#/sql">
               <querylist
                 :reload="reloadHistory"
                 @selectedquery="selectedSQL = $event; tabIndex = 't0'"
@@ -22,9 +22,9 @@
               ></querylist>
             </md-tab>
 
-            <!-- <md-tab md-label="More Stuff" id="t3">
+            <md-tab md-label="More Stuff" id="t3">
               <settings></settings>
-            </md-tab>-->
+            </md-tab>
           </md-tabs>
         </md-drawer>
       </div>
@@ -62,7 +62,7 @@ import header01 from "@/components/headers/header01.vue";
 // import results from "./results";
 // import results2 from "./results2";
 // import libList from "./../servers/joblibl";
-//import settings from "./../settings/settings";
+import settings from "./../settings/settings";
 export default {
   components: {
     sqlquery,
@@ -70,22 +70,14 @@ export default {
     // results,
     // results2,
     // libList
-    //settings,
+    settings,
     header01
   },
   updated() {
     // this.tabIndex = 2;
   },
   mounted() {},
-  beforeRouteLeave(to, from, next) {
-    eventBus.$emit("beforeRouteLeave_save_sql", true);
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
-  },
+
   data() {
     return {
       xtrue: true,
@@ -122,15 +114,7 @@ export default {
 
 <style>
 html {
-  overflow: hidden !important;
-}
-
-table {
-  outline: none;
-}
-
-table:focus {
-  outline: none;
+  overflow: auto;
 }
 </style>
 

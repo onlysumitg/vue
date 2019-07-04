@@ -1,26 +1,39 @@
 <template>
-  <div style="padding:10px; width: 100vw;height: 100vh" class="overflowscroll">
+  <div style="padding:10px;width: 100vw;height: 100vh" class="overflowscroll">
     <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
     <div class="row">
       <div class="col-sm">
         <form novalidate class="md-layout">
           <md-field>
-            <label>Table Name</label>
-            <md-input v-model="tableName"></md-input>
+            <label>SP Name</label>
+            <md-input v-model="spName"></md-input>
           </md-field>
 
           <md-field>
             <label>Library</label>
-            <md-input v-model="tableLib"></md-input>
+            <md-input v-model="spLib"></md-input>
           </md-field>
 
           <md-field>
-            <label>Field/Column</label>
-            <md-input v-model="columneName"></md-input>
+            <label>Specific Name</label>
+            <md-input v-model="specificName"></md-input>
+          </md-field>
+        </form>
+      </div>
+      <div class="col-sm">
+        <form novalidate class="md-layout">
+          <md-field>
+            <label>Parameter</label>
+            <md-input v-model="spParm"></md-input>
           </md-field>
           <md-field>
-            <label>Text</label>
-            <md-input v-model="searchText"></md-input>
+            <label>External Name</label>
+            <md-input v-model="externalName"></md-input>
+          </md-field>
+
+          <md-field>
+            <label>Language</label>
+            <md-input v-model="externalLang"></md-input>
           </md-field>
         </form>
       </div>
@@ -63,7 +76,7 @@
 
 <script>
 export default {
-  name: "dbdoc",
+  name: "spdoc",
   components: {},
   beforeRouteLeave(to, from, next) {
     const answer = window.confirm("Do you really want to leave?");
@@ -93,14 +106,18 @@ export default {
       sqldata3.requestIdToClose = "";
 
       sqldata3.sqlsqlToRun =
-        "@dbdoc " +
-        this.tableLib.toString() +
+        "@spdoc " +
+        this.spName.toString() +
         " / " +
-        this.tableName.toString() +
+        this.specificName.toString() +
         " / " +
-        this.columneName.toString() +
+        this.spLib.toString() +
         " / " +
-        this.searchText.toString() +
+        this.spParm.toString() +
+        " / " +
+        this.externalName.toString() +
+        " / " +
+        this.externalLang.toString() +
         " / " +
         this.category.toString() +
         " / " +
@@ -110,13 +127,14 @@ export default {
 
       eventBus.$emit("runsql3", sqldata3);
     },
-    //----------------------------
+    //---------------------------------------------
     clear() {
-      this.tableName = "";
-      this.tableLib = "";
-      this.columneName = "";
-      this.searchText = "";
-
+      this.spName = "";
+      this.specificName = "";
+      this.spLib = "";
+      this.spParm = "";
+      this.externalName = "";
+      this.externalLang = "";
       this.category = "";
       this.tags = "";
       this.comments = "";
@@ -125,7 +143,7 @@ export default {
     searchDBDOC() {
       var vm = this;
       this.runWebService(
-        "dd/setup",
+        "dd/setup_sp",
         {
           id: vm.$session.get("currentserver")
         },
@@ -152,12 +170,15 @@ export default {
   },
   data() {
     return {
-      tableName: "",
-      tableLib: "",
-      columneName: "",
       searchText: "",
       showError: false,
       errorMessage: "",
+      spName: "",
+      specificName: "",
+      spLib: "",
+      spParm: "",
+      externalName: "",
+      externalLang: "",
       category: "",
       tags: "",
       comments: ""

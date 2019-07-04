@@ -11,7 +11,15 @@
         <md-button @click="alertMessage=''">close</md-button>
       </md-card-actions>
     </md-card>
+
     <md-progress-bar class="md-accent" v-if="loading" md-mode="indeterminate"></md-progress-bar>
+    <button
+      style="margin:10px"
+      type="button"
+      v-if="loading"
+      @click="cancelAxiosRequest"
+      class="btn btn-danger"
+    >Cancel</button>
 
     <!-- <md-empty-state
       v-if="(alertMessage.length <= 0) "
@@ -94,6 +102,8 @@ export default {
       eventBus.$off("runsql3");
     },
 
+    //------------------------------------
+
     //-----------------------------
     getHeading(sqlResultData) {
       if (
@@ -117,6 +127,7 @@ export default {
       this.loading = true;
       this.showMessage = false;
       var vm = this;
+
       this.runWebService(
         "r/sql3",
         {
@@ -180,6 +191,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+html {
+  overflow-x: auto;
+}
+
 .md-tabs-content {
   overflow: visible;
 }
