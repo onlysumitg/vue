@@ -8,7 +8,7 @@
       <md-card-content>
         Query :
         <strong>{{sqldata.sql}}</strong>
-        <hr>
+        <hr />
         <div v-html="alertMessage"></div>
       </md-card-content>
 
@@ -54,21 +54,21 @@
                 [{{col.name.trim()}}]
               </span>-->
               <span v-if="col.label.trim()!=col.shortFieldName.trim()" class="md-caption">
-                <br>
+                <br />
                 [{{col.shortFieldName.trim()}}]
               </span>
               <span v-else>
-                <br>&nbsp;
+                <br />&nbsp;
               </span>
               <span v-if="sqldata.multiTable && col.tableName.trim().length >0 " class="md-caption">
-                <br>
+                <br />
                 [{{col.libName.trim()}}/{{col.tableName.trim()}}]
               </span>
               <span
                 v-if="sqldata.multiTable && col.tableName.trim().length <=0 "
                 class="md-caption"
               >
-                <br>-
+                <br />-
               </span>
             </th>
           </tr>
@@ -262,10 +262,12 @@ export default {
           vm.requestIdToProcess = "";
           //  alert("kkk;");
           //  console.log("KK: ");
-          //  console.log("KK: " + Object.keys(responce.data.sqldata)[0]);
+          //  console.log("KK: " + Object.keys(responce.data.data.sqldata)[0]);
 
           vm.sqldata =
-            responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+            responce.data.data.sqldata[
+              Object.keys(responce.data.data.sqldata)[0]
+            ];
 
           eventBus.$emit("updateHistorySQL", true);
           console.log("vm.sqldata.data " + vm.sqldata);
@@ -287,7 +289,7 @@ export default {
                 vm.hasMoreData = vm.sqldata.hasMoreData;
               }
 
-              vm.requestIdToProcess = responce.data.requestId;
+              vm.requestIdToProcess = responce.data.data.requestId;
               vm.alertMessage = vm.sqldata.error;
 
               break;

@@ -223,7 +223,7 @@ export default {
         function() {},
         function(responce) {
           vm.showMessage = true;
-          switch (responce.data.status) {
+          switch (responce.data.status.toLowerCase) {
             case "s": {
               try {
                 vm.rows[vm.currentRecord][
@@ -234,17 +234,17 @@ export default {
               } catch (e) {
                 console.log(e);
               }
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
 
               break;
             } // end sucess
             case "e": {
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
               break;
             }
 
             case "u": {
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
               break;
             }
             default: {
@@ -347,19 +347,19 @@ export default {
           vm.loading = false;
           vm.requestIdToClose = "";
           vm.requestIdToProcess = "";
-          vm.sqldata = responce.data.sqldata;
+          vm.sqldata = responce.data.data.sqldata;
           eventBus.$emit("updateHistorySQL", true);
 
           switch (responce.data.status) {
             case "s": {
-              vm.columns = responce.data.sqldata.columns;
+              vm.columns = responce.data.data.sqldata.columns;
               //  console.log("vm.rows.length " + vm.rows.length);
               if (vm.rows.length > 0) {
-                vm.rows = vm.rows.concat(responce.data.sqldata.data);
+                vm.rows = vm.rows.concat(responce.data.data.sqldata.data);
               } else {
-                vm.rows = responce.data.sqldata.data;
+                vm.rows = responce.data.data.sqldata.data;
               }
-              if (responce.data.sqldata.data.length <= 0) {
+              if (responce.data.data.sqldata.data.length <= 0) {
                 vm.hasMoreData = false;
               }
 
@@ -368,13 +368,13 @@ export default {
               break;
             } // end sucess
             case "e": {
-              vm.alertMessage = responce.data.sqldata.error;
+              vm.alertMessage = responce.data.data.sqldata.error;
               vm.hasMoreData = false;
               break;
             }
 
             case "u": {
-              vm.alertMessage = responce.data.sqldata.error;
+              vm.alertMessage = responce.data.data.sqldata.error;
               vm.hasMoreData = false;
               break;
             }

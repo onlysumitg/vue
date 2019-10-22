@@ -97,9 +97,9 @@ export default {
         function() {},
         function(respons) {
           console.log(respons);
-          if (respons.data.status == "s") {
+          if (respons.data.status == "s" || respons.data.status == "S") {
             vm.serverlist = [];
-            respons.data.servers.forEach(server => {
+            respons.data.data.servers.forEach(server => {
               vm.serverlist.push(server);
             });
           }

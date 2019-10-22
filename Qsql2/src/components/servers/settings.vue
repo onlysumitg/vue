@@ -20,7 +20,7 @@
           </td>
           <td>
             <div v-if="setting.validValues === undefined || setting.validValues.length < 1">
-              <input type="text" class="form-control" v-model="setting.value">
+              <input type="text" class="form-control" v-model="setting.value" />
             </div>
             <div v-else>
               <select class="form-control" v-model="setting.value">
@@ -72,7 +72,7 @@ export default {
       this.runWebService(
         "s/settingssave",
         {
-          id: vm.$session.get("currentserver"),
+          serverId: vm.$session.get("currentserver"),
           key: setting.key,
           value: setting.value
         },
@@ -83,8 +83,8 @@ export default {
         function(respons) {
           console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "s") {
-            setting.value = respons.data.newvalue;
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            setting.value = respons.data.data.newvalue;
             //vm.settings = respons.data.settings;
           }
         },
@@ -102,7 +102,7 @@ export default {
       this.runWebService(
         "s/settings",
         {
-          id: vm.$session.get("currentserver")
+          serverId: vm.$session.get("currentserver")
         },
 
         function() {
@@ -111,8 +111,8 @@ export default {
         function(respons) {
           console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "s") {
-            vm.settings = respons.data.settings;
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.settings = respons.data.data.settings;
           }
         },
         function(error) {

@@ -555,8 +555,8 @@ export default {
         function(responce) {
           vm.loading = false;
 
-          if ((responce.data.status = "s")) {
-            vm.sourcelist = responce.data.tableStmt;
+          if (responce.data.status == "s" || responce.data.status == "S") {
+            vm.sourcelist = responce.data.data.tableStmt;
             vm.showSaveQueryDialog = true;
           }
         },
@@ -609,7 +609,7 @@ export default {
           //  console.log("KK: " + Object.keys(responce.data.sqldata)[0]);
 
           vm.sqldata =
-            responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+            responce.data.data.sqldata[Object.keys(responce.data.sqldata)[0]];
 
           eventBus.$emit("updateHistorySQL", true);
           console.log("vm.sqldata.data " + vm.sqldata);
@@ -626,7 +626,7 @@ export default {
 
               vm.hasMoreData = false;
 
-              vm.requestIdToProcess = responce.data.requestId;
+              vm.requestIdToProcess = responce.data.data.requestId;
               vm.alertMessage = vm.sqldata.error;
               vm.loadScreen();
               break;

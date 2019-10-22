@@ -14,13 +14,13 @@
     ></codeeditor>-->
     <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
     <!-- show save query dialof -->
     <b-modal
@@ -34,7 +34,7 @@
       <form @submit.stop.prevent="handleSubmit">
         {{modalErrorMessage}}
         <b-form-input type="text" placeholder="Title*" v-model="queryHeading"></b-form-input>
-        <br>
+        <br />
         <b-form-input type="text" placeholder="Description*" v-model="queryDesc"></b-form-input>
       </form>
     </b-modal>
@@ -164,11 +164,11 @@ export default {
               function() {},
               function(respons) {
                 //console.log(respons);
-                if (respons.data.status == "s") {
+                if (respons.data.status == "s" || respons.data.status == "S") {
                   // console.log(respons.data);
-                  vm2.autoComData = respons.data.data;
+                  vm2.autoComData = respons.data.data.data;
                   resolve({
-                    suggestions: respons.data.data,
+                    suggestions: respons.data.data.data,
 
                     isIncomplete: false
                   });
@@ -314,6 +314,7 @@ export default {
       eventBus.$emit("beforeRouteLeave_save_sql", true);
 
       var sqldata3 = {};
+
       sqldata3.serverId = this.$session.get("currentserver");
       sqldata3.requestIdToProcess = "";
       sqldata3.requestIdToClose = "";

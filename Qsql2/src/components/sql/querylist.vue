@@ -91,8 +91,8 @@ export default {
         },
         function(respons) {
           //  console.log(respons);
-          if (respons.data.status == "s") {
-            respons.data.sqllist.forEach(query => {
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            respons.data.data.sqllist.forEach(query => {
               vm.querylist.push(query);
             });
           }

@@ -40,7 +40,7 @@ export default {
       this.runWebService(
         "s/libl",
         {
-          id: vm.$session.get("currentserver")
+          serverId: vm.$session.get("currentserver")
         },
 
         function() {
@@ -49,8 +49,8 @@ export default {
         function(respons) {
           console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "s") {
-            vm.libl = respons.data.libl;
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.libl = respons.data.data.libl;
           }
         },
         function(error) {

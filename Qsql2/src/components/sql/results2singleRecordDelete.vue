@@ -262,7 +262,7 @@ export default {
             case "s": {
               // vm.alertMessage = responce.data.message;
               var sqldata =
-                responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+                responce.data.data.sqldata[Object.keys(responce.data.data.sqldata)[0]];
               vm.alertMessage = sqldata.error;
               break;
             }

@@ -43,6 +43,7 @@
     "vue-popperjs": "^2.0.3",
     "vue-router": "^3.0.6",
     "vue-sessionstorage": "^1.0.0",
+    "vue2-transitions": "^0.3.0",
     "vuetify": "^1.5.14",
     "vuex": "^3.1.1"
   },

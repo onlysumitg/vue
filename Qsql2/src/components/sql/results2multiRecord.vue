@@ -8,9 +8,9 @@
       <md-card-content>
         Query :
         <strong>{{sqldata.sqlOriginal}}</strong>
-        <hr>
+        <hr />
         <strong>{{sqldata.sql}}</strong>
-        <hr>
+        <hr />
         <div v-html="alertMessage"></div>
       </md-card-content>
 
@@ -24,11 +24,14 @@
       v-if="(typeof sqldata.downloadLocation !== 'undefined') && (sqldata.downloadLocation.length > 0)"
     >
       <md-card-header>
-        <div class="md-title">File available at following location</div>
+        <div class="md-title">File is ready to download</div>
       </md-card-header>
 
       <md-card-content>
-        <a :href="'file://'+sqldata.downloadLocation" download="a.xls">{{sqldata.downloadLocation}}</a>
+        <a
+          :href="getBaseUrl()+'/'+sqldata.downloadLocation"
+          download="a.xls"
+        >{{sqldata.downloadLocation}}</a>
       </md-card-content>
 
       <md-card-actions>
@@ -89,21 +92,21 @@
                 [{{col.name.trim()}}]
               </span>-->
               <span v-if="col.label.trim()!=col.shortFieldName.trim()" class="md-caption">
-                <br>
+                <br />
                 [{{col.shortFieldName.trim()}}]
               </span>
               <span v-else>
-                <br>&nbsp;
+                <br />&nbsp;
               </span>
               <span v-if="sqldata.multiTable && col.tableName.trim().length >0 " class="md-caption">
-                <br>
+                <br />
                 [{{col.libName.trim()}}/{{col.tableName.trim()}}]
               </span>
               <span
                 v-if="sqldata.multiTable && col.tableName.trim().length <=0 "
                 class="md-caption"
               >
-                <br>-
+                <br />-
               </span>
             </th>
           </tr>
@@ -145,12 +148,12 @@
       @click="cancelAxiosRequest"
       class="btn btn-danger"
     >Cancel</button>
-    <br>
+    <br />
 
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 <script>
@@ -232,7 +235,7 @@ export default {
       this.columns = this.initialData.columns;
       this.hasMoreData = this.initialData.hasMoreData;
       this.alertMessage = this.initialData.error;
-      //alert(this.sqldata.processId);
+
       try {
         this.table.remove();
       } catch (e) {}
@@ -383,10 +386,12 @@ export default {
           vm.requestIdToProcess = "";
           //  alert("kkk;");
           //  console.log("KK: ");
-          //  console.log("KK: " + Object.keys(responce.data.sqldata)[0]);
+          //  console.log("KK: " + Object.keys(responce.data.data.sqldata)[0]);
 
           vm.sqldata =
-            responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+            responce.data.data.sqldata[
+              Object.keys(responce.data.data.sqldata)[0]
+            ];
 
           eventBus.$emit("updateHistorySQL", true);
           console.log("vm.sqldata.data " + vm.sqldata.data.length);
@@ -409,7 +414,7 @@ export default {
                 vm.hasMoreData = vm.sqldata.hasMoreData;
               }
 
-              vm.requestIdToProcess = responce.data.requestId;
+              vm.requestIdToProcess = responce.data.id;
               vm.alertMessage = vm.sqldata.error;
               vm.turnOffListeners();
               vm.setupListeners();

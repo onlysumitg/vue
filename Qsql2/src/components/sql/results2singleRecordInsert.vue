@@ -13,14 +13,14 @@
           <p>{{this.sqlToRun}}</p>
         </strong>
 
-        <hr>
+        <hr />
 
         <div v-html="alertMessage"></div>
 
-        <hr>
+        <hr />
 
         <md-button @click="alertMessage=''">close</md-button>
-        <hr>
+        <hr />
       </div>
       <!--------- next section ---------------->
 
@@ -59,7 +59,7 @@
                       v-if="col.scale>0"
                     >, {{col.scale}}</span>
                     ]
-                    <br>
+                    <br />
                     <span v-if="multiTable">[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
                     <!-- <span v-else class="md-caption">-</span> -->
                   </div>
@@ -76,7 +76,7 @@
                       v-model="row[col.rowKey]"
                       :style="[{minWidth:'500px'}]"
                       :maxlength="getMaxLength(col)"
-                    >
+                    />
                     <textarea
                       v-else
                       class="form-control"
@@ -266,11 +266,13 @@ export default {
         },
         function(responce) {
           vm.loading = false;
-          switch (responce.data.status) {
+          switch (responce.data.status.toLowerCase()) {
             case "s": {
               // vm.alertMessage = responce.data.message;
               var sqldata =
-                responce.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+                responce.data.data.sqldata[
+                  Object.keys(responce.data.data.sqldata)[0]
+                ];
               vm.alertMessage = sqldata.error;
               break;
             }

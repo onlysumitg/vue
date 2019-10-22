@@ -2,6 +2,7 @@
   <div>
     <router-view name="headerTop"></router-view>
     <div id="app" class="fill">
+       <notifications></notifications>
       <div class="containerx fill">
         <router-view></router-view>
         <!-- this is the default container -->

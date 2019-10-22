@@ -55,7 +55,7 @@
             :style="[{width:getInputWidth(dataRow[indxx])+'px'}]"
             :maxlength="getMaxLength(columns[colIndx])"
             @dblclick.stop
-          >
+          />
           <textarea
             v-else
             class="form-control"
@@ -330,7 +330,10 @@ export default {
               vm.dataRowSucess[rowIndex2] = false;
               vm.dataRowError[rowIndex2] = true;
 
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               var backup = vm.dataRow[rowIndex2];
               vm.dataRow[rowIndex2] = vm.dataRow[rowIndex2] + " ";
               vm.dataRow[rowIndex2] = backup;
@@ -344,7 +347,10 @@ export default {
               vm.dataRowError[rowIndex2] = false;
               vm.dataRowSucess[rowIndex2] = true;
 
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
             default: {

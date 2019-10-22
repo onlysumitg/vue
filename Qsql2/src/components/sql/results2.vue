@@ -33,9 +33,10 @@
         <results2multiRecord :initialData="value"></results2multiRecord>
       </md-tab>
     </md-tabs>-->
+    <!-- {{sqldata}} -->
     <b-tabs>
       <b-tab v-for="(value,key,index) in sqldata" :key="'c'+index" :title="getHeading(value)">
-        <!-- {{value.sql}} -->
+        <!-- {{value}} -->
         <results2multiRecord :initialData="value"></results2multiRecord>
       </b-tab>
     </b-tabs>
@@ -145,10 +146,10 @@ export default {
         },
         function(responce) {
           vm.loading = false;
-          vm.sqldata = responce.data.sqldata;
+          vm.sqldata = responce.data.data.sqldata;
           eventBus.$emit("updateHistorySQL", true);
 
-          switch (responce.data.status) {
+          switch (responce.data.status.toLowerCase()) {
             case "s": {
               vm.alertMessage = responce.data.message;
               break;

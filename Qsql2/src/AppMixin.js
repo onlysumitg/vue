@@ -13,16 +13,26 @@ export const AppMixin = {
   deactivated() {
     this.turnOffListeners();
   },
+
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
   data: function () {
     return {
       CancelTokenSource: {}
 
     }
   },
+  //----------------------------------------------------------------------------
+  //
+  //----------------------------------------------------------------------------
+
+
   methods: {
     initialize() {},
     setupListeners() {},
     turnOffListeners() {},
+    //----------------------------------------------------------------------------
 
     cancelAxiosRequest() {
       try {
@@ -32,8 +42,26 @@ export const AppMixin = {
       }
     },
 
+    //----------------------------------------------------------------------------
 
+    notifyReloginRequied(message) {
+      var vm = this;
+      var errorMessage = message;
+      if (errorMessage.trim().length <= 0) {
+        errorMessage = "Please login again"
+      }
+      var notification = {
+        message: errorMessage,
+        onClose: function () {
+          vm.$router.push({
+            path: "/"
+          });
+        }
+      };
 
+      eventBus.$emit("notification", notification);
+    },
+    //----------------------------------------------------------------------------
     setupAxios() {
       // const sToken =  window.$cookies.get("QSQL_TOKEN");
       const sToken = this.$session.get("QSQL_TOKEN");
@@ -47,11 +75,38 @@ export const AppMixin = {
       return true;
     },
 
+    //----------------------------------------------------------------------------
+
+    openWebSocket(requestId, onMessage, onClose) {
+      const sToken = this.$session.get("QSQL_TOKEN");
+      var ws = new WebSocket("ws://localhost:7071/notifyme/" + requestId);
+      ws.onmessage = msg => {
+
+        var messageData = msg.data
+        if (msg.data == "@DONE") {
+          messageData = "<strong style='color:red'>-- -- -- -- -- -- -- -- -- -- -- END OF DATA -- -- -- -- -- -- -- -- -- -- --</strong>"
+          ws.close();
+        }
+        onMessage(messageData, requestId)
+      };
+      ws.onclose = () => onClose(requestId);
+
+      return ws;
+
+
+    },
+
+    //--------------------------------------------------------------------------
+    getBaseUrl() {
+      return axios.defaults.baseURL;
+    },
+    //----------------------------------------------------------------------------
+
     runWebService(url, params, beforeRun, onSucess, onError) {
       //      alert("ok3");
       const CancelToken = axios.CancelToken;
       this.CancelTokenSource = CancelToken.source();
-
+      params["source"] = "web"
       var vm = this;
 
       if (this.setupAxios()) {
@@ -65,19 +120,42 @@ export const AppMixin = {
             cancelToken: vm.CancelTokenSource.token
           })
           .then(response => {
-            try {
-              onSucess(response);
-            } catch (e) {
-              console.log(url);
-              console.log(e);
+
+            if (response.data.token !== undefined) {
+              this.$session.set("QSQL_TOKEN", response.data.token);
             }
+            try {
+
+              if (response.data.status == 401) {
+                this.notifyReloginRequied(response.data.message)
+                throw new Error(response.data.message);
+              }
+            } catch (e) {
+
+              throw e;
+            }
+
+            onSucess(response);
+
           })
           .catch(err => {
             //alert(err);
             if (axios.isCancel(err)) {
               console.log('Request canceled', err.message);
             } else {
-              console.log(err);
+
+              try {
+                if (err.response.status !== undefined && (err.response.status == 401 || err.response.data.status == 401)) {
+
+                  this.notifyReloginRequied(err.response.data.message)
+                  // vm.$router.push({
+                  //   path: "/login"
+                  // });
+                }
+              } catch (e) {
+
+                throw e;
+              }
 
             }
             onError(err);

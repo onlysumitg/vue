@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="no-gutter h-100 w-100 d-flex overflowscroll">
+    <div class="no-gutter h-100 w-100 d-flex">
       <div class="col-4 main-screen">
         <md-drawer class="md-elevation-2" md-persistent="full" :md-active.sync="xtrue">
           <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
@@ -30,7 +30,7 @@
       </div>
       <!-- <div class="col-4"></div> -->
       <!-- query results -->
-      <div class="col-8 pt-3">
+      <div class="col-8 pt-3 overflowscroll">
         <!-- <results2></results2> -->
         <!-- <results></results> -->
         <router-view></router-view>

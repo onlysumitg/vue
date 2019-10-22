@@ -61,7 +61,7 @@ export default {
       showError: false,
       errorMessage: "",
       selectedServerLocal: {
-        id: 0,
+        serverId: 0,
         serverName: "",
         serverIP: "",
         userName: "",
@@ -95,10 +95,10 @@ export default {
         function(respons) {
           console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "s") {
+          if (respons.data.status == "s" || respons.data.status == "S") {
             // go to next screen
-            vm.selectedServerLocal.id = respons.data.id;
-            vm.$session.set("currentserver", respons.data.id);
+            vm.selectedServerLocal.serverId = respons.data.data.id;
+            vm.$session.set("currentserver", respons.data.data.id);
             vm.$session.set(
               "currentservername",
               vm.selectedServerLocal.serverName
@@ -109,8 +109,8 @@ export default {
             //   vm.getAutoCompleteData();
             // }, 5000);
 
-            var route = "/" + respons.data.initialscreen.trim();
-            if (respons.data.initialscreen.trim().length <= 0) {
+            var route = "/" + respons.data.data.initialscreen.trim();
+            if (respons.data.data.initialscreen.trim().length <= 0) {
               route = "/sql";
             }
 
@@ -133,7 +133,7 @@ export default {
       var vm = this;
       this.runWebService(
         "r/autoc",
-        { serverId: vm.selectedServerLocal.id },
+        { serverId: vm.selectedServerLocal.serverId },
         function() {},
         function(respons) {
           console.log(respons);
@@ -148,7 +148,7 @@ export default {
     //------------------------------------------------------------
     clearServers() {
       // this.selectedServer = _.clone(this.selectedServer);
-      this.selectedServerLocal.id = 0;
+      this.selectedServerLocal.serverId = 0;
       this.selectedServerLocal.serverName = "";
       this.selectedServerLocal.serverIP = "";
       this.selectedServerLocal.userName = "";

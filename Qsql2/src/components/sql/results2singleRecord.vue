@@ -285,17 +285,17 @@ export default {
               } catch (e) {
                 console.log(e);
               }
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
 
               break;
             } // end sucess
             case "e": {
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
               break;
             }
 
             case "u": {
-              vm.mainMessage = responce.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
               break;
             }
             default: {

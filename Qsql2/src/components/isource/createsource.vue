@@ -47,7 +47,7 @@
           <div>
             <md-checkbox v-model="overrideSource" class="md-primary">Override original source</md-checkbox>
           </div>
-          <br>
+          <br />
           <div>
             <md-button type="submit" class="md-primary">Create</md-button>
           </div>
@@ -61,11 +61,11 @@
       </div>
     </div>
 
-    <br>
-    <br>
+    <br />
+    <br />
 
-    <br>
-    <hr>
+    <br />
+    <hr />
   </div>
 </template>
 <script>
@@ -188,7 +188,7 @@ export default {
         function(responce) {
           //vm.loading = false;
 
-          if (responce.data.status == "s") {
+          if (responce.data.status == "s" || responce.data.status == "S") {
             // vm.sourcelist = responce.data.tableStmt;
             // vm.showSaveQueryDialog = true;
           }

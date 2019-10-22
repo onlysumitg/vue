@@ -43,9 +43,9 @@
         </form>
       </div>
       <div class="col-sm">
-        <br>
+        <br />
         <button @click="clear()" type="button" class="btn btn-secondary btn-lg btn-block">Clear</button>
-        <hr>
+        <hr />
         <button
           @click="emitSQLToRun2('ff')"
           type="button"
@@ -127,7 +127,7 @@ export default {
       this.runWebService(
         "dd/setup",
         {
-          id: vm.$session.get("currentserver")
+          serverId: vm.$session.get("currentserver")
         },
 
         function() {

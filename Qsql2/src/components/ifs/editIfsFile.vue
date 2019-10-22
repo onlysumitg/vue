@@ -461,7 +461,7 @@ export default {
           vm.alertMessage = "";
         },
         function(responce) {
-          if (responce.data.status == "s") {
+          if (responce.data.status == "s" || responce.data.status == "S") {
             vm.contentChanged = false;
             // vm.sourcelist = responce.data.tableStmt;
             // vm.showSaveQueryDialog = true;
@@ -470,8 +470,8 @@ export default {
 
             if (responce.data.ifsPath === undefined) {
             } else {
-              if (responce.data.ifsPath.length > 0) {
-                vm.ifsPath = responce.data.ifsPath;
+              if (responce.data.data.ifsPath.length > 0) {
+                vm.ifsPath = responce.data.data.ifsPath;
               }
             }
           }

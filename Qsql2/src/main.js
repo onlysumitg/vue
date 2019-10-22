@@ -19,6 +19,8 @@ import 'material-icons/iconfont/material-icons.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
+import NotificationPlugin from "@/components/NotificationPlugin/index"
+
 import VuePopper from 'vue-popperjs';
 
 import VueSelect from 'vue-cool-select'
@@ -97,6 +99,7 @@ import VueSessionStorage from "vue-sessionstorage";
 
 
 Vue.use(VueSessionStorage);
+Vue.use(NotificationPlugin);
 
 window.eventBus = new Vue();
 window.monacoX = monaco;

@@ -13,7 +13,7 @@
           clearable
           clear-icon="mdi-close-circle-outline"
         ></v-text-field>
-        <br>
+        <br />
         <div class="row">
           <div class="col-4">
             <form class="form-inline" v-on:submit.prevent="onSubmit">
@@ -24,7 +24,7 @@
                 id="inlineFormInputName2"
                 placeholder=" option/target (s)"
                 v-model="gmakeOptions"
-              >
+              />
               <button type="submit" @click="runCmdOptions" class="btn btn-primary ml-4">RUN</button>
             </form>
           </div>
@@ -37,7 +37,7 @@
                 class="form-control"
                 id="inlineFormInputName2"
                 placeholder="Sup options"
-              >
+              />
               <button type="button" @click="runCmdOptions" class="btn btn-primary ml-4">Send</button>
             </form>
           </div>
@@ -46,10 +46,10 @@
       <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
 
       <md-progress-bar class="md-accent" v-if="loading" md-mode="indeterminate"></md-progress-bar>
-      <br>
+      <br />
     </v-card>
 
-    <hr>
+    <hr />
 
     <div class="row">
       <div class="col-8">
@@ -172,21 +172,64 @@ export default {
 
             vm.shellOutput = vm.shellOutput + responce.data.commandoutput;
 
-            const regex = /(On branch )([^<]*?)$/gm;
-            const subst = "$1<span style='color:red'>$2</span>";
-            vm.shellOutput = vm.shellOutput.replace(regex, subst);
+            //--------------------------------
+            // if (vm.requestIdToProcess.trim().length > 0) {
+            //   setTimeout(function() {
+            //     vm.runCmd("");
+            //   }, 50);
+            // } else {
+            //   vm.loading = false;
+            // }
+            //---------------------------------
 
-            const regex2 = /(Your branch is up-to-date with )([^<]*?)$/gm;
-            const subst2 = "$1<span style='color:blue'>$2</span>";
-            vm.shellOutput = vm.shellOutput.replace(regex2, subst2);
+            vm.openWebSocket(
+              vm.requestIdToProcess,
+              function(wData, requestId) {
+                console.log(wData);
+                if (vm.requestIdToProcess == requestId) {
+                  vm.shellOutput = vm.shellOutput + wData;
+                  const regex = /(On branch )([^<]*?)$/gm;
+                  const subst = "$1<span style='color:red'>$2</span>";
+                  vm.shellOutput = vm.shellOutput.replace(regex, subst);
 
-            if (vm.requestIdToProcess.trim().length > 0) {
-              setTimeout(function() {
-                vm.runCmd("");
-              }, 50);
-            } else {
-              vm.loading = false;
-            }
+                  const regex5 = /(Untracked files:)([^<]*?)$/gm;
+                  const subst5 = "<strong>$1</strong><strong>$2</strong>";
+                  vm.shellOutput = vm.shellOutput.replace(regex5, subst5);
+
+                  const regex6 = /(Changes not staged for commit:)([^<]*?)$/gm;
+                  const subst6 = "<strong>$1</strong><strong>$2</strong>";
+                  vm.shellOutput = vm.shellOutput.replace(regex6, subst6);
+
+                  const regex7 = /(\* \* \* \* \*  E N D  O F  L I S T I N G  \* \* \* \* \*)([^<]*?)$/gm;
+                  const subst7 =
+                    "<strong style='color:orange'>-------------------------------------$1-------------------------------------</br></br></strong><strong>$2</strong>";
+                  vm.shellOutput = vm.shellOutput.replace(regex7, subst7);
+
+                  const regex2 = /(Your branch is up-to-date with )([^<]*?)$/gm;
+                  const subst2 = "$1<span style='color:blue'>$2</span>";
+                  vm.shellOutput = vm.shellOutput.replace(regex2, subst2);
+
+                  const regex4 = /\x1b\[[0-9;]+m([^<]*?)\x1b\[m/gm;
+                  const subst4 =
+                    "<span style='color:green'><strong>$1</strong></span>";
+                  vm.shellOutput = vm.shellOutput.replace(regex4, subst4);
+
+                  const regex3 = /\x1b\[m/gm;
+                  const subst3 = "";
+                  vm.shellOutput = vm.shellOutput.replace(regex3, subst3);
+
+                  //wData.data ?? WebSocket.close()
+                }
+              },
+              function(requestId) {
+                if (vm.requestIdToProcess == requestId) {
+                  vm.loading = false;
+                  vm.requestIdToProcess = "";
+                }
+              }
+            );
+
+            //------------------------------------------------
           }
           if (responce.data.status == "e") {
             vm.showError = true;
