@@ -6,43 +6,39 @@
     <table class="i-table table table-striped table-bordered table-sm table-hover">
       <thead>
         <tr>
-          <th class="stickyHead">Key</th>
-          <th class="stickyHead">Value</th>
+          <th class="stickyHead">Authority</th>
+          <th class="stickyHead">Allowed</th>
           <th class="stickyHead">Save</th>
           <th class="stickyHead">Delete</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="(setting, index) in settings" :key="index">
+        <tr v-for="(auth, index) in auths" :key="index">
           <td>
-            {{setting.text}}
+            {{auth.text}}
             <p>
-              <small>{{setting.code}}</small>
+              <small>{{auth.code}}</small>
             </p>
           </td>
           <td>
-            <div v-if="setting.validValues === undefined || setting.validValues.length < 1">
-              <input type="text" class="form-control" v-model="setting.currentValue" />
+            <div v-if="auth.validValues === undefined || auth.validValues.length < 1">
+              <input type="text" class="form-control" v-model="auth.currentValue" />
             </div>
             <div v-else>
-              <select class="form-control" v-model="setting.currentValue">
-                <option
-                  v-for="(xVal,indx) in setting.validValues"
-                  :key="indx"
-                  :value="xVal"
-                >{{xVal}}</option>
+              <select class="form-control" v-model="auth.currentValue">
+                <option v-for="(xVal,indx) in auth.validValues" :key="indx" :value="xVal">{{xVal}}</option>
               </select>
             </div>
           </td>
 
           <td>
-            <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveSetting(setting)">
+            <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveAuths(auth)">
               <i class="fa fa-save"></i>
             </button>
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" @click="deleteSetting(setting)">
+            <button class="btn btn-sm btn-outline-danger" @click="deleteAuths(auth)">
               <i class="fa fa-trash-alt"></i>
             </button>
           </td>
@@ -74,27 +70,27 @@ export default {
     return {
       processing: false,
       userNameAsRoute: this.$route.params.username,
-      settings: {}
+      auths: {}
     };
   },
   mounted() {
-    this.loadsettings();
+    this.loadauths();
   },
 
   methods: {
     initialize() {
-      this.loadsettings();
+      this.loadauths();
     },
 
     //----------------------------------
-    saveSetting(setting) {
+    saveAuths(auth) {
       var vm = this;
 
       this.runWebService(
-        "u/settingssave",
+        "u/authsave",
         {
-          setting: setting.code,
-          newValue: setting.currentValue,
+          auth: auth.code,
+          newValue: auth.currentValue,
           user: vm.userName
         },
 
@@ -106,7 +102,7 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
+            auth.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
               title: "Done"
@@ -124,13 +120,13 @@ export default {
       );
     },
     //----------------------------------
-    deleteSetting(setting) {
+    deleteAuths(auth) {
       var vm = this;
-      setting.currentValue = "";
+      auth.currentValue = "N";
       this.runWebService(
-        "u/settingsdlt",
+        "u/authsave",
         {
-          setting: setting.code,
+          auth: auth.code,
           user: vm.userName
         },
 
@@ -142,7 +138,8 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
+            auth.value = respons.data.newvalue;
+
             vm.$notify({
               type: "success",
               title: "Done"
@@ -160,10 +157,10 @@ export default {
       );
     },
     //----------------------------------
-    loadsettings() {
+    loadauths() {
       var vm = this;
       this.runWebService(
-        "u/settings",
+        "u/auths",
         {
           user: vm.userName
         },
@@ -174,8 +171,9 @@ export default {
         function(respons) {
           console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "S") {
-            vm.settings = respons.data.data.settings;
+
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.auths = respons.data.data.authlist;
           } else {
             vm.$notify({
               type: "danger",

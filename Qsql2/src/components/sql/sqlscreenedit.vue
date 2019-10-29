@@ -1,46 +1,89 @@
 <template>
-  <div class style="height:calc(100vh - 100px)">
-    <!-- <codeeditor
-      id="editor"
-      ref="editor"
-      v-model="value"
-      :value="value"
-      @init="editorInit"
-      lang="sql"
-      :options="options"
-      theme="crimson_editor"
-      width="100%"
-      height="100%"
-    ></codeeditor>-->
-    <h5>{{getConnectedServerName()}}</h5>
-    <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>
+  <div class style="height:calc(100vh - 100px); overflow-y:scroll;overflow-x: hidden;">
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
-    <!-- show save query dialof -->
-    <b-modal
-      id="modalPrevent"
-      ref="modal"
-      title="Save Query"
-      v-model="showSaveQueryDialog"
-      @ok="saveQueryToDB"
-      @shown="clearName"
+    <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
+      <div style="width: 80%;">
+        <h5>{{queryId}}. {{queryHeading}}</h5>
+      </div>
+      <div class="md-toolbar-section-end">
+        <md-button class="md-icon-button md-dense" @click="loadQuery(queryId)">
+          <md-icon>refresh</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-field>
+      <label>Name</label>
+      <md-input v-model="queryHeading"></md-input>
+    </md-field>
+    <md-field>
+      <label>Description</label>
+      <md-input v-model="queryDesc"></md-input>
+    </md-field>
+
+    <table
+      v-if="groups.length>0"
+      class="i-table table table-striped table-bordered table-sm table-hover"
     >
-      <form @submit.stop.prevent="handleSubmit">
-        {{modalErrorMessage}}
-        <b-form-input type="text" placeholder="Title*" v-model="queryHeading"></b-form-input>
-        <br />
-        <b-form-input type="text" placeholder="Description*" v-model="queryDesc"></b-form-input>
-      </form>
-    </b-modal>
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Assigned</th>
+        </tr>
+      </thead>
 
-    <!--____________________________  save query  ___________________________ -->
-    <!-- <md-dialog-prompt
-      :md-active.sync="showSaveQueryDialog"
-      v-model="queryHeading"
-      md-title="Enter a Title"
-      md-input-maxlength="100"
-      md-input-placeholder="Title*"
-      md-confirm-text="Done"
-    />-->
+      <tbody>
+        <tr v-for="(group, index) in groups" :key="index">
+          <td>
+            {{group.text}}
+            <p>
+              <small>{{group.code}}</small>
+            </p>
+          </td>
+          <td>
+            <div v-if="group.validValues === undefined || group.validValues.length < 1">
+              <input type="text" class="form-control" v-model="group.currentValue" />
+            </div>
+            <div v-else>
+              <select class="form-control" v-model="group.currentValue">
+                <option v-for="(xVal,indx) in group.validValues" :key="indx" :value="xVal">{{xVal}}</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="sqlscreeneditor" style="width:100%;height:80%;border:1px solid #ccc"></div>
+    <br />
+    <div class="row">
+      <div class="col-3">
+        <button
+          v-if="queryId>0"
+          @click="deleteSQL()"
+          type="button"
+          class="btn btn-outline-danger"
+        >Delete</button>
+      </div>
+
+      <div class="col-3">
+        <button @click="saveQueryToDB(true)" type="button" class="btn btn-success">Add new</button>
+      </div>
+      <div class="col-3">
+        <button
+          v-if="queryId>0"
+          @click="saveQueryToDB(false)"
+          type="button"
+          class="btn btn-primary"
+        >Update</button>
+      </div>
+    </div>
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 <script>
@@ -48,20 +91,31 @@ import * as monaco2 from "monaco-editor";
 
 export default {
   props: {
-    currentSQL: {
-      type: String,
-      required: false
+    queryId: {
+      type: Number,
+      required: false,
+      default: -1
     }
   },
   watch: {
     currentSQL(valx) {
       this.value = valx;
       var currentValue = this.monacoEditor.getModel().getValue();
-      this.value = currentValue + " \n \n" + valx + " \n \n";
+      this.value = valx;
       this.monacoEditor.getModel().setValue(this.value);
+    },
+
+    queryId(valx) {
+      if (valx > 0) {
+        this.currentSQL = "";
+        this.loadQuery(valx);
+      }
     }
   },
 
+  mounted() {
+    this.loadQuery(-1);
+  },
   //------------------------------------------------------------------------------------------
   data: function() {
     return {
@@ -73,6 +127,8 @@ export default {
       showSaveQueryDialog: false,
       modalErrorMessage: "",
       autoComData: [],
+      groups: {},
+      currentSQL: "",
       options: {
         minLines: 500,
         wrap: true,
@@ -86,14 +142,7 @@ export default {
   },
   //------------------------------------------------------------------------------------------
   methods: {
-    setupListeners() {
-      eventBus.$on("beforeRouteLeave_save_sql", data => {
-        this.$session.set(
-          "currentSavedSQL",
-          this.monacoEditor.getModel().getValue()
-        );
-      });
-    },
+    setupListeners() {},
     //-----------------------------------------------
     turnOffListeners() {
       eventBus.$off("beforeRouteLeave_save_sql");
@@ -108,13 +157,9 @@ export default {
       //   );
       // }, 9000);
 
-      var currentSQL = this.$session.get("currentSavedSQL");
-      if (currentSQL === undefined) {
-        currentSQL = "\n\n\n\n\n\n\n\n\n\n\n\n\n";
-      }
-
+      var currentSQL = "";
       this.monacoEditor = monaco2.editor.create(
-        document.getElementById("sqleditor"),
+        document.getElementById("sqlscreeneditor"),
         {
           value: currentSQL,
           language: "sql",
@@ -237,44 +282,114 @@ export default {
       };
     },
 
-    okke: function() {
-      //console.log(this.$refs.editor);
-      // alert(this.$refs.editor.editor.getSelectedText());
-    },
-    saveQueryToDB(evt) {
+    saveQueryToDB(newQuery) {
+      //alert(this.monacoEditor.getModel().getValue());
+      this.value = this.monacoEditor.getModel().getValue();
       this.showSaveQueryDialog = false;
 
       this.modalErrorMessage = "";
-      evt.preventDefault();
+      //evt.preventDefault();
       if (
         this.queryHeading.trim().length == 0 ||
         this.queryDesc.trim().length == 0
       ) {
         this.modalErrorMessage = "Both Fields are required";
       } else {
-        this.handleSubmit();
-        eventBus.$emit("updateSavedSQL", true);
+        this.handleSubmit(newQuery);
       }
     },
-
     //---------------------------------------
-    handleSubmit() {
+    handleSubmit(newQuery) {
+      var queryId = this.queryId;
+
+      if (newQuery) {
+        queryId = -1;
+      }
+
       var data = {
-        id: 0,
-        type: "S",
-        heading: this.queryHeading,
+        queryId: queryId,
+
+        name: this.queryHeading,
         desc: this.queryDesc,
-        sql: this.selectedSQL
+        sql: this.value,
+        status: "A",
+        groups: this.groups
       };
 
       this.runWebService(
-        "r/savequery",
+        "ss/save",
         data,
         function() {},
         function(response) {
-          this.$emit("reloadQueryList", true);
-          this.queryHeading = "";
-          this.queryDesc = "";
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.$notify({
+              type: "success",
+              title: "Done"
+            });
+          } else {
+            vm.$notify({
+              type: "danger",
+              title: respons.data.message
+            });
+          }
+        },
+        function(error) {}
+      );
+    },
+    //---------------------------------------
+    loadQuery(valcc) {
+      var data = {
+        queryId: valcc
+      };
+
+      var vm = this;
+
+      this.runWebService(
+        "ss/loadone",
+        data,
+        function() {},
+        function(response) {
+          if (response.data.status == "S") {
+            vm.queryHeading = response.data.data.screensql.name;
+            vm.queryDesc = response.data.data.screensql.desc;
+            vm.groups = response.data.data.screensql.groups;
+            vm.currentSQL = response.data.data.screensql.query;
+            //vm.groups = respons.data.groups;
+          } else {
+            vm.$notify({
+              type: "danger",
+              title: respons.data.message
+            });
+          }
+        },
+        function(error) {}
+      );
+    },
+
+    //---------------------------------------
+    deleteSQL() {
+      var data = {
+        queryId: this.queryId
+      };
+
+      var vm = this;
+
+      this.runWebService(
+        "ss/delete",
+        data,
+        function() {},
+        function(response) {
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.$notify({
+              type: "success",
+              title: "Done"
+            });
+          } else {
+            vm.$notify({
+              type: "danger",
+              title: respons.data.message
+            });
+          }
         },
         function(error) {}
       );
@@ -351,67 +466,6 @@ export default {
       });
 
       //-----------------  RUN ALLL
-      this.monacoEditor.addAction({
-        id: "RunALLSQL",
-        label: "Run All",
-        keybindings: [
-          monaco2.KeyMod.chord(monaco2.KeyMod.Alt | monaco2.KeyCode.KEY_A)
-        ],
-        precondition: null,
-        keybindingContext: null,
-
-        run: function(meditor) {
-          // vm2.emitSQLToRun2();
-          var value2 = meditor.getModel().getValue();
-          //alert("ok " + value);
-          //console.log(vm2.monacoEditor.tokenize(value, "sql"));
-          vm2.emitSQLToRun2(value2);
-          return null;
-        }
-      });
-
-      //-----------------  RUN Current line
-      this.monacoEditor.addAction({
-        id: "RunCurrentLineSQL",
-        label: "Run Current line",
-        keybindings: [
-          monaco2.KeyMod.chord(monaco2.KeyMod.Alt | monaco2.KeyCode.KEY_C)
-        ],
-        precondition: null,
-        keybindingContext: null,
-
-        run: function(meditor) {
-          // vm2.emitSQLToRun2();
-          var value = meditor
-            .getModel()
-            .getLineContent(meditor.getPosition().lineNumber);
-
-          vm2.emitSQLToRun2(value);
-          return null;
-        }
-      });
-      //-----------------  SAVE
-      this.monacoEditor.addAction({
-        id: "saveSelectedSQL",
-        label: "Save Selected",
-        keybindings: [
-          monaco2.KeyMod.chord(monaco2.KeyMod.Alt | monaco2.KeyCode.KEY_S)
-        ],
-        precondition: null,
-        keybindingContext: null,
-
-        run: function(meditor) {
-          // vm2.emitSQLToRun2();
-          vm2.selectedSQL = meditor
-            .getModel()
-            .getValueInRange(meditor.getSelection());
-          //alert("ok " + value);
-          //console.log(vm2.monacoEditor.tokenize(value, "sql"));
-          vm2.modalErrorMessage = "";
-          vm2.showSaveQueryDialog = true;
-          return null;
-        }
-      });
     },
     //---------------------------------------------------
     editorInit: function() {
@@ -420,42 +474,6 @@ export default {
 
       require("brace/theme/crimson_editor");
       require("brace/snippets/javascript"); //snippet
-
-      var vm2 = this;
-      this.$refs.editor.editor.commands.addCommand({
-        name: "runSelected",
-        bindKey: {
-          win: "Alt-R",
-          mac: "Command-R"
-        },
-        exec: function(editor) {
-          vm2.emitSQLToRun(true);
-        }
-      });
-
-      this.$refs.editor.editor.commands.addCommand({
-        name: "runAll",
-        bindKey: {
-          win: "Alt-A",
-          mac: "Command-A"
-        },
-        exec: function(editor) {
-          vm2.emitSQLToRun(false);
-        }
-      });
-
-      this.$refs.editor.editor.commands.addCommand({
-        name: "save",
-        bindKey: {
-          win: "Alt-S",
-          mac: "Command-S"
-        },
-        exec: function(editor) {
-          vm2.selectedSQL = editor.getSelectedText();
-          vm2.modalErrorMessage = "";
-          vm2.showSaveQueryDialog = true;
-        }
-      });
     }
   }
 };

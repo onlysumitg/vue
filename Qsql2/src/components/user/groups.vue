@@ -1,48 +1,44 @@
 <template>
-  <div class="h-100">
+  <div>
     {{userName}}
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
     <table class="i-table table table-striped table-bordered table-sm table-hover">
       <thead>
         <tr>
-          <th class="stickyHead">Key</th>
-          <th class="stickyHead">Value</th>
+          <th class="stickyHead">Group</th>
+          <th class="stickyHead">Assigned</th>
           <th class="stickyHead">Save</th>
           <th class="stickyHead">Delete</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="(setting, index) in settings" :key="index">
+        <tr v-for="(group, index) in groups" :key="index">
           <td>
-            {{setting.text}}
+            {{group.text}}
             <p>
-              <small>{{setting.code}}</small>
+              <small>{{group.code}}</small>
             </p>
           </td>
           <td>
-            <div v-if="setting.validValues === undefined || setting.validValues.length < 1">
-              <input type="text" class="form-control" v-model="setting.currentValue" />
+            <div v-if="group.validValues === undefined || group.validValues.length < 1">
+              <input type="text" class="form-control" v-model="group.currentValue" />
             </div>
             <div v-else>
-              <select class="form-control" v-model="setting.currentValue">
-                <option
-                  v-for="(xVal,indx) in setting.validValues"
-                  :key="indx"
-                  :value="xVal"
-                >{{xVal}}</option>
+              <select class="form-control" v-model="group.currentValue">
+                <option v-for="(xVal,indx) in group.validValues" :key="indx" :value="xVal">{{xVal}}</option>
               </select>
             </div>
           </td>
 
           <td>
-            <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveSetting(setting)">
+            <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveGroups(group)">
               <i class="fa fa-save"></i>
             </button>
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" @click="deleteSetting(setting)">
+            <button class="btn btn-sm btn-outline-danger" @click="deleteGroups(group)">
               <i class="fa fa-trash-alt"></i>
             </button>
           </td>
@@ -70,31 +66,32 @@ export default {
       }
     }
   },
+
   data: function() {
     return {
       processing: false,
       userNameAsRoute: this.$route.params.username,
-      settings: {}
+      groups: {}
     };
   },
   mounted() {
-    this.loadsettings();
+    this.loadgroups();
   },
 
   methods: {
     initialize() {
-      this.loadsettings();
+      this.loadgroups();
     },
 
     //----------------------------------
-    saveSetting(setting) {
+    saveGroups(group) {
       var vm = this;
 
       this.runWebService(
-        "u/settingssave",
+        "u/setgroup",
         {
-          setting: setting.code,
-          newValue: setting.currentValue,
+          group: group.code,
+          newValue: group.currentValue,
           user: vm.userName
         },
 
@@ -106,7 +103,7 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
+            group.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
               title: "Done"
@@ -124,13 +121,13 @@ export default {
       );
     },
     //----------------------------------
-    deleteSetting(setting) {
+    deleteGroups(group) {
       var vm = this;
-      setting.currentValue = "";
+      group.currentValue = "N";
       this.runWebService(
-        "u/settingsdlt",
+        "u/setgroup",
         {
-          setting: setting.code,
+          group: group.code,
           user: vm.userName
         },
 
@@ -142,7 +139,7 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
+            group.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
               title: "Done"
@@ -160,10 +157,10 @@ export default {
       );
     },
     //----------------------------------
-    loadsettings() {
+    loadgroups() {
       var vm = this;
       this.runWebService(
-        "u/settings",
+        "u/groups",
         {
           user: vm.userName
         },
@@ -175,7 +172,7 @@ export default {
           console.log(respons);
           vm.processing = false;
           if (respons.data.status == "S") {
-            vm.settings = respons.data.data.settings;
+            vm.groups = respons.data.data.groups;
           } else {
             vm.$notify({
               type: "danger",

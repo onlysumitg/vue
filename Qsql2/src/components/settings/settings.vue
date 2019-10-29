@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div style="padding:10px">
     <ul class="list-group">
+      <!--  ==== --->
       <router-link
         class="list-group-item"
         :to="{ name: 'serversettings'}"
@@ -8,6 +9,7 @@
         active-class="active"
         exact
       >Server Settings</router-link>
+      <!--  ==== --->
       <router-link
         class="list-group-item"
         :to="{ name: 'usersettings'}"
@@ -15,6 +17,41 @@
         active-class="active"
         exact
       >User Settings</router-link>
+      <!--  ==== --->
+      <router-link
+        class="list-group-item"
+        :to="{ name: 'userAuths'}"
+        tag="li"
+        active-class="active"
+        exact
+      >User Auths</router-link>
+      <!--  ==== --->
+      <router-link
+        class="list-group-item"
+        :to="{ name: 'userGroups'}"
+        tag="li"
+        active-class="active"
+        exact
+      >User Groups</router-link>
+      <!--  ==== --->
+      <router-link
+        v-if="isAdmin"
+        class="list-group-item"
+        :to="{ name: 'userlist'}"
+        tag="li"
+        active-class="active"
+        exact
+      >User List</router-link>
+      <!--  ==== --->
+      <router-link
+        v-if="isAdmin"
+        class="list-group-item"
+        :to="{ name: 'usercreate'}"
+        tag="li"
+        active-class="active"
+        exact
+      >Add new user</router-link>
+      <!--  ==== --->
       <router-link
         class="list-group-item"
         :to="{ name: 'libList'}"

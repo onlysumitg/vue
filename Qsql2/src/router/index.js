@@ -15,9 +15,16 @@ import allsettinglist from "@/components/settings/settingsedit.vue";
 
 import serverSettings from "@/components/servers/settings.vue";
 import userSettings from "@/components/user/settings.vue";
+import userList from "@/components/user/userList.vue";
+import userx from "@/components/user/useredit.vue";
+import usercrt from "@/components/user/usercreate.vue";
 
+import userAuths from "@/components/user/auths.vue";
+
+import userGroups from "@/components/user/groups.vue";
 
 import sql from "@/components/sql/sql.vue";
+import sqlscreen from "@/components/sql/sqlscreen.vue";
 import results2multiRecord from "@/components/sql/results2multiRecord.vue";
 
 import createTable from "@/components/create/table.vue";
@@ -69,7 +76,7 @@ export default new Router({
       component: servers,
       name: "servers"
     },
-
+    //----------------------------------------------------
     {
       path: "/settings",
       name: "settings",
@@ -87,11 +94,43 @@ export default new Router({
           path: "serversetting",
           component: serverSettings,
           name: "serversettings"
-        }, {
-          path: "usersettings",
+        },
+        {
+          path: "usersettings/:username?",
           component: userSettings,
           name: "usersettings"
-        }
+        },
+        {
+          path: "userAuths/:username?",
+          component: userAuths,
+          name: "userAuths"
+        },
+        {
+          path: "userGroups/:username?",
+          component: userGroups,
+          name: "userGroups"
+        },
+        {
+          path: "users",
+          component: userList,
+          name: "userlist",
+
+
+
+        }, {
+          path: "user/:username",
+          component: userx,
+          name: "useredit",
+
+        },
+        {
+          path: "usercreate",
+          component: usercrt,
+          name: "usercreate",
+
+        },
+
+
       ]
     },
     //----------------------------- start of /sql and children element
@@ -111,11 +150,30 @@ export default new Router({
       }]
 
     },
+
+    //----------------------------- start of /sql and children element
+    {
+      path: "/sqlscreen",
+
+      name: "sqlscreen",
+      components: {
+        default: sqlscreen,
+        speedDialMenu: headerSpeedDial01
+      },
+      children: [{
+        path: "",
+        component: results2,
+        name: "sqlscreensqlind"
+      }]
+
+
+    },
     //----------------------------- end of /sql
     {
       path: "/sqldata",
       component: results2multiRecord,
       name: "multidatasql"
+
     },
 
 

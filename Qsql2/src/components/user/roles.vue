@@ -1,54 +1,31 @@
 <template>
-  <div class="h-100">
+  <div class="w-100">
     {{userName}}
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
-    <table class="i-table table table-striped table-bordered table-sm table-hover">
-      <thead>
-        <tr>
-          <th class="stickyHead">Key</th>
-          <th class="stickyHead">Value</th>
-          <th class="stickyHead">Save</th>
-          <th class="stickyHead">Delete</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr v-for="(setting, index) in settings" :key="index">
-          <td>
-            {{setting.text}}
-            <p>
-              <small>{{setting.code}}</small>
-            </p>
-          </td>
-          <td>
-            <div v-if="setting.validValues === undefined || setting.validValues.length < 1">
-              <input type="text" class="form-control" v-model="setting.currentValue" />
-            </div>
-            <div v-else>
-              <select class="form-control" v-model="setting.currentValue">
-                <option
-                  v-for="(xVal,indx) in setting.validValues"
-                  :key="indx"
-                  :value="xVal"
-                >{{xVal}}</option>
-              </select>
-            </div>
-          </td>
-
-          <td>
-            <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveSetting(setting)">
-              <i class="fa fa-save"></i>
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-outline-danger" @click="deleteSetting(setting)">
-              <i class="fa fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-2">
+        <h5>User Role</h5>
+      </div>
+      <div class="col-5">
+        <select class="form-control" v-model="currentRole">
+          <option
+            v-for="role in roles"
+            v-bind:value="role.code"
+            v-bind:key="role.code"
+          >{{role.code}}</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <button
+          v-if="isAdmin"
+          class="btn btn-sm btn-link btn-outline-secondary"
+          @click="saveRole()"
+        >
+          <i class="fa fa-save"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -74,27 +51,27 @@ export default {
     return {
       processing: false,
       userNameAsRoute: this.$route.params.username,
-      settings: {}
+      roles: {},
+      currentRole: ""
     };
   },
   mounted() {
-    this.loadsettings();
+    this.loadroles();
   },
 
   methods: {
     initialize() {
-      this.loadsettings();
+      this.loadroles();
     },
 
     //----------------------------------
-    saveSetting(setting) {
+    saveRole() {
       var vm = this;
 
       this.runWebService(
-        "u/settingssave",
+        "u/setrole",
         {
-          setting: setting.code,
-          newValue: setting.currentValue,
+          role: vm.currentRole,
           user: vm.userName
         },
 
@@ -106,7 +83,6 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
               title: "Done"
@@ -123,14 +99,13 @@ export default {
         }
       );
     },
+
     //----------------------------------
-    deleteSetting(setting) {
+    loadroles() {
       var vm = this;
-      setting.currentValue = "";
       this.runWebService(
-        "u/settingsdlt",
+        "u/roles",
         {
-          setting: setting.code,
           user: vm.userName
         },
 
@@ -142,40 +117,12 @@ export default {
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.newvalue;
-            vm.$notify({
-              type: "success",
-              title: "Done"
-            });
-          } else {
-            vm.$notify({
-              type: "danger",
-              title: respons.data.message
-            });
-          }
-        },
-        function(error) {
-          vm.processing = false;
-        }
-      );
-    },
-    //----------------------------------
-    loadsettings() {
-      var vm = this;
-      this.runWebService(
-        "u/settings",
-        {
-          user: vm.userName
-        },
+            vm.roles = respons.data.data.rolelist;
 
-        function() {
-          vm.processing = true;
-        },
-        function(respons) {
-          console.log(respons);
-          vm.processing = false;
-          if (respons.data.status == "S") {
-            vm.settings = respons.data.data.settings;
+            var selectRole = _.find(vm.roles, function(role) {
+              return role.currentValue == "Y";
+            });
+            vm.currentRole = selectRole.code;
           } else {
             vm.$notify({
               type: "danger",

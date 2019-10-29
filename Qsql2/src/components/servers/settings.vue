@@ -3,10 +3,10 @@
     <table class="i-table table table-striped table-bordered table-sm table-hover">
       <thead>
         <tr>
-          <th>Key</th>
-          <th>Value</th>
-          <th>Save</th>
-          <th>Delete</th>
+          <th class="stickyHead">Key</th>
+          <th class="stickyHead">Value</th>
+          <th class="stickyHead">Save</th>
+          <th class="stickyHead">Delete</th>
         </tr>
       </thead>
 

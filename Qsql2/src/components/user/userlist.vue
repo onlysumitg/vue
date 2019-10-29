@@ -1,19 +1,29 @@
 <template>
   <div class="h-100">
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
     <table class="i-table table table-striped table-bordered table-sm table-hover">
       <thead>
         <tr>
-          <th class="stickyHead">Type</th>
-          <th class="stickyHead">Lib</th>
-          <th class="stickyHead">Text</th>
+          <th class="stickyHead">User Name</th>
+          <th class="stickyHead">Status</th>
+          <th class="stickyHead">Edit</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="(lib,i) in libl" :key="i">
-          <td>{{lib.type.trim()}}</td>
-          <td>{{lib.lib.trim()}}</td>
-          <td>{{lib.text.trim()}}</td>
+        <tr v-for="(user, index) in userList" :key="index">
+          <td>{{user.userName}}</td>
+          <td>{{user.status}}</td>
+
+          <td>
+            <button
+              class="btn btn-sm btn-link btn-outline-secondary"
+              @click="editUser(user.userName)"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -24,39 +34,47 @@ export default {
   data: function() {
     return {
       processing: false,
-      libl: {}
+      userList: {}
     };
   },
   mounted() {
-    this.loadLibl();
+    //  this.loadsettings();
   },
 
   methods: {
     initialize() {
-      this.loadLibl();
+      this.loadlist();
     },
-    loadLibl() {
+
+    //----------------------------------
+    loadlist() {
       var vm = this;
       this.runWebService(
-        "s/libl",
-        {
-          serverId: vm.$session.get("currentserver")
-        },
+        "u/list",
+        {},
 
         function() {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
           vm.processing = false;
           if (respons.data.status == "s" || respons.data.status == "S") {
-            vm.libl = respons.data.data.libl;
+            vm.userList = respons.data.data.users;
+          } else {
+            vm.$notify({
+              type: "danger",
+              title: respons.data.message
+            });
           }
         },
         function(error) {
           vm.processing = false;
         }
       );
+    },
+    //----------------------------------
+    editUser(userName) {
+      this.$router.push({ name: "useredit", params: { username: userName } });
     }
   }
 };

@@ -176,7 +176,7 @@ export default {
     document.addEventListener(
       "scroll",
       () => {
-        alert("okk");
+        //alert("okk");
         vm.bottom = vm.bottomVisible();
       },
       { passive: true }
@@ -334,7 +334,7 @@ export default {
 
     //---------------------------------------------
     bottomVisible() {
-      alert("scrolling");
+      // alert("scrolling");
       const scrollY = document.scrollY;
       const visible = document.documentElement.clientHeight;
       const pageHeight = document.documentElement.scrollHeight - 100;

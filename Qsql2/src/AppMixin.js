@@ -19,8 +19,20 @@ export const AppMixin = {
 
   data: function () {
     return {
-      CancelTokenSource: {}
+      CancelTokenSource: {},
+      xloading: false,
+      xIsAdmin: false
 
+    }
+  },
+
+  computed: {
+    isAdmin() {
+      if (this.xIsAdmin) {
+        return this.xIsAdmin
+      }
+      this.checkIfAdmin()
+      return this.xIsAdmin
     }
   },
   //----------------------------------------------------------------------------
@@ -96,14 +108,37 @@ export const AppMixin = {
 
     },
 
+    getConnectedServerName() {
+      return this.$session.get("currentservername")
+    },
     //--------------------------------------------------------------------------
     getBaseUrl() {
       return axios.defaults.baseURL;
     },
     //----------------------------------------------------------------------------
 
+    checkIfAdmin() {
+      var vm = this;
+
+      this.runWebService(
+        "u/isa", {},
+        function () {},
+        function (respons) {
+          if (respons.data.status == "s" || respons.data.status == "S") {
+            vm.xIsAdmin = true;
+          } else {
+            vm.xIsAdmin = false;
+          }
+        },
+        function (error) {
+          vm.xIsAdmin = false;
+        }
+      );
+    },
+    //----------------------------------------------------------------------------
     runWebService(url, params, beforeRun, onSucess, onError) {
       //      alert("ok3");
+      this.xloading = true
       const CancelToken = axios.CancelToken;
       this.CancelTokenSource = CancelToken.source();
       params["source"] = "web"
@@ -120,7 +155,7 @@ export const AppMixin = {
             cancelToken: vm.CancelTokenSource.token
           })
           .then(response => {
-
+            // alert(response);
             if (response.data.token !== undefined) {
               this.$session.set("QSQL_TOKEN", response.data.token);
             }
@@ -134,12 +169,15 @@ export const AppMixin = {
 
               throw e;
             }
-
+            vm.xloading = false
             onSucess(response);
 
           })
           .catch(err => {
-            //alert(err);
+            vm.xloading = false
+            //  alert(err);
+            console.log("err>>")
+            console.log(err)
             if (axios.isCancel(err)) {
               console.log('Request canceled', err.message);
             } else {

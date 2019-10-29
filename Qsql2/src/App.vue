@@ -2,7 +2,7 @@
   <div>
     <router-view name="headerTop"></router-view>
     <div id="app" class="fill">
-       <notifications></notifications>
+      <notifications></notifications>
       <div class="containerx fill">
         <router-view></router-view>
         <!-- this is the default container -->
@@ -82,5 +82,12 @@ html {
   overflow-y: scroll !important;
   max-width: 100vw;
   max-height: 100vh;
+}
+
+.stickyHead {
+  position: sticky;
+  background-color: #cfe3fa;
+  top: 0;
+  z-index: 7;
 }
 </style>
