@@ -1,36 +1,35 @@
 <template>
-  <div class="page-container">
-    <md-app>
-      <md-app-toolbar class="md-primary" md-elevation="0">
-        <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-          <md-icon>menu</md-icon>
-        </md-button>
-        <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
-          <md-icon>keyboard_arrow_left</md-icon>
-        </md-button>
-        <span class="md-title">{{getConnectedServerName()}}</span>
-      </md-app-toolbar>
+  <md-app>
+    <md-app-toolbar class="md-primary" md-elevation="0">
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+        <md-icon>menu</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
+        <md-icon>keyboard_arrow_left</md-icon>
+      </md-button>
+      <span class="md-title">{{getConnectedServerName()}}</span>
+      <menu01></menu01>
+    </md-app-toolbar>
 
-      <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
-        <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
-          <md-tab md-label="SQL List" id="t0">
-            <sqlscreenquerylist></sqlscreenquerylist>
-          </md-tab>
-          <md-tab v-if="isAdmin" md-label="Edit/Add SQL" id="t1">
-            <sqlscreenedit :queryId="sqlEditId"></sqlscreenedit>
-          </md-tab>
-        </md-tabs>
-      </md-app-drawer>
+    <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+      <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
+        <md-tab md-label="SQL List" id="t0">
+          <sqlscreenquerylist></sqlscreenquerylist>
+        </md-tab>
+        <md-tab v-if="isAdmin" md-label="Edit/Add SQL" id="t1">
+          <sqlscreenedit :queryId="sqlEditId"></sqlscreenedit>
+        </md-tab>
+      </md-tabs>
+    </md-app-drawer>
 
-      <md-app-content>
-        <div class="overflowscroll" style="height:calc(100vh - 70px)">
-          <div class="flex">
-            <sqlscreendata :queryId="sqlRunId"></sqlscreendata>
-          </div>
+    <md-app-content>
+      <div class="overflowscroll" style="height:calc(100vh - 70px)">
+        <div class="flex">
+          <sqlscreendata :queryId="sqlRunId"></sqlscreendata>
         </div>
-      </md-app-content>
-    </md-app>
-  </div>
+      </div>
+    </md-app-content>
+  </md-app>
 </template>
 
 <script>
@@ -38,14 +37,14 @@ import sqlscreenquerylist from "./sqlscreenquerylist";
 import sqlscreendata from "./sqlscreendata";
 import sqlscreenedit from "./sqlscreenedit";
 
-import header01 from "@/components/headers/header01.vue";
+import menu01 from "@/components/headers/menu01.vue";
 
 export default {
   components: {
     sqlscreenquerylist,
     sqlscreenedit,
     sqlscreendata,
-    header01
+    menu01
   },
   updated() {},
   mounted() {},

@@ -10,7 +10,7 @@
       :options="options"
       theme="crimson_editor"
       width="100%"
-      height="100%"
+      height="100%" 
     ></codeeditor>-->
     <h5>{{getConnectedServerName()}}</h5>
     <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>

@@ -9,30 +9,8 @@
           <md-icon>keyboard_arrow_left</md-icon>
         </md-button>
         <span class="md-title">{{getConnectedServerName()}}</span>
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button" :to="{ name: 'servers'}">
-            <v-icon>mdi-server</v-icon>
-          </md-button>
-          <md-button class="md-icon-button" :to="{ name: 'settings'}">
-            <v-icon>mdi-settings</v-icon>
-          </md-button>
 
-          <v-menu bottom left>
-            <template v-slot:activator="{ on }">
-              <v-btn dark icon v-on="on">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-
-            <v-list-item v-for="(item, index) in items" :key="index">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-menu>
-
-          <md-button class="md-icon-button" :to="{ name: 'loginentry'}">
-            <v-icon color="orange">mdi-power</v-icon>
-          </md-button>
-        </div>
+        <menu01></menu01>
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
@@ -71,6 +49,8 @@
 import sqlquery from "./sqlquery";
 import querylist from "./querylist";
 import header01 from "@/components/headers/header01.vue";
+import menu01 from "@/components/headers/menu01.vue";
+
 // import results from "./results";
 // import results2 from "./results2";
 // import libList from "./../servers/joblibl";
@@ -83,7 +63,8 @@ export default {
     // results2,
     // libList
     //settings,
-    header01
+    header01,
+    menu01
   },
   updated() {
     // this.tabIndex = 2;
@@ -157,6 +138,9 @@ table:focus {
 </style>
 
 <style lang="scss" scoped>
+.v-btn:hover {
+  text-decoration: none;
+}
 .md-app {
   min-height: 100vh;
 }

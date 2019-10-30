@@ -1,7 +1,15 @@
 <template>
   <div class="page-container">
     <!-- single record -->
-    <v-navigation-drawer right v-model="showSingleRecord" fixed floating temporary width="800">
+    <v-navigation-drawer
+      v-if="showSingleRecord"
+      right
+      v-model="showSingleRecord"
+      fixed
+      floating
+      temporary
+      width="800"
+    >
       <div v-if="(alertMessage.length > 0)" style="max-width:600px;padding:15px">
         Query :
         <strong>

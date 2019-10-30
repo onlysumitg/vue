@@ -140,7 +140,7 @@ export default new Router({
       name: "sql",
       components: {
         default: sql,
-        speedDialMenu: headerSpeedDial01
+
       },
 
       children: [{
@@ -158,7 +158,7 @@ export default new Router({
       name: "sqlscreen",
       components: {
         default: sqlscreen,
-        speedDialMenu: headerSpeedDial01
+        // speedDialMenu: headerSpeedDial01
       },
       children: [{
         path: "",

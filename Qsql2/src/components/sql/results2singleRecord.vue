@@ -1,7 +1,15 @@
 <template>
   <div class="page-container">
     <!-- single record -->
-    <v-navigation-drawer right v-model="showSingleRecord" fixed floating temporary width="800">
+    <v-navigation-drawer
+      v-if="showSingleRecord"
+      right
+      v-model="showSingleRecord"
+      fixed
+      floating
+      temporary
+      width="800"
+    >
       <div class="md-layout" style="  min-width:400px; margin:10px">
         <div class="md-layout-item" style="min-width=500px">
           <md-toolbar class="md-transparent" md-elevation="0">
