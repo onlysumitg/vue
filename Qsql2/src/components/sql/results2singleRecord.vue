@@ -1,13 +1,8 @@
 <template>
   <div class="page-container">
     <!-- single record -->
-    <md-drawer
-      :md-right="xtrue"
-      :md-fixed="xtrue"
-      v-if="showSingleRecord"
-      :md-active.sync="showSingleRecord"
-    >
-      <div class="md-layout" style="min-width:400px; margin:10px">
+    <v-navigation-drawer right v-model="showSingleRecord" fixed floating temporary width="800">
+      <div class="md-layout" style="  min-width:400px; margin:10px">
         <div class="md-layout-item" style="min-width=500px">
           <md-toolbar class="md-transparent" md-elevation="0">
             <div class="md-toolbar-section-start">
@@ -45,7 +40,7 @@
                       v-if="col.scale>0"
                     >, {{col.scale}}</span>
                     ]
-                    <br>
+                    <br />
                     <span v-if="multiTable">[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
                     <!-- <span v-else class="md-caption">-</span> -->
                   </div>
@@ -63,7 +58,7 @@
                       :style="[{minWidth:'500px'}]"
                       :maxlength="getMaxLength(col)"
                       disabled
-                    >
+                    />
                     <textarea
                       v-else
                       class="form-control"
@@ -106,7 +101,7 @@
           <!-- <div id="idataeditor" style="width:600px;height:800px;border:1px solid #ccc"></div> -->
         </div>
       </div>
-    </md-drawer>
+    </v-navigation-drawer>
 
     <!-- end single record -->
     <md-snackbar md-position="left" :md-duration="Infinity" :md-active.sync="showMessage">
@@ -285,17 +280,26 @@ export default {
               } catch (e) {
                 console.log(e);
               }
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
 
               break;
             } // end sucess
             case "e": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
 
             case "u": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
             default: {
@@ -391,6 +395,9 @@ export default {
   word-wrap: break-word;
 }
 
+.v-navigation-drawer {
+  z-index: 99 !important;
+}
 .tableClasss {
   table-layout: fixed;
   white-space: normal;
@@ -425,12 +432,12 @@ export default {
   overflow: auto;
   max-height: 96vh;
 }
-</style>
-<style>
 .md-overlay {
   background: none;
+  position: inherit !important;
 }
-
+</style>
+<style>
 .md-table-head-container {
   height: auto;
   padding: 0%;

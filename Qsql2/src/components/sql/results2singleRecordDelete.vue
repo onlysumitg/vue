@@ -1,26 +1,21 @@
 <template>
   <div class="page-container">
     <!-- single record -->
-    <md-drawer
-      :md-right="xtrue"
-      :md-fixed="xtrue"
-      v-if="showSingleRecord"
-      :md-active.sync="showSingleRecord"
-    >
+    <v-navigation-drawer right v-model="showSingleRecord" fixed floating temporary width="800">
       <div v-if="(alertMessage.length > 0)" style="max-width:600px;padding:15px">
         Query :
         <strong>
           <p>{{this.sqlToRun}}</p>
         </strong>
 
-        <hr>
+        <hr />
 
         <div v-html="alertMessage"></div>
 
-        <hr>
+        <hr />
 
         <md-button @click="alertMessage=''">close</md-button>
-        <hr>
+        <hr />
       </div>
       <!--------- next section ---------------->
 
@@ -59,7 +54,7 @@
                       v-if="col.scale>0"
                     >, {{col.scale}}</span>
                     ]
-                    <br>
+                    <br />
                     <span v-if="multiTable">[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
                     <!-- <span v-else class="md-caption">-</span> -->
                   </div>
@@ -77,7 +72,7 @@
                       :style="[{minWidth:'500px'}]"
                       :maxlength="getMaxLength(col)"
                       disabled
-                    >
+                    />
                     <textarea
                       v-else
                       class="form-control"
@@ -94,7 +89,7 @@
           </table>
         </div>
       </div>
-    </md-drawer>
+    </v-navigation-drawer>
 
     <!-- end single record -->
     <md-snackbar md-position="left" :md-duration="Infinity" :md-active.sync="showMessage">
@@ -262,7 +257,9 @@ export default {
             case "s": {
               // vm.alertMessage = responce.data.message;
               var sqldata =
-                responce.data.data.sqldata[Object.keys(responce.data.data.sqldata)[0]];
+                responce.data.data.sqldata[
+                  Object.keys(responce.data.data.sqldata)[0]
+                ];
               vm.alertMessage = sqldata.error;
               break;
             }
@@ -319,6 +316,9 @@ export default {
   word-wrap: break-word;
 }
 
+.v-navigation-drawer {
+  z-index: 99 !important;
+}
 .tableClasss {
   table-layout: fixed;
   white-space: normal;

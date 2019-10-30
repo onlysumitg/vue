@@ -1,12 +1,7 @@
 <template>
   <div class="page-container">
     <!-- single record -->
-    <md-drawer
-      :md-right="xtrue"
-      :md-fixed="xtrue"
-      v-if="showSingleRecord"
-      :md-active.sync="showSingleRecord"
-    >
+    <v-navigation-drawer right v-model="showSingleRecord" fixed floating temporary width="800">
       <div v-if="(alertMessage.length > 0)" style="max-width:600px;padding:15px">
         Query :
         <strong>
@@ -92,7 +87,7 @@
           </table>
         </div>
       </div>
-    </md-drawer>
+    </v-navigation-drawer>
 
     <!-- end single record -->
     <md-snackbar md-position="left" :md-duration="Infinity" :md-active.sync="showMessage">
@@ -329,6 +324,9 @@ export default {
   word-wrap: break-word;
 }
 
+.v-navigation-drawer {
+  z-index: 99 !important;
+}
 .tableClasss {
   table-layout: fixed;
   white-space: normal;

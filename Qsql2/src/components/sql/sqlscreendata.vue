@@ -1,8 +1,8 @@
 <template>
-  <div style="padding:10px;  height: 100vh">
+  <div style="padding:10px; " class="h-100">
     <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
       <div>
-        <h5>{{getConnectedServerName()}} : {{queryId}}. {{queryHeading}}</h5>
+        <h5>{{queryId}}. {{queryHeading}}</h5>
       </div>
       <div class="md-toolbar-section-start">
         <md-button class="md-icon-button md-dense" @click="loadQuery(queryId)">
@@ -37,11 +37,7 @@
     <br />
     <br />
 
-    <div class="row">
-      <div class="col-sm">
-        <router-view></router-view>
-      </div>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>

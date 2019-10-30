@@ -1,58 +1,70 @@
 <template>
-  <div>
-    <div class="no-gutter h-100 w-100 d-flex">
-      <div class="col-4 main-screen">
-        <md-drawer class="md-elevation-2" md-persistent="full" :md-active.sync="xtrue">
-          <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
-            <md-tab md-label="SQL" id="t0">
-              <sqlquery :currentSQL="selectedSQL"></sqlquery>
-            </md-tab>
-            <md-tab md-label="Saved SQL" id="t1">
-              <querylist
-                :reload="reloadSaved"
-                @selectedquery="selectedSQL = $event; tabIndex = 't0' "
-                qtype="S"
-              ></querylist>
-            </md-tab>
-            <md-tab md-label="History" id="t2">
-              <querylist
-                :reload="reloadHistory"
-                @selectedquery="selectedSQL = $event; tabIndex = 't0'"
-                qtype="H"
-              ></querylist>
-            </md-tab>
-
-            <!-- <md-tab md-label="More Stuff" id="t3">
-              <settings></settings>
-            </md-tab>-->
-          </md-tabs>
-        </md-drawer>
-      </div>
-      <!-- <div class="col-4"></div> -->
-      <!-- query results -->
-      <div class="col-8 pt-3 overflowscroll">
-        <!-- <results2></results2> -->
-        <!-- <results></results> -->
-        <router-view></router-view>
-      </div>
-
-      <!-- <md-speed-dial class="md-top-right md-fixed" md-direction="bottom" md-event="click">
-      <md-speed-dial-target class="md-primary">
-        <md-icon class="md-morph-initial">add</md-icon>
-        <md-icon class="md-morph-final">close</md-icon>
-      </md-speed-dial-target>
-
-      <md-speed-dial-content>
-        <md-button class="md-icon-button">
-          <md-icon>directions</md-icon>
+  <div class="page-container">
+    <md-app>
+      <md-app-toolbar class="md-primary" md-elevation="0">
+        <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+          <md-icon>menu</md-icon>
         </md-button>
-
-        <md-button class="md-icon-button">
-          <md-icon>streetview</md-icon>
+        <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
+          <md-icon>keyboard_arrow_left</md-icon>
         </md-button>
-      </md-speed-dial-content>
-      </md-speed-dial>-->
-    </div>
+        <span class="md-title">{{getConnectedServerName()}}</span>
+        <div class="md-toolbar-section-end">
+          <md-button class="md-icon-button" :to="{ name: 'servers'}">
+            <v-icon>mdi-server</v-icon>
+          </md-button>
+          <md-button class="md-icon-button" :to="{ name: 'settings'}">
+            <v-icon>mdi-settings</v-icon>
+          </md-button>
+
+          <v-menu bottom left>
+            <template v-slot:activator="{ on }">
+              <v-btn dark icon v-on="on">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+
+            <v-list-item v-for="(item, index) in items" :key="index">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-menu>
+
+          <md-button class="md-icon-button" :to="{ name: 'loginentry'}">
+            <v-icon color="orange">mdi-power</v-icon>
+          </md-button>
+        </div>
+      </md-app-toolbar>
+
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+        <md-tabs md-elevation="1" :md-active-tab="tabIndex" @md-changed="tabUpdated">
+          <md-tab md-label="SQL" id="t0">
+            <sqlquery :currentSQL="selectedSQL"></sqlquery>
+          </md-tab>
+          <md-tab md-label="Saved SQL" id="t1">
+            <querylist
+              :reload="reloadSaved"
+              @selectedquery="selectedSQL = $event; tabIndex = 't0' "
+              qtype="S"
+            ></querylist>
+          </md-tab>
+          <md-tab md-label="History" id="t2">
+            <querylist
+              :reload="reloadHistory"
+              @selectedquery="selectedSQL = $event; tabIndex = 't0'"
+              qtype="H"
+            ></querylist>
+          </md-tab>
+        </md-tabs>
+      </md-app-drawer>
+
+      <md-app-content>
+        <div class="overflowscroll" style="height:calc(100vh - 70px)">
+          <div class="flex">
+            <router-view></router-view>
+          </div>
+        </div>
+      </md-app-content>
+    </md-app>
   </div>
 </template>
 <script>
@@ -89,16 +101,26 @@ export default {
   data() {
     return {
       xtrue: true,
+      menuVisible: true,
       sqlToRun: "",
       tabIndex: "t0",
       selectedSQL: "",
       reloadHistory: false,
       reloadSaved: false,
-      tabIndexResult: "x"
+      tabIndexResult: "x",
+      items: [
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me 2" }
+      ]
     };
   },
   //---------------------------
   methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
     setupListeners() {
       eventBus.$on("updateHistorySQL", data => {
         this.reloadHistory = data;
@@ -135,8 +157,28 @@ table:focus {
 </style>
 
 <style lang="scss" scoped>
+.md-app {
+  min-height: 100vh;
+}
+
+.md-toolbar {
+  min-height: 70px;
+  max-height: 70px;
+}
+
+.md-app-content {
+  padding: 0;
+}
+
 .navbar-brand {
   color: #000;
+}
+
+.md-drawer {
+  width: 230px;
+  max-width: 500px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 .stickyHead {
   position: sticky;
