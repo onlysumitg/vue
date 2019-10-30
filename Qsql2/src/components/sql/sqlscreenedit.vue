@@ -3,13 +3,11 @@
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
     <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
-      <div style="width: 80%;">
-        <h5>{{queryId}}. {{queryHeading}}</h5>
-      </div>
-      <div class="md-toolbar-section-end">
-        <md-button class="md-icon-button md-dense" @click="loadQuery(queryId)">
-          <md-icon>refresh</md-icon>
-        </md-button>
+      <div class="md-toolbar-section-start">
+        <v-chip @click="loadQuery(queryId)" label large color="transparent" text-color="black">
+          <span class="title font-weight-light">{{queryId}}. {{queryHeading}}</span>
+          <v-icon right>mdi-refresh</v-icon>
+        </v-chip>
       </div>
     </md-toolbar>
 
@@ -28,8 +26,8 @@
     >
       <thead>
         <tr>
-          <th>Group</th>
-          <th>Assigned</th>
+          <th class="stickyHead">Group</th>
+          <th class="stickyHead">Assigned</th>
         </tr>
       </thead>
 
@@ -56,27 +54,20 @@
     </table>
     <div id="sqlscreeneditor" style="width:100%;height:80%;border:1px solid #ccc"></div>
     <br />
-    <div class="row">
-      <div class="col-3">
-        <button
-          v-if="queryId>0"
-          @click="deleteSQL()"
-          type="button"
-          class="btn btn-outline-danger"
-        >Delete</button>
-      </div>
+    <div>
+      <v-btn class="ma-2" v-if="queryId>0" @click="deleteSQL()" color="white" icon>
+        <v-icon color="red">mdi-delete-outline</v-icon>
+      </v-btn>
 
-      <div class="col-3">
-        <button @click="saveQueryToDB(true)" type="button" class="btn btn-success">Add new</button>
-      </div>
-      <div class="col-3">
-        <button
-          v-if="queryId>0"
-          @click="saveQueryToDB(false)"
-          type="button"
-          class="btn btn-primary"
-        >Update</button>
-      </div>
+      <v-btn class="ma-2" @click="saveQueryToDB(true)">
+        Add new
+        <v-icon right dark>mdi-plus</v-icon>
+      </v-btn>
+
+      <v-btn class="ma-2" color="blue" v-if="queryId>0" @click="saveQueryToDB(false)">
+        Update
+        <v-icon right dark>mdi-check</v-icon>
+      </v-btn>
     </div>
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 

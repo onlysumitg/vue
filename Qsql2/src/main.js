@@ -18,6 +18,13 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'material-icons/iconfont/material-icons.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+import VuejsDialog from 'vuejs-dialog';
+import VuejsDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'; // only needed in custom components
+
+// include the default style
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+
+Vue.use(VuejsDialog);
 
 import NotificationPlugin from "@/components/NotificationPlugin/index"
 
@@ -30,6 +37,7 @@ import Vuetify from 'vuetify'
 Vue.use(Vuetify, {
   iconfont: 'mdi'
 })
+
 
 Vue.use(VueSelect, {
   theme: 'bootstrap' // or 'material-design'

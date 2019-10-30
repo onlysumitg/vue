@@ -74,19 +74,31 @@ html {
 }
 
 .overflowscroll {
-  overflow: scroll !important;
+  overflow: auto !important;
   max-width: 100vw;
   max-height: 100vh;
 }
 .overflowscrollyonly {
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   max-width: 100vw;
   max-height: 100vh;
 }
-
+.overflowscrollyonly2 {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-width: 100vw;
+  max-height: 100vh;
+}
 .stickyHead {
   position: sticky;
   background-color: #cfe3fa;
+  top: 0;
+  z-index: 7;
+}
+.stickyHeadNoBGC {
+  position: sticky;
+  background-color: #fff;
   top: 0;
   z-index: 7;
 }

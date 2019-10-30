@@ -22,8 +22,11 @@
     </div>
 
     <div class="row">
-      <div class="col-1">
-        <button @click="emitSQLToRun2('ff')" type="button" class="btn btn-primary btn-block">GO >>></button>
+      <div class="col-2">
+        <v-btn @click="emitSQLToRun2('ff')">
+          Submit
+          <v-icon right dark>mdi-cloud-upload</v-icon>
+        </v-btn>
       </div>
     </div>
     <br />
@@ -55,12 +58,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next);
   },
 
   computed: {

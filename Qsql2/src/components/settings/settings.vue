@@ -1,66 +1,80 @@
 <template>
-  <div style="padding:10px">
-    <ul class="list-group">
-      <!--  ==== --->
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'serversettings'}"
-        tag="li"
-        active-class="active"
-        exact
-      >Server Settings</router-link>
-      <!--  ==== --->
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'usersettings'}"
-        tag="li"
-        active-class="active"
-        exact
-      >User Settings</router-link>
-      <!--  ==== --->
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'userAuths'}"
-        tag="li"
-        active-class="active"
-        exact
-      >User Auths</router-link>
-      <!--  ==== --->
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'userGroups'}"
-        tag="li"
-        active-class="active"
-        exact
-      >User Groups</router-link>
-      <!--  ==== --->
-      <router-link
-        v-if="isAdmin"
-        class="list-group-item"
-        :to="{ name: 'userlist'}"
-        tag="li"
-        active-class="active"
-        exact
-      >User List</router-link>
-      <!--  ==== --->
-      <router-link
-        v-if="isAdmin"
-        class="list-group-item"
-        :to="{ name: 'usercreate'}"
-        tag="li"
-        active-class="active"
-        exact
-      >Add new user</router-link>
-      <!--  ==== --->
-      <router-link
-        class="list-group-item"
-        :to="{ name: 'libList'}"
-        tag="li"
-        active-class="active"
-        exact
-      >Lib List</router-link>
-    </ul>
-  </div>
+  <v-list>
+    <v-list-tile avatar ripple router :to="{ name: 'serversettings'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-server</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>Server Settings</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+    <!--  ==== --->
+    <v-list-tile avatar ripple router :to="{ name: 'usersettings'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-account-settings</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>User Settings</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+
+    <!--  ==== --->
+    <v-list-tile avatar ripple router :to="{ name: 'userAuths'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-alpha-a</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>User Auths</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+
+    <!--  ==== --->
+    <v-list-tile avatar ripple router :to="{ name: 'userGroups'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-account-group</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>User Groups</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+
+    <!--  ==== --->
+    <v-list-tile v-if="isAdmin" avatar ripple router :to="{ name: 'userlist'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-account-multiple</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>Users List</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+
+    <!--  ==== --->
+    <v-list-tile v-if="isAdmin" avatar ripple router :to="{ name: 'usercreate'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-account-plus</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>Add new user</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+
+    <!--  ==== --->
+    <v-list-tile avatar ripple router :to="{ name: 'libList'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-alpha-l</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>Lib List</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
+  </v-list>
 </template>
 
 <script>

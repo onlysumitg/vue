@@ -1,5 +1,7 @@
 <template>
-  <div class="h-100">
+  <div>
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
     <table class="i-table table table-striped table-bordered table-sm table-hover">
       <thead>
         <tr>
@@ -13,9 +15,9 @@
       <tbody>
         <tr v-for="(setting, index) in settings" :key="index">
           <td>
-            {{setting.key}}
+            {{setting.text}}
             <p>
-              <small>{{setting.text}}</small>
+              <small>{{setting.key}}</small>
             </p>
           </td>
           <td>

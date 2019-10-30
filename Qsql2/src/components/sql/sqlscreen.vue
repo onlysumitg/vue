@@ -49,18 +49,11 @@ export default {
   updated() {},
   mounted() {},
   beforeRouteLeave(to, from, next) {
-    eventBus.$emit("beforeRouteLeave_save_sql", true);
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next);
   },
 
   name: "PersistentMini",
   data: () => ({
-    menuVisible: true,
     xtrue: true,
     sqlToRun: "",
     tabIndex: "t0",
@@ -72,9 +65,6 @@ export default {
     sqlRunId: 0
   }),
   methods: {
-    toggleMenu() {
-      this.menuVisible = !this.menuVisible;
-    },
     setupListeners() {
       eventBus.$on("screensql_edit", data => {
         this.sqlEditId = data;

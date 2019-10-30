@@ -1,7 +1,9 @@
 <template>
-  <div class="h-100">
+  <div class="stickyHeadNoBGC">
     <md-card>
       <md-card-header>
+        <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
         <div class="md-title" style="color:#448aff">Server details</div>
       </md-card-header>
 
@@ -12,11 +14,17 @@
             <md-input v-model="selectedServerLocal.serverName" id="servername"></md-input>
           </md-field>
 
-          <md-field md-inline>
-            <label>Server IP</label>
-            <md-input v-model="selectedServerLocal.serverIP" id="serverip"></md-input>
-          </md-field>
-          <md-switch md-inline v-model="selectedServerLocal.ssl" class="md-primary">SSL</md-switch>
+          <div class="row">
+            <div class="col-10">
+              <md-field>
+                <label>Server IP</label>
+                <md-input v-model="selectedServerLocal.serverIP" id="serverip"></md-input>
+              </md-field>
+            </div>
+            <div class="col-1">
+              <md-switch v-model="selectedServerLocal.ssl" class="md-primary">SSL</md-switch>
+            </div>
+          </div>
 
           <md-field>
             <label>User</label>
@@ -28,23 +36,23 @@
             <md-input v-model="selectedServerLocal.password" type="password" required></md-input>
           </md-field>
         </form>
+        <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
       </md-card-content>
 
       <md-card-actions>
         <md-button class="md-accent" @click="clearServers">Clear</md-button>
         <md-button class="md-accent" @click="deleteServers">Delete</md-button>
         <md-button :disabled="processing" @click="saveServers" class="md-primary">
-          <md-progress-spinner
+          <!-- <md-progress-spinner
             v-show="processing"
             :md-diameter="12"
             :md-stroke="2"
             md-mode="indeterminate"
-          ></md-progress-spinner>Connect
+          ></md-progress-spinner>-->
+          Connect
         </md-button>
       </md-card-actions>
     </md-card>
-
-    <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
   </div>
 </template>
 <script>

@@ -12,7 +12,8 @@
       width="100%"
       height="100%" 
     ></codeeditor>-->
-    <h5>{{getConnectedServerName()}}</h5>
+    <p class="overline">F1 / Alt+R = Run SQL</p>
+
     <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>
 
     <!-- show save query dialof -->

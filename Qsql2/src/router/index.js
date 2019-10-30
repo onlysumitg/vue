@@ -82,7 +82,7 @@ export default new Router({
       name: "settings",
       components: {
         default: allsettinglist,
-        speedDialMenu: headerSpeedDial01
+
       },
       children: [
         // libl
@@ -185,7 +185,7 @@ export default new Router({
       name: "dbdocind",
       components: {
         default: dbdoc,
-        speedDialMenu: headerSpeedDial01
+        // speedDialMenu: headerSpeedDial01
       },
       children: [{
         path: "",
@@ -202,7 +202,7 @@ export default new Router({
       name: "spdocind",
       components: {
         default: spdoc,
-        speedDialMenu: headerSpeedDial01
+        // speedDialMenu: headerSpeedDial01
       },
       children: [{
         path: "",
@@ -218,7 +218,7 @@ export default new Router({
       name: "createtablei",
       components: {
         default: createTable,
-        speedDialMenu: headerSpeedDial01
+
       }
     },
 

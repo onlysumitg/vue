@@ -18,18 +18,24 @@
 
     <div class="overflowscrollyonly" style="height: calc(100vh - 150px) ">
       <!-- ====================2=================-->
-      <div v-for="query in filteredQueryList" :key="query.id">
-        <div class="card">
-          <div class="card-header">{{query.id}}. {{query.name}}</div>
-          <div class="card-body">
-            <pre>{{query.desc}}</pre>
-            <!-- <hr />
-            <pre>{{query.query}}</pre>-->
-            <button v-if="isAdmin" @click="editQuery(query)" class="btn btn-link">Edit</button>
-            <button @click="runQuery(query)" class="btn btn-primary">Run >>></button>
-          </div>
-        </div>
-      </div>
+
+      <v-list two-line>
+        <template v-for="(query, index) in filteredQueryList">
+          <v-list-tile @click="runQuery(query)" :key="query.id" avatar ripple>
+            <v-list-tile-avatar>{{query.id}}.</v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>{{query.name}}</v-list-tile-title>
+              <v-list-tile-sub-title class="text--primary">{{query.desc}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn @click="editQuery(query)" v-if="isAdmin" color="white" icon>
+                <v-icon color="black">mdi-pencil-outline</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-divider v-if="index   < filteredQueryList.length" :key="index"></v-divider>
+        </template>
+      </v-list>
     </div>
     <!-- ======================2===============-->
     <br />

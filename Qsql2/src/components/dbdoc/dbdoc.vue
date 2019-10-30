@@ -1,77 +1,98 @@
 <template>
-  <div style="padding:10px; width: 100vw;height: 100vh" class="overflowscroll">
-    <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
-    <div class="row">
-      <div class="col-sm">
-        <form novalidate class="md-layout">
-          <md-field>
-            <label>Table Name</label>
-            <md-input v-model="tableName"></md-input>
-          </md-field>
+  <md-app>
+    <md-app-toolbar class="md-primary" md-elevation="0">
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+        <md-icon>menu</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
+        <md-icon>keyboard_arrow_left</md-icon>
+      </md-button>
+      <span class="md-title">{{getConnectedServerName()}}</span>
 
-          <md-field>
-            <label>Library</label>
-            <md-input v-model="tableLib"></md-input>
-          </md-field>
+      <menu01></menu01>
+    </md-app-toolbar>
 
-          <md-field>
-            <label>Field/Column</label>
-            <md-input v-model="columneName"></md-input>
-          </md-field>
-          <md-field>
-            <label>Text</label>
-            <md-input v-model="searchText"></md-input>
-          </md-field>
-        </form>
-      </div>
-      <div class="col-sm">
-        <form novalidate class="md-layout">
-          <md-field>
-            <label>Category</label>
-            <md-input v-model="category"></md-input>
-          </md-field>
+    <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+      <md-app-toolbar class="md-transparent" md-elevation="0">
+        <span class="md-title">Search</span>
+      </md-app-toolbar>
+      <div
+        v-if="showError"
+        style="height:70px"
+        class="alert alert-danger"
+        role="alert"
+      >{{errorMessage}}</div>
 
-          <md-field>
-            <label>Tags</label>
-            <md-input v-model="tags"></md-input>
-          </md-field>
+      <div style="height:calc(100vh - 70px); padding:10px">
+        <div class="row">
+          <div class="col-sm">
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="tableName" label="Table Name"></v-text-field>
+            </div>
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="tableLib" label="Library"></v-text-field>
+            </div>
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="columneName" label="Field/Column"></v-text-field>
+            </div>
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="searchText" label="Text"></v-text-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="category" label="Category"></v-text-field>
+            </div>
 
-          <md-field>
-            <label>Comment</label>
-            <md-input v-model="comments"></md-input>
-          </md-field>
-        </form>
-      </div>
-      <div class="col-sm">
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="tags" label="Tags"></v-text-field>
+            </div>
+
+            <div style="padding:4px">
+              <v-text-field color="blue" hide-details v-model="comments" label="Comment"></v-text-field>
+            </div>
+          </div>
+        </div>
         <br />
-        <button @click="clear()" type="button" class="btn btn-secondary btn-lg btn-block">Clear</button>
-        <hr />
-        <button
-          @click="emitSQLToRun2('ff')"
-          type="button"
-          class="btn btn-primary btn-lg btn-block"
-        >Search</button>
+        <div class="row">
+          <div class="col-sm">
+            <v-btn color="blue-gray" @click="clear()">
+              Clear
+              <v-icon right dark>mdi-delete-outline</v-icon>
+            </v-btn>
+          </div>
+          <div class="col-sm">
+            <v-btn color="blue" @click="emitSQLToRun2('ff')">
+              Search
+              <v-icon right dark>mdi-magnify</v-icon>
+            </v-btn>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm">
-        <router-view></router-view>
+    </md-app-drawer>
+
+    <md-app-content>
+      <div class="overflowscroll" style="height:calc(100vh - 70px)">
+        <div class="flex">
+          <router-view></router-view>
+        </div>
       </div>
-    </div>
-  </div>
+    </md-app-content>
+  </md-app>
 </template>
 
 <script>
+import menu01 from "@/components/headers/menu01.vue";
+
 export default {
   name: "dbdoc",
-  components: {},
+  components: {
+    menu01
+  },
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next);
   },
   methods: {
     initialize() {
@@ -170,5 +191,24 @@ export default {
 <style scoped>
 .IZ-select {
   min-width: 150px;
+}
+.md-app {
+  min-height: 100vh;
+}
+
+.md-toolbar {
+  min-height: 70px;
+  max-height: 70px;
+}
+
+.md-app-content {
+  padding: 0;
+}
+
+.md-drawer {
+  width: 400px;
+  max-width: 500px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 </style>

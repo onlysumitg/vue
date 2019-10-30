@@ -1,320 +1,351 @@
 <template>
-  <div style="padding:20px" class="overflowscroll">
-    <div class="row">
-      <div class="col-sm">
-        <h5>Load existing table</h5>
-        <form novalidate class="md-layout">
-          <md-field>
-            <label>Table Name</label>
-            <md-input required v-model="loadTableName"></md-input>
-          </md-field>
+  <div>
+    <md-app>
+      <md-app-toolbar class="md-primary" md-elevation="0">
+        <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+          <md-icon>menu</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
+          <md-icon>keyboard_arrow_left</md-icon>
+        </md-button>
+        <span class="md-title">{{getConnectedServerName()}}</span>
 
-          <md-field>
-            <label>Library</label>
-            <md-input required v-model="loadTableLib"></md-input>
-          </md-field>
+        <menu01></menu01>
+      </md-app-toolbar>
 
-          <md-button @click="loadTable" class="md-primary">Load</md-button>
-        </form>
-      </div>
-      <div class="col-sm">
-        <h5>how to create new table?</h5>
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+        <md-app-toolbar class="md-transparent" md-elevation="0">
+          <span class="md-title">Create Table</span>
+        </md-app-toolbar>
 
-        <md-field>
-          <label>New Table Name[Short]</label>
-          <md-input required v-model="newTableName"></md-input>
-        </md-field>
-        <md-field>
-          <label>New Table Name[Long]</label>
-          <md-input required v-model="newTableNameLong"></md-input>
-        </md-field>
+        <div style="height:calc(100vh - 70px) ; padding:10px">
+          <div class="row">
+            <div class="col-sm">
+              <h5>Load existing table</h5>
+              <form novalidate class="md-layout">
+                <md-field>
+                  <label>Table Name</label>
+                  <md-input required v-model="loadTableName"></md-input>
+                </md-field>
 
-        <md-field>
-          <label>New Table lib</label>
-          <md-input required v-model="newTableLib"></md-input>
-        </md-field>
+                <md-field>
+                  <label>Library</label>
+                  <md-input required v-model="loadTableLib"></md-input>
+                </md-field>
 
-        <md-field>
-          <label>New Table Heading</label>
-          <md-input required v-model="loadTableHeading"></md-input>
-        </md-field>
+                <md-button @click="loadTable" class="md-primary">Load</md-button>
+              </form>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm">
+              <h5>how to create new table?</h5>
 
-        <md-field>
-          <label>New Table Record format</label>
-          <md-input required v-model="newTableRecordFormat"></md-input>
-        </md-field>
+              <md-field>
+                <label>New Table Name[Short]</label>
+                <md-input required v-model="newTableName"></md-input>
+              </md-field>
+              <md-field>
+                <label>New Table Name[Long]</label>
+                <md-input required v-model="newTableNameLong"></md-input>
+              </md-field>
 
-        <md-button @click="runCreateTable" class="md-primary">Create Table</md-button>
-      </div>
+              <md-field>
+                <label>New Table lib</label>
+                <md-input required v-model="newTableLib"></md-input>
+              </md-field>
 
-      <div class="col-sm"></div>
+              <md-field>
+                <label>New Table Heading</label>
+                <md-input required v-model="loadTableHeading"></md-input>
+              </md-field>
+
+              <md-field>
+                <label>New Table Record format</label>
+                <md-input required v-model="newTableRecordFormat"></md-input>
+              </md-field>
+
+              <md-button @click="runCreateTable" class="md-primary">Create Table</md-button>
+            </div>
+          </div>
+        </div>
+      </md-app-drawer>
+
+      <md-app-content>
+        <div class="overflowscroll" style="height:calc(100vh - 70px); padding-left:15px">
+          <div class="flex">
+            <div class="row" v-if="!loading && fieldListSorted.length>0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="stickyHead" scope="col"></th>
+                    <th class="stickyHead" scope="col">Seq</th>
+                    <th class="stickyHead" scope="col">Long Name</th>
+                    <th class="stickyHead" scope="col">Short Name</th>
+                    <th class="stickyHead" scope="col">Data type</th>
+                    <th class="stickyHead" scope="col">Length</th>
+                    <th class="stickyHead" scope="col">Decimal Position</th>
+                    <th class="stickyHead" scope="col">Nullable</th>
+                    <th class="stickyHead" scope="col">with Default</th>
+                    <th class="stickyHead" scope="col">Default Value</th>
+                    <th class="stickyHead" scope="col">Heading</th>
+                    <th class="stickyHead" scope="col">Text</th>
+                    <th class="stickyHead" scope="col">Key Seq</th>
+
+                    <th class="stickyHead" scope="col">Identity Column</th>
+                    <th class="stickyHead" scope="col">Identity Generation</th>
+                    <th class="stickyHead" scope="col">Identity Start with</th>
+                    <th class="stickyHead" scope="col">Identity Increment by</th>
+                    <th class="stickyHead" scope="col">Identity Minimum</th>
+                    <th class="stickyHead" scope="col">Identity Maximum</th>
+                    <th class="stickyHead" scope="col">Identity Cache</th>
+                    <th class="stickyHead" scope="col">Identity Cycle</th>
+                    <th class="stickyHead" scope="col">Identity Order</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(afield,indx) in fieldList" :key="indx">
+                    <td>
+                      <button class="btn btn-sm btn-outline-danger" @click="deleteRow(indx)">
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 70px;"
+                        class="form-control"
+                        type="text"
+                        v-model.lazy="afield.seq"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 200px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.longName"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 140px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.shortName"
+                      />
+                    </td>
+                    <td>
+                      <div>
+                        <!-- <md-autocomplete v-model="afield.dataType" :md-options="alloweddatatype" md-dense></md-autocomplete> -->
+                        <cool-select
+                          v-model="afield.dataType"
+                          :items="alloweddatatype"
+                          placeholder="CHAR"
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 70px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.length"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.scale"
+                      />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          v-model="afield.isNullable"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          v-model="afield.hasDefault"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 120px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.defaultValue"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 200px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.heading"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 200px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.text"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        style="min-width: 200px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.keySeq"
+                      />
+                    </td>
+
+                    <!--             IDENTIRY COLUMNS -------------------->
+                    <td>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          v-model="afield.isIdentity"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                        />
+                      </div>
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 200px;"
+                        class="form-control"
+                        type="text"
+                        v-model="afield.isIdentityGENERATION"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.isIdentityStart"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.isIdentityIncrement"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.isIdentityMin"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.isIdentityMax"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        style="min-width: 40px;"
+                        class="form-control"
+                        type="number"
+                        v-model="afield.isIdentityCache"
+                      />
+                    </td>
+
+                    <td>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          v-model="afield.isIdentityCycle"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                        />
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          v-model="afield.isIdentityOrder"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr />
+            <div class="row" v-if="!loading && fieldListSorted.length==0">
+              <hr />
+              <div class="col-sm"></div>
+              <div class="col-sm">NO DATA</div>
+              <div class="col-sm"></div>
+            </div>
+            <md-button class="md-fab md-fab-bottom-right md-fixed md-mini" @click="addNewRow(true)">
+              <md-icon>add</md-icon>
+            </md-button>
+
+            <!-- -->
+            <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+          </div>
+        </div>
+      </md-app-content>
+    </md-app>
+    <div>
+      <md-dialog
+        :md-click-outside-to-close="!showSaveQueryDialog"
+        :md-active.sync="showSaveQueryDialog"
+      >
+        <md-dialog-title>
+          <md-button @click="showSaveQueryDialog=!showSaveQueryDialog" class="md-primary">CLOSE</md-button>
+        </md-dialog-title>
+        <md-dialog-content>
+          <isrouce :sourcelist="sourcelist"></isrouce>
+        </md-dialog-content>
+      </md-dialog>
     </div>
-
-    <div class="row" v-if="loading">
-      <div class="col-sm">
-        <md-progress-bar class="md-accent" md-mode="indeterminate"></md-progress-bar>
-      </div>
-    </div>
-
-    <div class="row" v-if="!loading && fieldListSorted.length>0">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">Seq</th>
-            <th scope="col">Long Name</th>
-            <th scope="col">Short Name</th>
-            <th scope="col">Data type</th>
-            <th scope="col">Length</th>
-            <th scope="col">Decimal Position</th>
-            <th scope="col">Nullable</th>
-            <th scope="col">with Default</th>
-            <th scope="col">Default Value</th>
-            <th scope="col">Heading</th>
-            <th scope="col">Text</th>
-            <th scope="col">Key Seq</th>
-
-            <th scope="col">Identity Column</th>
-            <th scope="col">Identity Generation</th>
-            <th scope="col">Identity Start with</th>
-            <th scope="col">Identity Increment by</th>
-            <th scope="col">Identity Minimum</th>
-            <th scope="col">Identity Maximum</th>
-            <th scope="col">Identity Cache</th>
-            <th scope="col">Identity Cycle</th>
-            <th scope="col">Identity Order</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(afield,indx) in fieldList" :key="indx">
-            <td>
-              <button class="btn btn-sm btn-outline-danger" @click="deleteRow(indx)">
-                <i class="fa fa-trash-alt"></i>
-              </button>
-            </td>
-            <td>
-              <input
-                style="min-width: 70px;"
-                class="form-control"
-                type="text"
-                v-model.lazy="afield.seq"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 200px;"
-                class="form-control"
-                type="text"
-                v-model="afield.longName"
-              >
-            </td>
-            <td>
-              <input
-                style="min-width: 140px;"
-                class="form-control"
-                type="text"
-                v-model="afield.shortName"
-              >
-            </td>
-            <td>
-              <div>
-                <!-- <md-autocomplete v-model="afield.dataType" :md-options="alloweddatatype" md-dense></md-autocomplete> -->
-                <cool-select v-model="afield.dataType" :items="alloweddatatype" placeholder="CHAR"/>
-              </div>
-            </td>
-            <td>
-              <input
-                style="min-width: 70px;"
-                class="form-control"
-                type="number"
-                v-model="afield.length"
-              >
-            </td>
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.scale"
-              >
-            </td>
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  v-model="afield.isNullable"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                >
-              </div>
-            </td>
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  v-model="afield.hasDefault"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                >
-              </div>
-            </td>
-            <td>
-              <input
-                style="min-width: 120px;"
-                class="form-control"
-                type="text"
-                v-model="afield.defaultValue"
-              >
-            </td>
-            <td>
-              <input
-                style="min-width: 200px;"
-                class="form-control"
-                type="text"
-                v-model="afield.heading"
-              >
-            </td>
-            <td>
-              <input
-                style="min-width: 200px;"
-                class="form-control"
-                type="text"
-                v-model="afield.text"
-              >
-            </td>
-            <td>
-              <input
-                style="min-width: 200px;"
-                class="form-control"
-                type="text"
-                v-model="afield.keySeq"
-              >
-            </td>
-
-            <!--             IDENTIRY COLUMNS -------------------->
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  v-model="afield.isIdentity"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                >
-              </div>
-            </td>
-
-            <td>
-              <input
-                style="min-width: 200px;"
-                class="form-control"
-                type="text"
-                v-model="afield.isIdentityGENERATION"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.isIdentityStart"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.isIdentityIncrement"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.isIdentityMin"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.isIdentityMax"
-              >
-            </td>
-
-            <td>
-              <input
-                style="min-width: 40px;"
-                class="form-control"
-                type="number"
-                v-model="afield.isIdentityCache"
-              >
-            </td>
-
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  v-model="afield.isIdentityCycle"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                >
-              </div>
-            </td>
-
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  v-model="afield.isIdentityOrder"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                >
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <hr>
-    <div class="row" v-if="!loading && fieldListSorted.length==0">
-      <hr>
-      <div class="col-sm"></div>
-      <div class="col-sm">NO DATA</div>
-      <div class="col-sm"></div>
-    </div>
-    <md-button class="md-fab md-fab-bottom-right md-fixed md-mini" @click="addNewRow(true)">
-      <md-icon>add</md-icon>
-    </md-button>
-
-    <md-dialog
-      :md-click-outside-to-close="!showSaveQueryDialog"
-      :md-active.sync="showSaveQueryDialog"
-    >
-      <md-dialog-title>
-        <md-button @click="showSaveQueryDialog=!showSaveQueryDialog" class="md-primary">CLOSE</md-button>
-      </md-dialog-title>
-      <md-dialog-content>
-        <isrouce :sourcelist="sourcelist"></isrouce>
-      </md-dialog-content>
-    </md-dialog>
   </div>
 </template>
 
 <script>
 import { CoolSelect } from "vue-cool-select";
 import isrouce from "../isource/createsource";
-
+import menu01 from "@/components/headers/menu01.vue";
 export default {
   name: "Create_Table",
-  components: { CoolSelect, isrouce },
+  components: { CoolSelect, isrouce, menu01 },
   computed: {
     fieldListSorted: function() {
       var tempList = _.sortBy(this.fieldList, [
@@ -336,12 +367,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+  this.beforeChangeRoute(to, from, next);
   },
   methods: {
     initialize() {},
@@ -609,7 +635,9 @@ export default {
           //  console.log("KK: " + Object.keys(responce.data.sqldata)[0]);
 
           vm.sqldata =
-            responce.data.data.sqldata[Object.keys(responce.data.sqldata)[0]];
+            responce.data.data.sqldata[
+              Object.keys(responce.data.data.sqldata)[0]
+            ];
 
           eventBus.$emit("updateHistorySQL", true);
           console.log("vm.sqldata.data " + vm.sqldata);
@@ -750,5 +778,25 @@ html {
 }
 .md-dialog {
   width: 100%;
+  z-index: 99999;
+}
+.md-app {
+  min-height: 100vh;
+}
+
+.md-toolbar {
+  min-height: 70px;
+  max-height: 70px;
+}
+
+.md-app-content {
+  padding: 0;
+}
+
+.md-drawer {
+  width: 400px;
+  max-width: 500px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 </style>

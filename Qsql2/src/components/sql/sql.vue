@@ -71,37 +71,21 @@ export default {
   },
   mounted() {},
   beforeRouteLeave(to, from, next) {
-    eventBus.$emit("beforeRouteLeave_save_sql", true);
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next, "beforeRouteLeave_save_sql", true);
   },
   data() {
     return {
       xtrue: true,
-      menuVisible: true,
       sqlToRun: "",
       tabIndex: "t0",
       selectedSQL: "",
       reloadHistory: false,
       reloadSaved: false,
-      tabIndexResult: "x",
-      items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" }
-      ]
+      tabIndexResult: "x"
     };
   },
   //---------------------------
   methods: {
-    toggleMenu() {
-      this.menuVisible = !this.menuVisible;
-    },
     setupListeners() {
       eventBus.$on("updateHistorySQL", data => {
         this.reloadHistory = data;

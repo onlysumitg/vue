@@ -21,7 +21,8 @@ export const AppMixin = {
     return {
       CancelTokenSource: {},
       xloading: false,
-      xIsAdmin: false
+      xIsAdmin: false,
+      menuVisible: true,
 
     }
   },
@@ -44,8 +45,24 @@ export const AppMixin = {
     initialize() {},
     setupListeners() {},
     turnOffListeners() {},
+    beforeChangeRoute(to, from, next, emitEvent, eventValue) {
+      if (typeof emitEvent !== 'undefined' &&
+        emitEvent.length > 0) {
+        eventBus.$emit(emitEvent, eventValue);
+      }
+      this.$dialog
+        .confirm("Do you really want to leave?")
+        .then(function () {
+          next();
+        })
+        .catch(function () {
+          next(false);
+        });
+    },
     //----------------------------------------------------------------------------
-
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
     cancelAxiosRequest() {
       try {
         this.CancelTokenSource.cancel("Operation canceled by the user.");

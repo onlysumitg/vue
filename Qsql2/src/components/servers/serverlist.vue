@@ -1,5 +1,7 @@
 <template>
-  <div class="h-100">
+  <div>
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
     <md-toolbar class="md-transparent" md-elevation="0">
       <div style="width: 80%;">
         <md-field>
@@ -14,28 +16,22 @@
       </div>
     </md-toolbar>
 
-    <div
-      @click="selectServer(server)"
-      class="card"
-      v-for="server in filteredServerList"
-      :key="server.id"
-      style="margin:10px"
-    >
-      <md-ripple>
-        <md-card-header>
-          <div class="md-body-1">{{server.serverName}}</div>
-          <div class="md-subhead">{{server.userName}}@{{server.serverIP}}</div>
-        </md-card-header>
-        <md-card-content>
-          <md-badge
-            v-if="server.ssl"
-            class="md-square"
-            style="margin-right: 10px"
-            md-content="SSL"
-          />
-        </md-card-content>
-      </md-ripple>
-    </div>
+    <!-- ========== -->
+    <v-list two-line>
+      <template v-for="(server, index) in filteredServerList">
+        <v-list-tile @click="selectServer(server)" :key="server.serverName" avatar ripple>
+          <v-list-tile-avatar>
+            <v-icon v-if="server.ssl" left>mdi-server-security</v-icon>
+            <v-icon v-else left>mdi-server</v-icon>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>{{server.serverName}}</v-list-tile-title>
+            <v-list-tile-sub-title class="text--primary">{{server.userName}}@{{server.serverIP}}</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider v-if="index   < filteredServerList.length" :key="index"></v-divider>
+      </template>
+    </v-list>
   </div>
 </template>
 <script>
@@ -112,7 +108,6 @@ export default {
 </script>
 <style scoped>
 .card:hover {
-  background-color: rgb(200, 200, 200);
-  color: rgb(255, 255, 255);
+  border: 1px solid #90b9ff;
 }
 </style>

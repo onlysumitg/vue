@@ -9,7 +9,7 @@
         Query :
         <strong>{{sqldata.sqlOriginal}}</strong>
         <hr />
-        <strong>{{sqldata.sql}}</strong>
+        <strong v-if="isAdmin()">{{sqldata.sql}}</strong>
         <hr />
         <div v-html="alertMessage"></div>
       </md-card-content>

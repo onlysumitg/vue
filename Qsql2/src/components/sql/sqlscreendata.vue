@@ -1,37 +1,33 @@
 <template>
   <div style="padding:10px; " class="h-100">
     <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
-      <div>
-        <h5>{{queryId}}. {{queryHeading}}</h5>
-      </div>
       <div class="md-toolbar-section-start">
-        <md-button class="md-icon-button md-dense" @click="loadQuery(queryId)">
-          <md-icon>refresh</md-icon>
-        </md-button>
+        <v-chip @click="loadQuery(queryId)" label large color="transparent" text-color="black">
+          <span class="title font-weight-light">{{queryId}}. {{queryHeading}}</span>
+          <v-icon right>mdi-refresh</v-icon>
+        </v-chip>
+        <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
       </div>
     </md-toolbar>
     <br />
 
-    <div class="row">
-      <div class="col-3" v-for="(paramName,indx) in getParameterList" :key="'xx'+indx">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">{{paramName}}</span>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            aria-label="Default"
-            aria-describedby="inputGroup-sizing-default"
-            @blur="setValues(paramName, $event)"
-          />
-        </div>
+    <div class="row" style="margin:5px">
+      <div class="col-2" v-for="(paramName,indx) in getParameterList" :key="'xx'+indx">
+        <v-text-field
+          @blur="setValues(paramName, $event)"
+          color="blue"
+          hide-details
+          :label="paramName"
+        ></v-text-field>
       </div>
     </div>
-
+    <br />
     <div v-if="queryId>0" class="row">
       <div class="col-2">
-        <button @click="emitSQLToRun2('ff')" type="button" class="btn btn-primary">GO >>></button>
+        <v-btn color="blue" text-color="white" @click="emitSQLToRun2('ff')">
+          Submit
+          <v-icon right>mdi-play</v-icon>
+        </v-btn>
       </div>
     </div>
     <br />
@@ -59,12 +55,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next);
   },
 
   computed: {

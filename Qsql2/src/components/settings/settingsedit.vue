@@ -1,35 +1,47 @@
 <template>
-  <div>
-    <div class="no-gutter h-100 w-100 d-flex overflowscroll">
-      <div class="col-4 main-screen">
-        <md-drawer class="md-elevation-2" md-persistent="full" :md-active.sync="xtrue">
-          <settings></settings>
-        </md-drawer>
-      </div>
+  <md-app>
+    <md-app-toolbar class="md-primary" md-elevation="0">
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+        <md-icon>menu</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
+        <md-icon>keyboard_arrow_left</md-icon>
+      </md-button>
+      <span class="md-title">{{getConnectedServerName()}}</span>
 
-      <div class="col-8 pt-3">
-        <router-view></router-view>
+      <menu01></menu01>
+    </md-app-toolbar>
+
+    <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
+      <md-app-toolbar class="md-transparent" md-elevation="0">
+        <span class="md-title">Settings</span>
+      </md-app-toolbar>
+      <settings></settings>
+    </md-app-drawer>
+
+    <md-app-content>
+      <div class="overflowscroll" style="height:calc(100vh - 70px)">
+        <div class="flex">
+          <router-view></router-view>
+        </div>
       </div>
-    </div>
-  </div>
+    </md-app-content>
+  </md-app>
 </template>
 <script>
+import menu01 from "@/components/headers/menu01.vue";
 import settings from "./settings";
 export default {
   components: {
-    settings
+    settings,
+    menu01
   },
   updated() {
     // this.tabIndex = 2;
   },
   mounted() {},
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
-      next();
-    } else {
-      next(false);
-    }
+    this.beforeChangeRoute(to, from, next);
   },
   data() {
     return {
@@ -56,15 +68,29 @@ table:focus {
 </style>
 
 <style lang="scss" scoped>
+.md-app {
+  min-height: 100vh;
+}
+
+.md-toolbar {
+  min-height: 70px;
+  max-height: 70px;
+}
+
+.md-app-content {
+  padding: 0;
+}
+
+.md-drawer {
+  width: 400px;
+  max-width: 500px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
 .navbar-brand {
   color: #000;
 }
-.stickyHead {
-  position: sticky;
-  background-color: #cfe3fa;
-  top: 0;
-  z-index: 7;
-}
+
 .main-screen {
   width: 100vh;
   height: 95vw;
@@ -72,10 +98,6 @@ table:focus {
 
 .md-tabs {
   margin-bottom: 24px;
-}
-
-.md-drawer {
-  width: 100%;
 }
 
 div.fixed {

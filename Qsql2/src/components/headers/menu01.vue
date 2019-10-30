@@ -44,7 +44,7 @@
           </v-btn>
         </md-menu-item>
         <md-menu-item>
-          <v-btn flat :to="{ name: 'settings'}">
+          <v-btn flat :to="{ name: 'servers'}">
             <v-icon>mdi-server</v-icon>&nbsp Servers
           </v-btn>
         </md-menu-item>
