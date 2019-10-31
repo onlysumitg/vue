@@ -1,35 +1,48 @@
 <template>
   <div style="padding:10px; " class="h-100">
+    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+
     <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
       <div class="md-toolbar-section-start">
         <v-chip @click="loadQuery(queryId)" label large color="transparent" text-color="black">
           <span class="title font-weight-light">{{queryId}}. {{queryHeading}}</span>
           <v-icon right>mdi-refresh</v-icon>
         </v-chip>
-        <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
       </div>
     </md-toolbar>
     <br />
-
-    <div class="row" style="margin:5px">
-      <div class="col-2" v-for="(paramName,indx) in getParameterList" :key="'xx'+indx">
-        <v-text-field
-          @blur="setValues(paramName, $event)"
-          color="blue"
-          hide-details
-          :label="paramName"
-        ></v-text-field>
+    <form>
+      <div class="row" style="margin:5px">
+        <div class="col-sm-3" v-for="(parameter,indx) in getParameterList" :key="'requireeed'+indx">
+          <v-text-field
+            v-if="parameter.required"
+            @blur="setValues(parameter.name, $event)"
+            color="blue"
+            hide-details
+            :value="valueData[''+parameter.name]"
+            :label="parameter.name + '*'"
+            required
+          ></v-text-field>
+          <v-text-field
+            :value="valueData[''+parameter.name]"
+            v-if="!parameter.required"
+            @blur="setValues(parameter.name, $event)"
+            color="blue"
+            hide-details
+            :label="parameter.name"
+          ></v-text-field>
+        </div>
       </div>
-    </div>
-    <br />
-    <div v-if="queryId>0" class="row">
-      <div class="col-2">
-        <v-btn color="blue" text-color="white" @click="emitSQLToRun2('ff')">
-          Submit
-          <v-icon right>mdi-play</v-icon>
-        </v-btn>
+      <br />
+      <div v-if="queryId>0" class="row">
+        <div class="col-2">
+          <v-btn color="blue" text-color="white" @click="emitSQLToRun2('ff')">
+            Submit
+            <v-icon right>mdi-play</v-icon>
+          </v-btn>
+        </div>
       </div>
-    </div>
+    </form>
     <br />
     <br />
 
@@ -52,6 +65,7 @@ export default {
         this.currentSQL = "";
         this.loadQuery(valx);
       }
+      eventBus.$emit("resetsql3", true);
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -66,32 +80,55 @@ export default {
 
     //---------------------------------
     getParameterList: function() {
-      var paramRegex = /(\$\$(.*?)\$\$)/;
-      var result;
+      let paramRegex = /(\$\$(.*?)\$\$)/;
+      let result;
       // while ((result = paramRegex.exec(this.sqlToProcess)) !== null) {
       //   console.log(result);
       // }
 
-      var matched = [];
+      let matched = [];
+      let matched2 = [];
 
-      var instring = this.sqlToProcess;
-      var match;
+      let instring = this.sqlToProcess;
+      let match;
       while ((match = paramRegex.exec(instring)) != null) {
         console.log(instring);
         instring = instring.replace(paramRegex, " ");
 
-        if (!matched.includes(match[2])) matched.push(match[2]);
+        if (!matched.includes(match[2])) {
+          matched.push(match[2]);
+          let parameter = {};
+          parameter.name = match[2];
+          parameter.required = true;
+          matched2.push(parameter);
+        }
 
         console.log(match[1]);
         console.log(match[2]);
       }
 
+      let paramRegexOptional = /(\$\#(.*?)\$\#)/;
+      while ((match = paramRegexOptional.exec(instring)) != null) {
+        console.log(instring);
+        instring = instring.replace(paramRegexOptional, " ");
+
+        if (!matched.includes(match[2])) {
+          matched.push(match[2]);
+          let parameter = {};
+          parameter.name = match[2];
+          parameter.required = false;
+          matched2.push(parameter);
+        }
+
+        console.log(match[1]);
+        console.log(match[2]);
+      }
       // var arrayX = instring.matchAll(paramRegex);
       // for (const match of arrayX) {
       //   console.log(match);
       //   console.log(match.index);
       // }
-      return matched;
+      return matched2;
     },
 
     //---------------------------------
@@ -129,7 +166,8 @@ export default {
     return {
       sqlToProcess: "",
       queryHeading: "",
-      valueData: {}
+      valueData: {},
+      requiredRule: [v => !!v || "required"]
     };
   },
   //------------------------------------------------------------------------------------------
@@ -142,13 +180,7 @@ export default {
     //----------------------------------
 
     setValues(key, event) {
-      //  alert("kk");
-      console.log("====================================");
-
       this.valueData["" + key] = event.target.value;
-      console.log("-------------------------------");
-      console.log(this.valueData);
-      console.log("====================================");
     },
 
     //-----------------------------------------------
@@ -200,14 +232,14 @@ export default {
 
       //  alert(instring);
 
-      var params = this.getParameterList;
+      var parameters = this.getParameterList;
       var paramPair = "";
-      _.forEach(params, function(value) {
-        var paramValue = vm.valueData["" + value];
+      _.forEach(parameters, function(parameter) {
+        var paramValue = vm.valueData["" + parameter.name];
         if (typeof paramValue === "undefined" || paramValue === null) {
           paramValue = "";
         }
-        paramPair = paramPair + value + "=" + paramValue + " ;";
+        paramPair = paramPair + parameter.name + "=" + paramValue + " ;";
       });
       var sqldata3 = {};
       sqldata3.serverId = this.$session.get("currentserver");

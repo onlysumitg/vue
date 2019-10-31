@@ -20,6 +20,14 @@ export default {
     return {
       msg: "Welcome to Your Vue.js App"
     };
+  },
+  methods: {
+    setupListeners() {
+     
+    },
+    turnOffListeners() {
+   
+    }
   }
 };
 </script>
@@ -101,5 +109,17 @@ html {
   background-color: #fff;
   top: 0;
   z-index: 7;
+}
+
+.height_70 {
+  height: calc(100vh - 70px) !important;
+}
+
+.supertop {
+  z-index: 999999 !important;
+}
+
+.v-navigation-drawer--fixed {
+  z-index: 999999 !important;
 }
 </style>

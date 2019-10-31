@@ -1,44 +1,47 @@
 <template>
-  <div class="h-100">
-    <h5>Create a New user</h5>
-    <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
-
-    <div class="row">
-      <div class="col-6">
-        <form @submit="checkForm" class="md-layout">
-          <md-field>
-            <label>User Name</label>
-            <md-input
-              required
-              v-model="userName"
-              oninvalid="this.setCustomValidity('User Name is required')"
-              oninput="setCustomValidity('')"
-            ></md-input>
-          </md-field>
-          <md-field>
-            <label>Email</label>
-            <md-input
-              type="email"
-              required
-              v-model="email"
-              oninvalid="this.setCustomValidity('Valid Email is required')"
-              oninput="setCustomValidity('')"
-            ></md-input>
-          </md-field>
-          <md-field>
-            <label>Password</label>
-            <md-input
-              required
-              v-model="password"
-              oninvalid="this.setCustomValidity('Password is required')"
-              oninput="setCustomValidity('')"
-            ></md-input>
-          </md-field>
-          <md-button type="submit" class="md-primary">Create</md-button>
-        </form>
+  <md-card>
+    <md-card-header>
+      <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
+      <h5>Create a New user</h5>
+    </md-card-header>
+    <md-card-content>
+      <div class="row">
+        <div class="col-6">
+          <form @submit="checkForm" class="md-layout">
+            <md-field>
+              <label>User Name</label>
+              <md-input
+                required
+                v-model="userName"
+                oninvalid="this.setCustomValidity('User Name is required')"
+                oninput="setCustomValidity('')"
+              ></md-input>
+            </md-field>
+            <md-field>
+              <label>Email</label>
+              <md-input
+                type="email"
+                required
+                v-model="email"
+                oninvalid="this.setCustomValidity('Valid Email is required')"
+                oninput="setCustomValidity('')"
+              ></md-input>
+            </md-field>
+            <md-field>
+              <label>Password</label>
+              <md-input
+                required
+                v-model="password"
+                oninvalid="this.setCustomValidity('Password is required')"
+                oninput="setCustomValidity('')"
+              ></md-input>
+            </md-field>
+            <md-button type="submit" class="md-primary">Create</md-button>
+          </form>
+        </div>
       </div>
-    </div>
-  </div>
+    </md-card-content>
+  </md-card>
 </template>
 <script>
 export default {
@@ -57,7 +60,7 @@ export default {
     initialize() {},
     checkForm(e) {
       e.preventDefault();
-      alert("1");
+
       if (
         this.userName.trim().length <= 0 ||
         this.password.trim().length <= 0 ||
@@ -65,12 +68,12 @@ export default {
       ) {
         return false;
       }
-      alert("2");
+
       this.createUser();
     },
     //-----------------------------
     createUser() {
-      alert(this.userName);
+      //alert(this.userName);
 
       var vm = this;
       this.runWebService(
@@ -91,9 +94,13 @@ export default {
 
           if (respons.data.status == "s" || respons.data.status == "S") {
             //  vm.userList = respons.data.data.users;
+            vm.userName = "";
+            vm.password = "";
+            vm.email = "";
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User Created successfully"
             });
           } else {
             vm.$notify({

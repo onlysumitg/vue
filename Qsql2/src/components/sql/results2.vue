@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div>
     <md-card md-with-hover v-if="(alertMessage.length > 0)">
       <md-card-header>
         <div class="md-title">{{alertHeading}}</div>
@@ -67,6 +67,14 @@ export default {
       eventBus.$on("runsql3ShowSingleRecord", data => {
         this.showSingleRecord = data;
       });
+      eventBus.$on("resetsql3", data => {
+        eventBus.$emit("hidesinglerecord3", true);
+        this.sqlToRun = "";
+
+        this.editorValue2 = "";
+        this.sqldata = [];
+        this.alertMessage = "";
+      });
 
       eventBus.$on("runsql3", data => {
         //alert("okrrrrk");
@@ -101,6 +109,7 @@ export default {
     //-----------------------------------------------
     turnOffListeners() {
       eventBus.$off("runsql3");
+      eventBus.$off("resetsql3");
     },
 
     //------------------------------------

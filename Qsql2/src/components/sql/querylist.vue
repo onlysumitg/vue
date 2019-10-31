@@ -30,6 +30,9 @@
           </div>
         </div>
       </div>
+      <div v-if="filteredQueryList.length <=0">
+        <center class="title font-weight-light">No record found</center>
+      </div>
     </div>
     <!-- ======================2===============-->
   </div>

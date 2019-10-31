@@ -8,8 +8,8 @@
         <tr>
           <th class="stickyHead">Authority</th>
           <th class="stickyHead">Allowed</th>
-          <th class="stickyHead">Save</th>
-          <th class="stickyHead">Delete</th>
+          <th v-if="isAdmin" class="stickyHead">Save</th>
+          <th v-if="isAdmin" class="stickyHead">Delete</th>
         </tr>
       </thead>
 
@@ -23,21 +23,26 @@
           </td>
           <td>
             <div v-if="auth.validValues === undefined || auth.validValues.length < 1">
-              <input type="text" class="form-control" v-model="auth.currentValue" />
+              <input
+                :disabled="!isAdmin"
+                type="text"
+                class="form-control"
+                v-model="auth.currentValue"
+              />
             </div>
             <div v-else>
-              <select class="form-control" v-model="auth.currentValue">
+              <select :disabled="!isAdmin" class="form-control" v-model="auth.currentValue">
                 <option v-for="(xVal,indx) in auth.validValues" :key="indx" :value="xVal">{{xVal}}</option>
               </select>
             </div>
           </td>
 
-          <td>
+          <td v-if="isAdmin">
             <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveAuths(auth)">
               <i class="fa fa-save"></i>
             </button>
           </td>
-          <td>
+          <td v-if="isAdmin">
             <button class="btn btn-sm btn-outline-danger" @click="deleteAuths(auth)">
               <i class="fa fa-trash-alt"></i>
             </button>
@@ -105,7 +110,8 @@ export default {
             auth.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User authority updated successfully"
             });
           } else {
             vm.$notify({
@@ -142,7 +148,8 @@ export default {
 
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User authority updated successfully"
             });
           } else {
             vm.$notify({

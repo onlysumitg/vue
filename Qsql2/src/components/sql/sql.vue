@@ -36,7 +36,7 @@
       </md-app-drawer>
 
       <md-app-content>
-        <div class="overflowscroll" style="height:calc(100vh - 70px)">
+        <div class="overflowscroll height_70">
           <div class="flex">
             <router-view></router-view>
           </div>
@@ -94,10 +94,19 @@ export default {
       eventBus.$on("updateSavedSQL", data => {
         this.reloadSaved = data;
       });
+
+      eventBus.$on("hideleftsidemenu", data => {
+        if (data) {
+          this.menuVisible = false;
+        } else {
+          this.menuVisible = true;
+        }
+      });
     },
     //-----------------------------------------------
     turnOffListeners() {
       eventBus.$off("updateHistorySQL");
+      eventBus.$off("hideleftsidemenu");
     },
     //-----------------------------------------------
     tabUpdated: function(id) {

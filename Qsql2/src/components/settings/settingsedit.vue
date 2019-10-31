@@ -16,14 +16,14 @@
       <md-app-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title">Settings</span>
       </md-app-toolbar>
-      <settings></settings>
+      <div class="overflowscrollyonly height_70">
+        <settings></settings>
+      </div>
     </md-app-drawer>
 
     <md-app-content>
-      <div class="overflowscroll" style="height:calc(100vh - 70px)">
-        <div class="flex">
-          <router-view></router-view>
-        </div>
+      <div class="overflowscroll height_70">
+        <router-view></router-view>
       </div>
     </md-app-content>
   </md-app>

@@ -13,11 +13,11 @@
 
     <md-field>
       <label>Name</label>
-      <md-input v-model="queryHeading"></md-input>
+      <md-input maxlength="30" v-model="queryHeading"></md-input>
     </md-field>
     <md-field>
       <label>Description</label>
-      <md-input v-model="queryDesc"></md-input>
+      <md-input maxlength="100" v-model="queryDesc"></md-input>
     </md-field>
 
     <table
@@ -191,13 +191,16 @@ export default {
               "r/autoc",
               { serverId: vm2.$session.get("currentserver") },
               function() {},
-              function(respons) {
-                //console.log(respons);
-                if (respons.data.status == "s" || respons.data.status == "S") {
-                  // console.log(respons.data);
-                  vm2.autoComData = respons.data.data.data;
+              function(response) {
+                //console.log(response);
+                if (
+                  response.data.status == "s" ||
+                  response.data.status == "S"
+                ) {
+                  // console.log(response.data);
+                  vm2.autoComData = response.data.data.data;
                   resolve({
-                    suggestions: respons.data.data.data,
+                    suggestions: response.data.data.data,
 
                     isIncomplete: false
                   });
@@ -293,6 +296,7 @@ export default {
     handleSubmit(newQuery) {
       var queryId = this.queryId;
 
+      var vm = this;
       if (newQuery) {
         queryId = -1;
       }
@@ -312,15 +316,16 @@ export default {
         data,
         function() {},
         function(response) {
-          if (respons.data.status == "s" || respons.data.status == "S") {
+          if (response.data.status == "s" || response.data.status == "S") {
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "Query saved successfully"
             });
           } else {
             vm.$notify({
               type: "danger",
-              title: respons.data.message
+              title: response.data.message
             });
           }
         },
@@ -345,11 +350,11 @@ export default {
             vm.queryDesc = response.data.data.screensql.desc;
             vm.groups = response.data.data.screensql.groups;
             vm.currentSQL = response.data.data.screensql.query;
-            //vm.groups = respons.data.groups;
+            //vm.groups = response.data.groups;
           } else {
             vm.$notify({
               type: "danger",
-              title: respons.data.message
+              title: response.data.message
             });
           }
         },
@@ -370,15 +375,16 @@ export default {
         data,
         function() {},
         function(response) {
-          if (respons.data.status == "s" || respons.data.status == "S") {
+          if (response.data.status == "s" || response.data.status == "S") {
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "Query deleted successfully"
             });
           } else {
             vm.$notify({
               type: "danger",
-              title: respons.data.message
+              title: response.data.message
             });
           }
         },

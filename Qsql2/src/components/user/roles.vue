@@ -85,7 +85,8 @@ export default {
           if (respons.data.status == "s" || respons.data.status == "S") {
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User role updated successfully"
             });
           } else {
             vm.$notify({

@@ -18,7 +18,7 @@
           <span class="md-title">Create Table</span>
         </md-app-toolbar>
 
-        <div style="height:calc(100vh - 70px) ; padding:10px">
+        <div class="overflowscrollyonly height_70" style=" padding:10px">
           <div class="row">
             <div class="col-sm">
               <h5>Load existing table</h5>
@@ -73,7 +73,7 @@
       </md-app-drawer>
 
       <md-app-content>
-        <div class="overflowscroll" style="height:calc(100vh - 70px); padding-left:15px">
+        <div class="overflowscroll height_70" style="padding-left:15px">
           <div class="flex">
             <div class="row" v-if="!loading && fieldListSorted.length>0">
               <table class="table">
@@ -367,11 +367,23 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-  this.beforeChangeRoute(to, from, next);
+    this.beforeChangeRoute(to, from, next);
   },
   methods: {
     initialize() {},
-
+    setupListeners() {
+      eventBus.$on("hideleftsidemenu", data => {
+        if (data) {
+          this.menuVisible = false;
+        } else {
+          this.menuVisible = true;
+        }
+      });
+    },
+    //-----------------------------------------------
+    turnOffListeners() {
+      eventBus.$off("hideleftsidemenu");
+    },
     deleteRow(indx) {
       this.fieldList[indx].deleted = true;
       var evens = _.remove(this.fieldList, function(n) {

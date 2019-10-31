@@ -51,7 +51,7 @@
         <v-list-tile-title>Users List</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-divider></v-divider>
+    <v-divider v-if="isAdmin"></v-divider>
 
     <!--  ==== --->
     <v-list-tile v-if="isAdmin" avatar ripple router :to="{ name: 'usercreate'}">
@@ -62,7 +62,7 @@
         <v-list-tile-title>Add new user</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-divider></v-divider>
+    <v-divider v-if="isAdmin"></v-divider>
 
     <!--  ==== --->
     <v-list-tile avatar ripple router :to="{ name: 'libList'}">

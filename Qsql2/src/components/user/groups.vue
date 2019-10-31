@@ -8,8 +8,8 @@
         <tr>
           <th class="stickyHead">Group</th>
           <th class="stickyHead">Assigned</th>
-          <th class="stickyHead">Save</th>
-          <th class="stickyHead">Delete</th>
+          <th v-if="isAdmin" class="stickyHead">Save</th>
+          <th v-if="isAdmin" class="stickyHead">Delete</th>
         </tr>
       </thead>
 
@@ -23,21 +23,26 @@
           </td>
           <td>
             <div v-if="group.validValues === undefined || group.validValues.length < 1">
-              <input type="text" class="form-control" v-model="group.currentValue" />
+              <input
+                :disabled="!isAdmin"
+                type="text"
+                class="form-control"
+                v-model="group.currentValue"
+              />
             </div>
             <div v-else>
-              <select class="form-control" v-model="group.currentValue">
+              <select :disabled="!isAdmin" class="form-control" v-model="group.currentValue">
                 <option v-for="(xVal,indx) in group.validValues" :key="indx" :value="xVal">{{xVal}}</option>
               </select>
             </div>
           </td>
 
-          <td>
+          <td v-if="isAdmin">
             <button class="btn btn-sm btn-link btn-outline-secondary" @click="saveGroups(group)">
               <i class="fa fa-save"></i>
             </button>
           </td>
-          <td>
+          <td v-if="isAdmin">
             <button class="btn btn-sm btn-outline-danger" @click="deleteGroups(group)">
               <i class="fa fa-trash-alt"></i>
             </button>
@@ -106,7 +111,8 @@ export default {
             group.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User groups updated successfully"
             });
           } else {
             vm.$notify({
@@ -142,7 +148,8 @@ export default {
             group.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User authority groups successfully"
             });
           } else {
             vm.$notify({

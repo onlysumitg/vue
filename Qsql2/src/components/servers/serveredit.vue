@@ -15,13 +15,13 @@
           </md-field>
 
           <div class="row">
-            <div class="col-10">
+            <div class="col-sm">
               <md-field>
                 <label>Server IP</label>
                 <md-input v-model="selectedServerLocal.serverIP" id="serverip"></md-input>
               </md-field>
             </div>
-            <div class="col-1">
+            <div class="col-sm">
               <md-switch v-model="selectedServerLocal.ssl" class="md-primary">SSL</md-switch>
             </div>
           </div>

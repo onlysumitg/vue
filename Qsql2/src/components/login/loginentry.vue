@@ -43,7 +43,14 @@ export default {
       errorMessage: ""
     };
   },
+
   methods: {
+    initialize() {
+      this.$session.remove("currentuser");
+      this.$session.remove("currentserver");
+      this.$session.remove("QSQL_TOKEN");
+    },
+
     validateUser() {
       if (this.user.trim().length <= 0 || this.password.trim().length <= 0) {
         this.showError = true;
@@ -67,16 +74,20 @@ export default {
           password: vm.password
         },
         function() {},
-        function(responce) {
-          // console.log("responce")
-          // console.log(responce)
-          //window.$cookies.set("QSQL_TOKEN", responce.data.token);
-
+        responce => {
           vm.$session.set("QSQL_TOKEN", responce.data.token);
           if (responce.data.token.length >= 0) {
-            vm.$router.push({
-              path: "/servers"
-            });
+            vm.$session.set("currentuser", vm.user);
+
+            if (responce.data.data.resetpwd == "Y") {
+              vm.$router.push({
+                name: "useredit"
+              });
+            } else {
+              vm.$router.push({
+                path: "/servers"
+              });
+            }
           } else {
             vm.showError = true;
             vm.errorMessage = responce.data.message;

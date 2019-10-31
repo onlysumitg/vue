@@ -17,13 +17,13 @@
         <span class="md-title">Servers</span>
       </md-app-toolbar>
 
-      <div class="overflowscrollyonly2">
+      <div class="overflowscrollyonly height_70">
         <serverlist @selectedserver="selectedServer = $event"></serverlist>
       </div>
     </md-app-drawer>
 
     <md-app-content>
-      <div class="overflowscrollyonly2" style="height:calc(100vh - 70px)">
+      <div class="overflowscrollyonly height_70">
         <div class="row">
           <div class="col-sm">
             <br />

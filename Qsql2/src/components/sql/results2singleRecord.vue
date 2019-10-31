@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container supertop">
     <!-- single record -->
     <v-navigation-drawer
       v-if="showSingleRecord"
@@ -8,7 +8,7 @@
       fixed
       floating
       temporary
-      width="800"
+      :width="totalWidth"
     >
       <div class="md-layout" style="  min-width:400px; margin:10px">
         <div class="md-layout-item" style="min-width=500px">
@@ -103,7 +103,7 @@
             :lang="editorLang"
             :options="editorOptions"
             theme="crimson_editor"
-            width="600px"
+            width="500px"
             height="90%"
           ></codeeditor>
           <!-- <div id="idataeditor" style="width:600px;height:800px;border:1px solid #ccc"></div> -->
@@ -139,6 +139,14 @@ export default {
   },
 
   computed: {
+    totalWidth() {
+      if (this.showEditor) {
+        this.hideLeftMenu();
+        return "1200";
+      }
+      this.unhideLeftMenu();
+      return "700";
+    },
     //---------------------------------
     editorValue2: {
       get: function() {
@@ -191,6 +199,10 @@ export default {
       console.log(
         "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
       );
+      if (!newval) {
+        this.showEditor = false;
+        this.unhideLeftMenu();
+      }
     },
 
     showEditor: function(newValue) {

@@ -23,7 +23,7 @@
         role="alert"
       >{{errorMessage}}</div>
 
-      <div style="height:calc(100vh - 70px); padding:10px">
+      <div class="overflowscrollyonly height_70" style=" padding:10px">
         <div class="row">
           <div class="col-sm">
             <div style="padding:4px">
@@ -74,7 +74,7 @@
     </md-app-drawer>
 
     <md-app-content>
-      <div class="overflowscroll" style="height:calc(100vh - 70px)">
+      <div class="overflowscroll height_70">
         <div class="flex">
           <router-view></router-view>
         </div>
@@ -99,7 +99,19 @@ export default {
       this.searchDBDOC();
     },
     loadScreen() {},
-
+    setupListeners() {
+      eventBus.$on("hideleftsidemenu", data => {
+        if (data) {
+          this.menuVisible = false;
+        } else {
+          this.menuVisible = true;
+        }
+      });
+    },
+    //-----------------------------------------------
+    turnOffListeners() {
+      eventBus.$off("hideleftsidemenu");
+    },
     //-------------------------------------
     //---------------------------------------------------
     emitSQLToRun2(sqltoRun) {

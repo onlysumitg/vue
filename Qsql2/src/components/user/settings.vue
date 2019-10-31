@@ -109,7 +109,8 @@ export default {
             setting.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User settings updated successfully"
             });
           } else {
             vm.$notify({
@@ -145,7 +146,8 @@ export default {
             setting.value = respons.data.newvalue;
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User settings updated successfully"
             });
           } else {
             vm.$notify({

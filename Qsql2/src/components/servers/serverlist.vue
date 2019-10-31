@@ -15,23 +15,32 @@
         </md-button>
       </div>
     </md-toolbar>
-
-    <!-- ========== -->
-    <v-list two-line>
-      <template v-for="(server, index) in filteredServerList">
-        <v-list-tile @click="selectServer(server)" :key="server.serverName" avatar ripple>
-          <v-list-tile-avatar>
-            <v-icon v-if="server.ssl" left>mdi-server-security</v-icon>
-            <v-icon v-else left>mdi-server</v-icon>
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>{{server.serverName}}</v-list-tile-title>
-            <v-list-tile-sub-title class="text--primary">{{server.userName}}@{{server.serverIP}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider v-if="index   < filteredServerList.length" :key="index"></v-divider>
-      </template>
-    </v-list>
+    <div>
+      <!-- ========== -->
+      <v-list two-line>
+        <template v-for="(server, index) in filteredServerList">
+          <v-list-tile
+            @click="selectServer(server)"
+            :key="server.serverName + ''+index"
+            avatar
+            ripple
+          >
+            <v-list-tile-avatar>
+              <v-icon v-if="server.ssl" left>mdi-server-security</v-icon>
+              <v-icon v-else left>mdi-server</v-icon>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>{{server.serverName}}</v-list-tile-title>
+              <v-list-tile-sub-title class="text--primary">{{server.userName}}@{{server.serverIP}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider v-if="index   < filteredServerList.length" :key="index"></v-divider>
+        </template>
+      </v-list>
+      <div v-if="filteredServerList.length <=0">
+        <center class="title font-weight-light">No record found</center>
+      </div>
+    </div>
   </div>
 </template>
 <script>

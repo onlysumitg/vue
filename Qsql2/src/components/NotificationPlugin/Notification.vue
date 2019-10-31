@@ -28,7 +28,7 @@
           <br />
         </b>
       </span>
-      <span v-if="message" v-html="message"></span>
+      <span class="subheading" v-if="message" v-html="message"></span>
       <content-render v-if="!message && component" :component="component"></content-render>
     </span>
 

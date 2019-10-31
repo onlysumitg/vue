@@ -23,7 +23,7 @@
     </md-app-drawer>
 
     <md-app-content>
-      <div class="overflowscroll" style="height:calc(100vh - 70px)">
+      <div class="overflowscroll height_70">
         <div class="flex">
           <sqlscreendata :queryId="sqlRunId"></sqlscreendata>
         </div>
@@ -74,11 +74,19 @@ export default {
       eventBus.$on("screensql_run", data => {
         this.sqlRunId = data;
       });
+      eventBus.$on("hideleftsidemenu", data => {
+        if (data) {
+          this.menuVisible = false;
+        } else {
+          this.menuVisible = true;
+        }
+      });
     },
     //-----------------------------------------------
     turnOffListeners() {
       eventBus.$off("screensql_edit");
       eventBus.$off("screensql_run");
+      eventBus.$off("hideleftsidemenu");
     },
     //-----------------------------------------------
     tabUpdated: function(id) {

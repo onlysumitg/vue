@@ -19,7 +19,7 @@
     <div class="overflowscrollyonly" style="height: calc(100vh - 150px) ">
       <!-- ====================2=================-->
 
-      <v-list two-line>
+      <v-list three-line>
         <template v-for="(query, index) in filteredQueryList">
           <v-list-tile @click="runQuery(query)" :key="query.id" avatar ripple>
             <v-list-tile-avatar>{{query.id}}.</v-list-tile-avatar>
@@ -36,6 +36,9 @@
           <v-divider v-if="index   < filteredQueryList.length" :key="index"></v-divider>
         </template>
       </v-list>
+      <div v-if="filteredQueryList.length <=0">
+        <center class="title font-weight-light">No record found</center>
+      </div>
     </div>
     <!-- ======================2===============-->
     <br />

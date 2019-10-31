@@ -43,7 +43,9 @@ export const AppMixin = {
 
   methods: {
     initialize() {},
-    setupListeners() {},
+    setupListeners() {
+
+    },
     turnOffListeners() {},
     beforeChangeRoute(to, from, next, emitEvent, eventValue) {
       if (typeof emitEvent !== 'undefined' &&
@@ -62,6 +64,14 @@ export const AppMixin = {
     //----------------------------------------------------------------------------
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+    },
+    hideLeftMenu() {
+      this.menuVisible = false
+      eventBus.$emit("hideleftsidemenu", true)
+    },
+    unhideLeftMenu() {
+      this.menuVisible = true
+      eventBus.$emit("hideleftsidemenu", false)
     },
     cancelAxiosRequest() {
       try {
@@ -151,6 +161,14 @@ export const AppMixin = {
           vm.xIsAdmin = false;
         }
       );
+    },
+    //---------------------------------------------------------------
+    isEmpty(value) {
+      return _.isUndefined(value) || _.isEmpty(value.trim())
+    },
+    //---------------------------------------------------------------
+    isNotEmpty(value) {
+      return !this.isEmpty(value)
     },
     //----------------------------------------------------------------------------
     runWebService(url, params, beforeRun, onSucess, onError) {

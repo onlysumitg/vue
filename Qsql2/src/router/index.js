@@ -118,7 +118,7 @@ export default new Router({
 
 
         }, {
-          path: "user/:username",
+          path: "user/:username?",
           component: userx,
           name: "useredit",
 

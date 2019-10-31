@@ -2,7 +2,7 @@
   <div class="h-100">
     <md-tabs md-elevation="1">
       <md-tab md-label="Password" id="t0">
-        <h5>Edit user</h5>
+        <h5>Change password</h5>
         <hr />
         <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
@@ -23,9 +23,21 @@
               <md-field>
                 <label>Password</label>
                 <md-input
+                  type="password"
                   v-model="password"
-                  oninvalid="this.setCustomValidity('Password is required')"
+                  oninvalid="this.setCustomValidity('Passwords are required and must match')"
                   oninput="setCustomValidity('')"
+                  required
+                ></md-input>
+              </md-field>
+              <md-field>
+                <label>Password again</label>
+                <md-input
+                  type="password"
+                  v-model="passwordagain"
+                  oninvalid="this.setCustomValidity('Passwords are required and must match')"
+                  oninput="setCustomValidity('')"
+                  required
                 ></md-input>
               </md-field>
               <md-button type="submit" class="md-primary">Save</md-button>
@@ -70,17 +82,37 @@ export default {
     userroles
   },
 
+  props: {
+    userNameASProp: {
+      type: String,
+      required: false,
+      default: ""
+    }
+  },
+
   data: function() {
     return {
       processing: false,
-      userName: this.$route.params.username,
+      userNameAsRoute: this.$route.params.username,
       password: "",
+      passwordagain: "",
       email: "",
       settings: {}
     };
   },
   mounted() {},
+  computed: {
+    userName: function() {
+      if (this.isNotEmpty(this.userNameASProp)) {
+        return this.userNameASProp;
+      }
+      if (this.isNotEmpty(this.userNameAsRoute)) {
+        return this.userNameAsRoute;
+      }
 
+      return this.$session.get("currentuser");
+    }
+  },
   methods: {
     initialize() {},
     //-----------------------------
@@ -88,6 +120,11 @@ export default {
       e.preventDefault();
 
       if (this.userName.trim().length <= 0) {
+        return false;
+      }
+
+      if (this.passwordagain != this.password) {
+        this.passwordagain = "";
         return false;
       }
 
@@ -114,7 +151,8 @@ export default {
           if (respons.data.status == "s" || respons.data.status == "S") {
             vm.$notify({
               type: "success",
-              title: "Done"
+              title: "Done",
+              message: "User info updated successfully"
             });
           } else {
             vm.$notify({
