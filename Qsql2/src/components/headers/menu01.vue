@@ -13,6 +13,13 @@
 
       <md-menu-content>
         <md-menu-item>
+          <div>
+            {{getCurrentUserName()}}
+            <hr />
+          </div>
+        </md-menu-item>
+
+        <md-menu-item>
           <v-btn flat :to="{ name: 'basesql'}">
             <v-icon>mdi-database</v-icon>&nbsp SQL
           </v-btn>

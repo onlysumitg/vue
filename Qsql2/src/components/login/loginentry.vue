@@ -48,6 +48,7 @@ export default {
     initialize() {
       this.$session.remove("currentuser");
       this.$session.remove("currentserver");
+      this.$session.remove("currentservername");
       this.$session.remove("QSQL_TOKEN");
     },
 

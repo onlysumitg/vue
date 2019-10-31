@@ -23,6 +23,7 @@ export const AppMixin = {
       xloading: false,
       xIsAdmin: false,
       menuVisible: true,
+      menuVisibleBackup: true,
 
     }
   },
@@ -64,14 +65,17 @@ export const AppMixin = {
     //----------------------------------------------------------------------------
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+      this.menuVisibleBackup = this.menuVisible
     },
     hideLeftMenu() {
+      this.menuVisibleBackup = this.menuVisible
       this.menuVisible = false
       eventBus.$emit("hideleftsidemenu", true)
     },
     unhideLeftMenu() {
-      this.menuVisible = true
-      eventBus.$emit("hideleftsidemenu", false)
+
+      // this.menuVisible = this.menuVisibleBackup
+      // eventBus.$emit("hideleftsidemenu", !this.menuVisibleBackup)
     },
     cancelAxiosRequest() {
       try {
@@ -137,6 +141,9 @@ export const AppMixin = {
 
     getConnectedServerName() {
       return this.$session.get("currentservername")
+    },
+    getCurrentUserName() {
+      return this.$session.get("currentuser")
     },
     //--------------------------------------------------------------------------
     getBaseUrl() {

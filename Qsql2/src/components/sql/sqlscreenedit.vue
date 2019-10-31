@@ -165,7 +165,7 @@ export default {
 
       this.monaocEditorInit();
 
-      //console.log(x1);
+      ////console.log(x1);
     },
 
     //--------------------------------------------------------
@@ -174,11 +174,11 @@ export default {
 
       return {
         provideCompletionItems: function(model, position) {
-          //console.log(model);
-          //console.log(model.getValue());
+          ////console.log(model);
+          ////console.log(model.getValue());
 
           return new Promise(function(resolve, reject) {
-            // console.log(vm2.autoComData.length);
+            // //console.log(vm2.autoComData.length);
             if (vm2.autoComData.length > 0) {
               return resolve({
                 suggestions: vm2.autoComData,
@@ -192,12 +192,12 @@ export default {
               { serverId: vm2.$session.get("currentserver") },
               function() {},
               function(response) {
-                //console.log(response);
+                ////console.log(response);
                 if (
                   response.data.status == "s" ||
                   response.data.status == "S"
                 ) {
-                  // console.log(response.data);
+                  // //console.log(response.data);
                   vm2.autoComData = response.data.data.data;
                   resolve({
                     suggestions: response.data.data.data,
@@ -219,7 +219,7 @@ export default {
             endColumn: position.column
           });
 
-          // console.log(position)
+          // //console.log(position)
           var sqlxom = {
             incomplete: true,
             suggestions: [
@@ -448,7 +448,7 @@ export default {
             .getModel()
             .getValueInRange(meditor.getSelection());
           // alert("ok " + value);
-          //  console.log(vm2.monacoEditor.tokenize(value, "sql"));
+          //  //console.log(vm2.monacoEditor.tokenize(value, "sql"));
 
           // alert(value);
 

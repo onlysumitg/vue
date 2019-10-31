@@ -83,7 +83,7 @@ export default {
       let paramRegex = /(\$\$(.*?)\$\$)/;
       let result;
       // while ((result = paramRegex.exec(this.sqlToProcess)) !== null) {
-      //   console.log(result);
+      //   //console.log(result);
       // }
 
       let matched = [];
@@ -92,7 +92,7 @@ export default {
       let instring = this.sqlToProcess;
       let match;
       while ((match = paramRegex.exec(instring)) != null) {
-        console.log(instring);
+        ////console.log(instring);
         instring = instring.replace(paramRegex, " ");
 
         if (!matched.includes(match[2])) {
@@ -103,13 +103,13 @@ export default {
           matched2.push(parameter);
         }
 
-        console.log(match[1]);
-        console.log(match[2]);
+        //console.log(match[1]);
+        //console.log(match[2]);
       }
 
       let paramRegexOptional = /(\$\#(.*?)\$\#)/;
       while ((match = paramRegexOptional.exec(instring)) != null) {
-        console.log(instring);
+        //console.log(instring);
         instring = instring.replace(paramRegexOptional, " ");
 
         if (!matched.includes(match[2])) {
@@ -120,13 +120,13 @@ export default {
           matched2.push(parameter);
         }
 
-        console.log(match[1]);
-        console.log(match[2]);
+        //console.log(match[1]);
+        //console.log(match[2]);
       }
       // var arrayX = instring.matchAll(paramRegex);
       // for (const match of arrayX) {
-      //   console.log(match);
-      //   console.log(match.index);
+      //   //console.log(match);
+      //   //console.log(match.index);
       // }
       return matched2;
     },
@@ -136,7 +136,7 @@ export default {
       var paramRegex = /(\$\$(.*?)\$\$)/;
       var result;
       // while ((result = paramRegex.exec(this.sqlToProcess)) !== null) {
-      //   console.log(result);
+      //   //console.log(result);
       // }
 
       var matched = [];
@@ -144,19 +144,19 @@ export default {
       var instring = this.sqlToProcess;
       var match;
       while ((match = paramRegex.exec(instring)) != null) {
-        console.log(instring);
+        //console.log(instring);
         instring = instring.replace(paramRegex, " ");
 
         if (!matched.includes(match[1])) matched.push(match[1]);
 
-        console.log(match[1]);
-        console.log(match[2]);
+        //console.log(match[1]);
+        //console.log(match[2]);
       }
 
       // var arrayX = instring.matchAll(paramRegex);
       // for (const match of arrayX) {
-      //   console.log(match);
-      //   console.log(match.index);
+      //   //console.log(match);
+      //   //console.log(match.index);
       // }
       return matched;
     }

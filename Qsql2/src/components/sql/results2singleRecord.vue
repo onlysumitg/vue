@@ -144,7 +144,7 @@ export default {
         this.hideLeftMenu();
         return "1200";
       }
-      this.unhideLeftMenu();
+      //this.unhideLeftMenu();
       return "700";
     },
     //---------------------------------
@@ -200,8 +200,10 @@ export default {
         "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
       );
       if (!newval) {
-        this.showEditor = false;
-        this.unhideLeftMenu();
+        if (this.showEditor) {
+          this.showEditor = false;
+          this.unhideLeftMenu();
+        }
       }
     },
 

@@ -105,7 +105,7 @@ export default {
         },
         function(respons) {
           //   vm.$notify("again");
-          //  console.log(respons);
+          //  //console.log(respons);
           if (respons.data.status == "s" || respons.data.status == "S") {
             respons.data.data.screensqls.forEach(query => {
               vm.querylist.push(query);
