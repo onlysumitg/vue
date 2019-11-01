@@ -40,7 +40,7 @@
                   clearable
                   clear-icon="mdi-close-circle-outline"
                 ></v-text-field>
-                <hr>
+                <hr />
                 <v-text-field
                   label="Source file"
                   v-model="pathSourceFile"
@@ -51,7 +51,7 @@
                   clearable
                   clear-icon="mdi-close-circle-outline"
                 ></v-text-field>
-                <hr>
+                <hr />
                 <v-text-field
                   label="Member"
                   v-model="pathSourceMbr"
@@ -282,7 +282,7 @@ export default {
     //------------------------------------------------
     reload2(item, open) {
       console.log("==reload==");
-      console.log(item);
+      //console.log(item);
       if (open) this.fetchChildren(item);
     },
     reset() {
@@ -291,7 +291,7 @@ export default {
     fetchChildren(item) {
       // Remove in 6 months and say
       // you've made optimizations! :)
-      console.log(item);
+      //console.log(item);
       // alert("fetchuser");
       // await pause(1500);
       //this.users = this.items2;
@@ -309,8 +309,8 @@ export default {
         .then(res => {
           item.children.length = 0;
           var XData = JSON.parse(res.config.data);
-          console.log(XData);
-          console.log(res);
+          //console.log(XData);
+          //console.log(res);
 
           if (XData.pathFromRoot != vm.pathFromRoot) {
             return;

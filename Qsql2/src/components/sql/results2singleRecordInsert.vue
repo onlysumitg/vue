@@ -122,11 +122,7 @@ export default {
     //---------------------------------
   },
   watch: {
-    showSingleRecord: function(newval) {
-      console.log(
-        "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
-      );
-    }
+    showSingleRecord: function(newval) {}
   },
   //------------------------------------------------------------
   methods: {

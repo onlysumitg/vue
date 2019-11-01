@@ -39,6 +39,10 @@ Vue.use(Vuetify, {
 })
 
 
+import 'vue-resize/dist/vue-resize.css'
+import VueResize from 'vue-resize'
+Vue.use(VueResize)
+
 Vue.use(VueSelect, {
   theme: 'bootstrap' // or 'material-design'
 })
@@ -111,7 +115,7 @@ Vue.use(NotificationPlugin);
 
 window.eventBus = new Vue();
 window.monacoX = monaco;
-console.log(window.monacoX)
+//console.log(window.monacoX)
 
 Vue.component("codeeditor", vueAceEditor);
 /* eslint-disable no-new */

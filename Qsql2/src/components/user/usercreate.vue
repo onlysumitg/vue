@@ -88,8 +88,8 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log("++++++++++++++++++++++++++++++++++++++++++++++++");
-          console.log(respons.data.data);
+          //console.log("++++++++++++++++++++++++++++++++++++++++++++++++");
+          //console.log(respons.data.data);
           vm.processing = false;
 
           if (respons.data.status == "s" || respons.data.status == "S") {

@@ -178,7 +178,7 @@ export default {
         }
       },
       set: function(newValue) {
-        console.log(newValue + " ::xx ");
+        // console.log(newValue + " ::xx ");
         try {
           this.editorValue2Val = newValue;
           if (this.currentCol.editable) {
@@ -186,7 +186,7 @@ export default {
             this.rows[this.currentRecord]["MDT_X___2"] = "Y";
           }
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           this.currentCol.modified = false;
         }
       }
@@ -234,17 +234,26 @@ export default {
               } catch (e) {
                 console.log(e);
               }
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
 
               break;
             } // end sucess
             case "e": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
 
             case "u": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
             default: {

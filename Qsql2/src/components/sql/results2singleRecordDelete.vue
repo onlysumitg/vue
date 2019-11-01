@@ -125,11 +125,7 @@ export default {
     //---------------------------------
   },
   watch: {
-    showSingleRecord: function(newval) {
-      console.log(
-        "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
-      );
-    }
+    showSingleRecord: function(newval) {}
   },
   //------------------------------------------------------------
   methods: {
@@ -168,7 +164,7 @@ export default {
       // insertSQL += columneValues.trim() + ")";
       this.sqlToRun = insertSQL;
       this.runSQL(false);
-      console.log(insertSQL);
+      //console.log(insertSQL);
     },
     //---------------------------------------------
     getInputWidth(chars) {

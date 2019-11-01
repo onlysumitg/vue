@@ -83,7 +83,7 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
+          //console.log(respons);
           vm.processing = false;
           if (respons.data.status == "s" || respons.data.status == "S") {
             setting.value = respons.data.data.newvalue;
@@ -111,7 +111,7 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
+          //   console.log(respons);
           vm.processing = false;
           if (respons.data.status == "s" || respons.data.status == "S") {
             vm.settings = respons.data.data.settings;

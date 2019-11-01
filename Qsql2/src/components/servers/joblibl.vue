@@ -47,7 +47,7 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
+          // console.log(respons);
           vm.processing = false;
           if (respons.data.status == "s" || respons.data.status == "S") {
             vm.libl = respons.data.data.libl;

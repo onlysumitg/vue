@@ -2,8 +2,8 @@
       alert("ok");
       return {
         provideCompletionItems: function (model, position) {
-          console.log(model);
-          console.log(model.getValue());
+          // console.log(model);
+          // console.log(model.getValue());
 
           let value = model.getValueInRange({
             startLineNumber: 1,

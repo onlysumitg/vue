@@ -173,7 +173,7 @@ export default {
         this.currentItem = "tab-" + item.hashCode;
       });
 
-      console.log(this.items);
+      // console.log(this.items);
     },
     //------------------------------------------
     addItem_more(item) {
@@ -187,7 +187,7 @@ export default {
         this.currentItem = "tab-" + item.hashCode;
       });
 
-      console.log(this.items);
+      // console.log(this.items);
     }
   }
 };

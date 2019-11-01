@@ -1,5 +1,7 @@
 <template>
-  <button class="w-100" style="width:100%" @click="emitVisible">{{iText}}</button>
+  <div v-bind:style="{width: dataTableWidth + 'px' }">
+    <button v-bind:style="{width: dataTableWidth + 'px' }" @click="emitVisible">{{iText}}</button>
+  </div>
 </template>
 <script>
 import inViewport from "vue-in-viewport-mixin";
@@ -9,6 +11,11 @@ export default {
     textToDisplay: {
       type: String,
       required: false
+    },
+
+    dataTableWidth: {
+      type: Number,
+      required: true
     }
   },
   mixins: [inViewport],

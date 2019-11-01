@@ -71,8 +71,10 @@
       </div>
       <table
         :id="sqldata.processId"
-        class="table i-table table-striped table-bordered table-sm table-hover"
+        class="table i-table table-striped table-bordered table-sm table-hover resized"
+        ref="sqldatatable"
       >
+        <resize-observer @notify="handleResize" />
         <thead>
           <tr>
             <th class="stickyHead" v-if="columns.length>0">#</th>
@@ -136,11 +138,21 @@
         class=".large-copy"
         v-if="endOfData.trim().length<=0 && hasMoreData && !loading"
       >
-        <lazyload @isvisiblenow="runSQL(false)" textToDisplay="Keep loading" @click="runSQL(false)"></lazyload>
+        <lazyload
+          :dataTableWidth="dataTableWidth"
+          @isvisiblenow="runSQL(false)"
+          textToDisplay="Keep loading"
+          @click="runSQL(false)"
+        ></lazyload>
       </div>
     </div>
 
-    <md-progress-bar class="md-accent" v-if="loading" md-mode="indeterminate"></md-progress-bar>
+    <md-progress-bar
+      v-bind:style="{width: dataTableWidth + 'px' }"
+      class="md-accent"
+      v-if="loading"
+      md-mode="indeterminate"
+    ></md-progress-bar>
     <button
       style="margin:10px"
       type="button"
@@ -213,6 +225,20 @@ export default {
         return "End of Data.";
       }
       return "";
+    },
+
+    dataTableWidth: function() {
+      let x = this.sqldata.length;
+      let y = this.dataTableWidth2;
+
+      let maxWidth = 0;
+
+      try {
+        maxWidth = this.$refs.sqldatatable.clientWidth;
+      } catch (error) {
+        maxWidth = 600;
+      }
+      return maxWidth;
     }
 
     //---------------------------------
@@ -226,9 +252,13 @@ export default {
   },
 
   methods: {
-    handleScroll() {
-      alert("div sxrolling");
+    handleResize() {
+      try {
+        this.dataTableWidth2 = this.$refs.sqldatatable.clientWidth;
+      } catch (error) {}
     },
+
+    handleScroll() {},
     initialize() {
       this.sqldata = this.initialData;
       this.rows = this.initialData.data;
@@ -394,7 +424,7 @@ export default {
             ];
 
           eventBus.$emit("updateHistorySQL", true);
-          console.log("vm.sqldata.data " + vm.sqldata.data.length);
+          // console.log("vm.sqldata.data " + vm.sqldata.data.length);
 
           switch (vm.sqldata.status) {
             case "s": {
@@ -484,13 +514,19 @@ export default {
         column: "",
         oldValue: "",
         newValue: ""
-      }
+      },
+
+      dataTableWidth2: 600
     };
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.resized {
+  position: relative;
+}
+
 html {
   overflow-x: auto;
 }

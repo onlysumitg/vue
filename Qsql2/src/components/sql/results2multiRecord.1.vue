@@ -189,12 +189,12 @@ export default {
     },
     //---------------------------------------------
     download(tableid) {
-      console.log(tableid);
+      // console.log(tableid);
       var table = TableExport(document.getElementById(tableid), {
         position: "top",
         bootstrap: "false"
       });
-      console.log(table);
+      // console.log(table);
     },
 
     //---------------------------------------------
@@ -270,12 +270,12 @@ export default {
             ];
 
           eventBus.$emit("updateHistorySQL", true);
-          console.log("vm.sqldata.data " + vm.sqldata);
+          // console.log("vm.sqldata.data " + vm.sqldata);
 
           switch (vm.sqldata.status) {
             case "s": {
               vm.columns = vm.sqldata.columns;
-              console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
+              //   console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
               if (vm.rows.length > 0) {
                 vm.rows = vm.rows.concat(vm.sqldata.data);
               } else {

@@ -652,12 +652,12 @@ export default {
             ];
 
           eventBus.$emit("updateHistorySQL", true);
-          console.log("vm.sqldata.data " + vm.sqldata);
+          // console.log("vm.sqldata.data " + vm.sqldata);
 
           switch (vm.sqldata.status) {
             case "s": {
               vm.columns = vm.sqldata.columns;
-              console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
+              // console.log("vm.sqldata.data.length " + vm.sqldata.data.length);
 
               vm.rows = vm.sqldata.data;
 

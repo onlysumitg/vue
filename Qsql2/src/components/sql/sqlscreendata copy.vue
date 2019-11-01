@@ -80,13 +80,13 @@ export default {
       var instring = this.sqlToProcess;
       var match;
       while ((match = paramRegex.exec(instring)) != null) {
-        console.log(instring);
+        //console.log(instring);
         instring = instring.replace(paramRegex, " ");
 
         if (!matched.includes(match[2])) matched.push(match[2]);
 
-        console.log(match[1]);
-        console.log(match[2]);
+        //console.log(match[1]);
+        //console.log(match[2]);
       }
 
       // var arrayX = instring.matchAll(paramRegex);
@@ -110,13 +110,13 @@ export default {
       var instring = this.sqlToProcess;
       var match;
       while ((match = paramRegex.exec(instring)) != null) {
-        console.log(instring);
+       // console.log(instring);
         instring = instring.replace(paramRegex, " ");
 
         if (!matched.includes(match[1])) matched.push(match[1]);
 
-        console.log(match[1]);
-        console.log(match[2]);
+       // console.log(match[1]);
+       // console.log(match[2]);
       }
 
       // var arrayX = instring.matchAll(paramRegex);
@@ -146,12 +146,12 @@ export default {
 
     setValues(key, event) {
       //  alert("kk");
-      console.log("====================================");
+     // console.log("====================================");
 
       this.valueData["" + key] = event.target.value;
-      console.log("-------------------------------");
-      console.log(this.valueData);
-      console.log("====================================");
+      //console.log("-------------------------------");
+      //console.log(this.valueData);
+      //console.log("====================================");
     },
 
     //-----------------------------------------------

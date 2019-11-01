@@ -174,12 +174,11 @@ export default {
             this.currentCol.label + "_" + this.currentCol.id
           ];
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           return "";
         }
       },
       set: function(newValue) {
-        console.log(newValue + " ::xx ");
         try {
           this.editorValue2Val = newValue;
           if (this.currentCol.editable) {
@@ -187,7 +186,7 @@ export default {
             this.rows[this.currentRecord]["MDT_X___2"] = "Y";
           }
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           this.currentCol.modified = false;
         }
       }
@@ -196,9 +195,6 @@ export default {
   },
   watch: {
     showSingleRecord: function(newval) {
-      console.log(
-        "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
-      );
       if (!newval) {
         if (this.showEditor) {
           this.showEditor = false;

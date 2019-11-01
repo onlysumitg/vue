@@ -167,7 +167,7 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
+          // console.log(respons);
           vm.processing = false;
           if (respons.data.status == "e") {
             vm.showError = true;

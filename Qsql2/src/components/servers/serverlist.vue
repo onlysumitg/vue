@@ -101,7 +101,7 @@ export default {
         {},
         function() {},
         function(respons) {
-          console.log(respons);
+         // console.log(respons);
           if (respons.data.status == "s" || respons.data.status == "S") {
             vm.serverlist = [];
             respons.data.data.servers.forEach(server => {

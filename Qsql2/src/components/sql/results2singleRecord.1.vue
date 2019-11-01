@@ -31,7 +31,7 @@
             <tbody>
               <tr v-for="(col,n) in columns" :key="'cc'+n" @dblclick="setCurrentColumn(col)">
                 <td>
-                 <Strong> {{col.label}}</Strong>
+                  <Strong>{{col.label}}</Strong>
                   <!-- <span v-if="col.modified">**</span> -->
                   <!-- <div class="md-caption" v-if="col.label != col.name">[{{col.name.trim()}}]</div> -->
                   <div
@@ -45,7 +45,7 @@
                       v-if="col.scale>0"
                     >, {{col.scale}}</span>
                     ]
-                    <br>
+                    <br />
                     <span v-if="multiTable">[{{col.libName.trim()}}/{{col.tableName.trim()}}]</span>
                     <!-- <span v-else class="md-caption">-</span> -->
                   </div>
@@ -140,12 +140,12 @@ export default {
             this.currentCol.label + "_" + this.currentCol.id
           ];
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           return "";
         }
       },
       set: function(newValue) {
-        console.log(newValue + " ::xx ");
+        //console.log(newValue + " ::xx ");
         try {
           this.editorValue2Val = newValue;
           if (this.currentCol.editable) {
@@ -153,7 +153,7 @@ export default {
             this.rows[this.currentRecord]["MDT_X___2"] = "Y";
           }
         } catch (e) {
-          console.log(e);
+          //  console.log(e);
           this.currentCol.modified = false;
         }
       }
@@ -162,9 +162,9 @@ export default {
   },
   watch: {
     showSingleRecord: function(newval) {
-      console.log(
-        "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
-      );
+      // console.log(
+      //   "showSingleRecord :: " + newval + " :: " + this.showSingleRecord
+      // );
     },
 
     showEditor: function(newValue) {
@@ -248,19 +248,28 @@ export default {
 
                 vm.currentCol.modified = false;
               } catch (e) {
-                console.log(e);
+                //console.log(e);
               }
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
 
               break;
             } // end sucess
             case "e": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
 
             case "u": {
-              vm.mainMessage = responce.data.data.sqldata.error.substring(0, 100);
+              vm.mainMessage = responce.data.data.sqldata.error.substring(
+                0,
+                100
+              );
               break;
             }
             default: {

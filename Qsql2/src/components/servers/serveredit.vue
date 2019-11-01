@@ -40,6 +40,7 @@
       </md-card-content>
 
       <md-card-actions>
+        <serverchgpwd :server="selectedServerLocal" v-if="selectedServerLocal.serverId >0"></serverchgpwd>
         <md-button class="md-accent" @click="clearServers">Clear</md-button>
         <md-button class="md-accent" @click="deleteServers">Delete</md-button>
         <md-button :disabled="processing" @click="saveServers" class="md-primary">
@@ -56,7 +57,11 @@
   </div>
 </template>
 <script>
+import serverchgpwd from "./serverchgpwd";
 export default {
+  components: {
+    serverchgpwd
+  },
   props: {
     selectedServer: {
       type: Object,
@@ -101,7 +106,7 @@ export default {
           vm.processing = true;
         },
         function(respons) {
-          console.log(respons);
+          // console.log(respons);
           vm.processing = false;
           if (respons.data.status == "s" || respons.data.status == "S") {
             // go to next screen
@@ -144,7 +149,7 @@ export default {
         { serverId: vm.selectedServerLocal.serverId },
         function() {},
         function(respons) {
-          console.log(respons);
+          //console.log(respons);
           if (respons.data.status == "s") {
             // reload the list
           }
@@ -174,7 +179,7 @@ export default {
         vm.selectedServerLocal,
         function() {},
         function(respons) {
-          console.log(respons);
+          // console.log(respons);
           if (respons.data.status == "s") {
             // reload the list
           }

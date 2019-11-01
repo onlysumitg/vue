@@ -176,8 +176,8 @@ export default {
 
     //------------------------------------------------
     reload2(item, open) {
-      console.log("==reload==");
-      console.log(item);
+      // console.log("==reload==");
+      //console.log(item);
       if (open) this.fetchChildren(item);
     },
     reset() {
@@ -186,7 +186,7 @@ export default {
     fetchChildren(item) {
       // Remove in 6 months and say
       // you've made optimizations! :)
-      console.log(item);
+      // console.log(item);
       // alert("fetchuser");
       // await pause(1500);
       //this.users = this.items2;

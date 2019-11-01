@@ -38,18 +38,18 @@ window.axios
   .get("https://qsql-i.firebaseio.com/url.json")
   .then(response => {
     // alert("firebase " + window.axios.defaults.baseURL)
-    console.log(response);
+    //console.log(response);
     try {
       window.axios.defaults.baseURL = response.data.url;
     } catch (e) {
 
-      console.log(e);
+      //  console.log(e);
       window.axios.defaults.baseURL = "http://localhost:7007";
     }
   })
   .catch(err => {
     //alert(err);
-    console.log(err);
+    //  console.log(err);
     window.axios.defaults.baseURL = "http://localhost:7007";
 
   });

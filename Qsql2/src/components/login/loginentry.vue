@@ -1,8 +1,17 @@
 <template>
   <div class="text-center">
+    <!-- <pre style="margin-top:10px;line-height:15px;letter-spacing: -1px;">
+ ██████╗     ███████╗     ██████╗     ██╗     
+██╔═══██╗    ██╔════╝    ██╔═══██╗    ██║     
+██║   ██║    ███████╗    ██║   ██║    ██║     
+██║▄▄ ██║    ╚════██║    ██║▄▄ ██║    ██║     
+╚██████╔╝    ███████║    ╚██████╔╝    ███████╗
+ ╚══▀▀═╝     ╚══════╝     ╚══▀▀═╝     ╚══════╝
+    </pre>-->
+
+    <center style="margin-top:10px;" class="flex display-4 font-weight-black">Q SQL</center>
     <form class="form-signin" @submit.prevent="validateUser">
-      <img class="mb-4" src="/static/avatar.png" alt width="72" height="72" />
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <v-divider>Sumit</v-divider>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
         type="text"
@@ -22,13 +31,13 @@
         required
         v-model="password"
       />
-      <div class="checkbox mb-3">
+      <!-- <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me" /> Remember me
         </label>
-      </div>
+      </div>-->
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click="checkLogin">Sign in</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+      <p class="mt-5 mb-3 text-muted"></p>
       <div v-if="showError" class="alert alert-danger" role="alert">{{errorMessage}}</div>
     </form>
   </div>

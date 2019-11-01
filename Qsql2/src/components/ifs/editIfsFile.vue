@@ -296,8 +296,8 @@ export default {
 
       this.originalModel2 = monacoX.editor.createModel("", "sql");
       var vm = this;
-      console.log(this.originalModel2);
-      console.log(this.originalModel2.uri.toString());
+      // console.log(this.originalModel2);
+      //console.log(this.originalModel2.uri.toString());
       this.monacoEditor = monacoX.editor.create(
         document.getElementById(vm.editorid),
         {
@@ -325,14 +325,13 @@ export default {
       } catch (e) {}
 
       this.monacoEditor.onDidChangeCursorPosition(function(e) {
-        console.log("--------------------------");
-        console.log(e.position);
+        // console.log("--------------------------");
+        // console.log(e.position);
         // if (e.source == "keyboard") {
         //   var lineMove = 1;
         //   if (e.position.lineNumber < vm.lastLineNumber) {
         //     lineMove = -1;
         //   }
-
         //   window.scrollBy(0, (e.position.lineNumber + 10) * lineMove);
         //   vm.lastLineNumber = e.position.lineNumber;
         // }
@@ -341,16 +340,15 @@ export default {
         //   monacoX.editor.ScrollType.Smooth
         // );
         //if (e.position.lineNumber + 10)
-
-        console.log("--------------------------");
+        // console.log("--------------------------");
       });
 
       this.monacoEditor.onDidLayoutChange(function(e) {
-        console.log(
-          "-----------onDidLayoutChange---------------" + vm.editorid
-        );
-        console.log(e);
-        console.log("------------onDidLayoutChange end--------------");
+        //  console.log(
+        //    "-----------onDidLayoutChange---------------" + vm.editorid
+        // );
+        // console.log(e);
+        //  console.log("------------onDidLayoutChange end--------------");
       });
       //console.log(x1);
 

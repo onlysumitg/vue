@@ -297,7 +297,7 @@ export default {
       this.currentIndex = indexx;
 
       if (!this.currentCol.editable) {
-        console.log("Not allowed to edit this value");
+        //  console.log("Not allowed to edit this value");
         return;
       }
 
@@ -323,7 +323,7 @@ export default {
           var XData = JSON.parse(responce.config.data);
           //  var colIndex = XData.colindex;
           var rowIndex2 = XData.rowindex;
-          console.log(responce);
+          //console.log(responce);
           // alert(responce.data.status);
           switch (responce.data.status) {
             case "e": {
