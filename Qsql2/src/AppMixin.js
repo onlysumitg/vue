@@ -122,14 +122,16 @@ export const AppMixin = {
 
     openWebSocket(requestId, onMessage, onClose) {
       const sToken = this.$session.get("QSQL_TOKEN");
-      var ws = new WebSocket("ws://localhost:7071/notifyme/" + requestId);
+      //process.backendWSurl in build/webpack.dev/prod
+      let ws = new WebSocket(process.backendWSurl + requestId);
       ws.onmessage = msg => {
 
-        var messageData = msg.data
+        let messageData = msg.data
         if (msg.data == "@DONE") {
           messageData = "<strong style='color:red'>-- -- -- -- -- -- -- -- -- -- -- END OF DATA -- -- -- -- -- -- -- -- -- -- --</strong>"
           ws.close();
         }
+        console.log("Web" + messageData)
         onMessage(messageData, requestId)
       };
       ws.onclose = () => onClose(requestId);

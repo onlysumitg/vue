@@ -7,7 +7,8 @@ module.exports = {
 
   configureWebpack: {
     plugins: [
-      new VuetifyLoaderPlugin()
+      new VuetifyLoaderPlugin(),
+
     ],
   },
 }

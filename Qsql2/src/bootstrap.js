@@ -32,27 +32,27 @@ window.axios.defaults.headers.common = {
   Authorization: "sToken"
 };
 
-window.axios.defaults.baseURL = "http://localhost:7007"
+//window.axios.defaults.baseURL = "http://localhost:7007"
+window.axios.defaults.baseURL = process.backendurl;
+// window.axios
+//   .get("https://qsql-i.firebaseio.com/url.json")
+//   .then(response => {
+//     // alert("firebase " + window.axios.defaults.baseURL)
+//     //console.log(response);
+//     try {
+//       window.axios.defaults.baseURL = response.data.url;
+//     } catch (e) {
 
-window.axios
-  .get("https://qsql-i.firebaseio.com/url.json")
-  .then(response => {
-    // alert("firebase " + window.axios.defaults.baseURL)
-    //console.log(response);
-    try {
-      window.axios.defaults.baseURL = response.data.url;
-    } catch (e) {
+//       //  console.log(e);
+//       window.axios.defaults.baseURL = "http://localhost:7007";
+//     }
+//   })
+//   .catch(err => {
+//     //alert(err);
+//     //  console.log(err);
+//     window.axios.defaults.baseURL = "http://localhost:7007";
 
-      //  console.log(e);
-      window.axios.defaults.baseURL = "http://localhost:7007";
-    }
-  })
-  .catch(err => {
-    //alert(err);
-    //  console.log(err);
-    window.axios.defaults.baseURL = "http://localhost:7007";
-
-  });
+//   });
 
 
 window._ = require("lodash");

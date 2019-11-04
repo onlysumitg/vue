@@ -31,7 +31,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      'process.env': env,
+      'process.backendurl': '""', //sumit
+      'process.backendWSurl': '"ws://localhost:7071/notifyme/"' //sumit
     }),
     new MonacoWebpackPlugin(),
     new UglifyJsPlugin({

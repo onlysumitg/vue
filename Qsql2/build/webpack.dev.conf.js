@@ -51,8 +51,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
+
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
+      'process.env': require('../config/dev.env'),
+      'process.backendurl': '"http://localhost:7007"', //sumit
+      'process.backendWSurl': '"ws://localhost:7071/notifyme/"' //sumit
     }),
     new MonacoWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),

@@ -4,7 +4,9 @@
 
 const path = require("path");
 
+
 module.exports = {
+
   dev: {
     // index: path.resolve(__dirname, '../dist/index.html'),
 
@@ -57,10 +59,10 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, "../dist"),
     assetsSubDirectory: "static",
-    assetsPublicPath: "./",
+    assetsPublicPath: "/",
 
     //assetsPublicPath: './',   >>> use this for local version sumit
-
+    //assetsPublicPath: '/',   >>> use this for server version sumit
     /**
      * Source Maps
      */
