@@ -1,16 +1,18 @@
 <template>
   <div class="text-center">
     <!-- <pre style="margin-top:10px;line-height:15px;letter-spacing: -1px;">
- ██████╗     ███████╗     ██████╗     ██╗     
-██╔═══██╗    ██╔════╝    ██╔═══██╗    ██║     
-██║   ██║    ███████╗    ██║   ██║    ██║     
-██║▄▄ ██║    ╚════██║    ██║▄▄ ██║    ██║     
+ ██████╗     ███████╗     ██████╗     ██╗
+██╔═══██╗    ██╔════╝    ██╔═══██╗    ██║
+██║   ██║    ███████╗    ██║   ██║    ██║
+██║▄▄ ██║    ╚════██║    ██║▄▄ ██║    ██║
 ╚██████╔╝    ███████║    ╚██████╔╝    ███████╗
  ╚══▀▀═╝     ╚══════╝     ╚══▀▀═╝     ╚══════╝
     </pre>-->
 
     <center style="margin-top:10px;" class="flex display-4 font-weight-black">Q SQL</center>
     <form class="form-signin" @submit.prevent="validateUser">
+
+      <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
       <v-divider>Sumit</v-divider>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
