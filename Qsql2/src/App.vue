@@ -23,16 +23,22 @@ export default {
   },
   methods: {
     setupListeners() {
-     
+
     },
     turnOffListeners() {
-   
+
     }
   }
 };
 </script>
 
 <style  >
+  .current-line {
+    background-color: #f1f1f1;
+
+    box-sizing: border-box;
+  }
+
 input:focus {
   outline: none;
 }

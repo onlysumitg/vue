@@ -10,10 +10,17 @@
         </v-chip>
       </div>
     </md-toolbar>
+    <div style="margin-left: 20px">
+      <md-switch v-model="isPrivate"  >Personal</md-switch>
 
+    </div>
+    <md-field>
+      <label>Category</label>
+      <md-input maxlength="50" v-model="queryCategory"></md-input>
+    </md-field>
     <md-field>
       <label>Name</label>
-      <md-input maxlength="30" v-model="queryHeading"></md-input>
+      <md-input maxlength="50" v-model="queryHeading"></md-input>
     </md-field>
     <md-field>
       <label>Description</label>
@@ -115,11 +122,13 @@ export default {
       value: "",
       queryHeading: "",
       queryDesc: "",
+        queryCategory:"",
       showSaveQueryDialog: false,
       modalErrorMessage: "",
       autoComData: [],
       groups: {},
       currentSQL: "",
+        isPrivate:false,
       options: {
         minLines: 500,
         wrap: true,
@@ -308,7 +317,9 @@ export default {
         desc: this.queryDesc,
         sql: this.value,
         status: "A",
-        groups: this.groups
+        groups: this.groups,
+          private: vm.isPrivate,
+          category :vm.queryCategory
       };
 
       this.runWebService(
@@ -350,6 +361,8 @@ export default {
             vm.queryDesc = response.data.data.screensql.desc;
             vm.groups = response.data.data.screensql.groups;
             vm.currentSQL = response.data.data.screensql.query;
+            vm.isPrivate = response.data.data.screensql.private;
+            vm.queryCategory = response.data.data.screensql.category;
             //vm.groups = response.data.groups;
           } else {
             vm.$notify({

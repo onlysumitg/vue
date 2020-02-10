@@ -112,10 +112,10 @@
     </v-navigation-drawer>
 
     <!-- end single record -->
-    <md-snackbar md-position="left" :md-duration="Infinity" :md-active.sync="showMessage">
-      <span>{{mainMessage}}</span>
-      <md-button class="md-primary" @click="showMessage = false">Close</md-button>
-    </md-snackbar>
+<!--    <md-snackbar md-position="left" :md-duration="Infinity" :md-active.sync="showMessage">-->
+<!--      <span>{{mainMessage}}</span>-->
+<!--      <md-button class="md-primary" @click="showMessage = false">Close</md-button>-->
+<!--    </md-snackbar>-->
   </div>
 </template>
 <script>
@@ -169,6 +169,11 @@ export default {
           if (this.IsValidJSONString(curVal)) {
             this.editorLang = "json";
             return vkbeautify.json(curVal);
+          }
+          if(isXML(curVal))
+          {
+              this.editorLang = "xml";
+              return vkbeautify.xml(curVal);
           }
           return this.rows[this.currentRecord][
             this.currentCol.label + "_" + this.currentCol.id
@@ -310,6 +315,11 @@ export default {
                 0,
                 100
               );
+                vm.$notify({
+                    type: "danger",
+                    title: "Error",
+                    message:responce.data.data.sqldata.error
+                });
               break;
             }
 
@@ -318,10 +328,20 @@ export default {
                 0,
                 100
               );
+                vm.$notify({
+                    type: "success",
+                    title: "Done",
+                    message: responce.data.data.sqldata.error
+                });
               break;
             }
             default: {
-              vm.mainMessage = "Somthing is not right";
+              vm.mainMessage = "Something is not right";
+                vm.$notify({
+                    type: "danger",
+                    title: "Error",
+                    message:vm.mainMessage
+                });
             }
           }
         },

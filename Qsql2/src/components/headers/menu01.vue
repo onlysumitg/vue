@@ -1,5 +1,27 @@
 <template>
+
+
   <div class="md-toolbar-section-end">
+
+    <div> <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar></div>
+    <div >
+
+
+      <md-field  >
+
+        <md-select md-dense @md-selected="changeServer"  v-model="selectedServer" name="selectedServer" id="selectedServer" placeholder="Servers">
+
+          <md-option  class="md-headline" v-for="(server, index) in serverlist" :key="server.serverName + ''+index" :value="server.serverId">{{server.serverName}}</md-option>
+<!--          <md-option   value="9999">ErrorTest</md-option>-->
+        </md-select>
+      </md-field>
+    </div>
+    <md-button class="md-icon-button" :to="{ name: 'basesql'}">
+      <v-icon color="white">mdi-database</v-icon>
+    </md-button>
+    <md-button class="md-icon-button" :to="{ name: 'sqlscreensqlind'}">
+      <v-icon color="white">mdi-laptop</v-icon>
+    </md-button>
     <md-button class="md-icon-button" :to="{ name: 'servers'}">
       <v-icon color="white">mdi-server</v-icon>
     </md-button>
@@ -71,8 +93,131 @@
     </md-menu>
   </div>
 </template>
- 
- 
+<script>
+export default {
+    data: function() {
+        return {
+
+            serverlist: [],
+            selectedServer:0,
+            selectedServerLocal: {
+                serverId: 0,
+                serverName: "",
+                serverIP: "",
+                userName: "",
+                password: "",
+                ssl: false,
+                libl: new Array(20),
+                modified: false
+            }
+        };
+
+    },
+
+    methods: {
+        initialize() {
+            this.loadServerList();
+            this.selectedServer = this.getConnectedServerID()
+        },
+        //--------------------------------------------
+        selectServer(server) {
+            //this.$emit("selectedserver", _.clone(serverProto));
+            this.$emit("selectedserver", server);
+        },
+
+
+        //----------------------------------
+
+        changeServer() {
+            if(this.selectedServer.toString() == this.getConnectedServerID().toString())
+            {
+
+               return
+            }
+
+
+            let  backupselectedServer = this.getConnectedServerID()
+            let vm = this;
+            this.runWebService(
+                "s/connect",
+                {
+                    serverId:vm.selectedServer
+                },
+                function() {
+
+                },
+                function(respons) {
+                    // console.log(respons);
+
+                    if (respons.data.status == "s" || respons.data.status == "S") {
+                        // go to next screen
+                        if(vm.isEmpty(respons.data.data.id))
+                        {
+                            return
+                        }
+
+                        vm.$session.set("currentserver", respons.data.data.id);
+                        vm.$session.set(
+                            "currentservername",
+                            respons.data.data.serverName
+                        );
+
+                        topTitle.title = respons.data.data.serverName;
+                        eventBus.$emit("serverischanged", true);
+                        vm.$notify({
+                            type: "success",
+                            title: "Done",
+                            message: "Current server changed"
+                        });
+
+                    } else {
+                        vm.selectedServer = backupselectedServer
+                        vm.$notify({
+                            type: "danger",
+                            title: respons.data.message
+                        });
+
+                    }
+                },
+                function(error) {
+
+                    let errorMessage = "" + error;
+                    vm.selectedServer = backupselectedServer
+                    vm.$notify({
+                        type: "danger",
+                        title: errorMessage
+                    });
+                }
+            );
+        },
+        //--------------------------------------------
+        loadServerList() {
+            // alert("this.loaded");
+            let vm = this;
+
+
+            this.runWebService(
+                "s/getlist",
+                {},
+                function() {},
+                function(respons) {
+                    // console.log(respons);
+                    if (respons.data.status == "s" || respons.data.status == "S") {
+                        vm.serverlist = [];
+                        respons.data.data.servers.forEach(server => {
+                            vm.serverlist.push(server);
+                        });
+
+                        vm.selectedServer = vm.getConnectedServerID()
+                    }
+                },
+                function(error) {}
+            );
+        }
+    }
+}
+
+</script>
 <style lang="scss" scoped>
 .md-menu-content {
   max-height: 85vh;

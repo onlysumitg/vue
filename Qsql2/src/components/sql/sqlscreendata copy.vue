@@ -1,6 +1,6 @@
 <template>
   <div style="padding:10px; width: 100vw;height: 100vh">
-    <h5 style="padding:10px">{{queryId}} {{getConnectedServerName()}} : {{queryId}}.{{queryHeading}}</h5>
+    <h5 style="padding:10px">{{queryId}} {{getConnectedServerName}} : {{queryId}}.{{queryHeading}}</h5>
 
     <br />
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
     <table class="i-table table table-striped table-bordered table-sm table-hover">
@@ -85,10 +85,20 @@ export default {
         function(respons) {
           //console.log(respons);
           vm.processing = false;
-          if (respons.data.status == "s" || respons.data.status == "S") {
-            setting.value = respons.data.data.newvalue;
-            //vm.settings = respons.data.settings;
-          }
+
+            if (respons.data.status == "s" || respons.data.status == "S") {
+                setting.value = respons.data.data.newvalue;
+                vm.$notify({
+                    type: "success",
+                    title: "Done",
+                    message: "Setting saved successfully"
+                });
+            } else {
+                vm.$notify({
+                    type: "danger",
+                    title: respons.data.message
+                });
+            }
         },
         function(error) {
           vm.processing = false;

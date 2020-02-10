@@ -62,3 +62,47 @@ window._ = require("lodash");
 window.papa = papa
 
 //window.TableExport = require("tableexport");
+// window.onbeforeunload = function(){
+//   return 'Are you sure you want to leave?';
+// };
+
+window.isXML = require('is-xml');
+
+
+//----------------------------------------------------------------------------
+
+// window.notifyReloginRequied_xxx = function(vm, message) {
+//
+//   _.debounce(notifyReloginRequied_debounce(vm,message),3000);
+// }
+
+window.notifyReloginRequied = _.debounce(function(vm, message) {
+
+  let errorMessage = message;
+  if (errorMessage.trim().length <= 0) {
+    errorMessage = "Please login again"
+  }
+  // alert(errorMessage)
+  let notification = {
+    message: errorMessage,
+    timeout:2000,
+    onClose: function () {
+      vm.$router.push({
+        path: "/"
+      });
+    }
+  };
+
+  eventBus.$emit("notification", notification);
+}, 250);
+
+
+window.addEventListener("beforeunload", function (e) {
+
+  //return 'You have unsaved changes. Please save them before leaving this page';
+
+  (e || window.event).returnValue = true;
+  return true;
+});
+
+

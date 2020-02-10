@@ -37,7 +37,7 @@ import headerSpeedDial02 from "@/components/headers/headerSpeedDial02.vue";
 import headerSpeedDial01 from "@/components/headers/headerSpeedDial01.vue";
 
 
-headerSpeedDial02
+
 import isource from "@/components/isource/createsource.vue";
 
 import dirtree from "@/components/ifs/dirtree.vue";
@@ -47,6 +47,9 @@ import gmake from "@/components/ssh/gmake.vue";
 import sshrun from "@/components/ssh/run.vue";
 
 import gitdiff from "@/components/ssh/gitdiff.vue";
+
+
+import documents from "@/components/docs/documents.vue";
 
 
 Vue.use(Router);
@@ -129,7 +132,12 @@ export default new Router({
           name: "usercreate",
 
         },
+        {
+          path: "docs",
+          component: documents,
+          name: "documents",
 
+        },
 
       ]
     },

@@ -10,11 +10,46 @@
       :options="options"
       theme="crimson_editor"
       width="100%"
-      height="100%" 
+      height="100%"
     ></codeeditor>-->
-    <p class="overline">F1 / Alt+R = Run SQL</p>
+
+
+
+
+    <v-tooltip right fixed>
+      <template v-slot:activator="{ on }">
+
+        <v-btn @click="emitSQLToRun3(false)" class="ma-2"      v-on="on"        icon>
+          <v-icon>mdi-alpha-l-box-outline</v-icon>
+        </v-btn>
+
+      </template>
+      <span>Run Current line</span>
+    </v-tooltip>
+
+    <v-tooltip right fixed>
+      <template v-slot:activator="{ on }">
+       <v-btn @click="emitSQLToRun3(true)" class="ma-2"    v-on="on"        icon>
+          <v-icon>mdi-alpha-s-box-outline</v-icon>
+        </v-btn>
+
+      </template>
+      <span>Run Selected</span>
+    </v-tooltip>
+
+    <v-tooltip right fixed>
+      <template v-slot:activator="{ on }">
+
+        <v-btn @click="emitSQLToRun4()" class="ma-2"    v-on="on"    icon>
+          <v-icon color="blue">mdi-play-circle-outline</v-icon>
+        </v-btn>
+      </template>
+      <span>Run> Can use F1 or ALT+R</span>
+    </v-tooltip>
+
 
     <div id="sqleditor" style="width:100%;height:95%;border:1px solid #ccc"></div>
+
 
     <!-- show save query dialof -->
     <b-modal
@@ -46,9 +81,11 @@
 </template>
 <script>
 import * as monaco2 from "monaco-editor";
+import ButtonRouter from "../headers/headerSpeedDial01";
 
 export default {
-  props: {
+    components: {ButtonRouter},
+    props: {
     currentSQL: {
       type: String,
       required: false
@@ -282,26 +319,7 @@ export default {
     },
     //------------------------------------
     clearName() {},
-    //---------------------------------------------------
-    emitSQLToRun(seletedOnly) {
-      //alert("ok");
-      eventBus.$emit("beforeRouteLeave_save_sql", true);
 
-      var sqldata3 = {};
-      sqldata3.serverId = this.$session.get("currentserver");
-      sqldata3.requestIdToProcess = "";
-      sqldata3.requestIdToClose = "";
-
-      if (seletedOnly) {
-        eventBus.$emit("runsql", this.$refs.editor.editor.getSelectedText());
-
-        sqldata3.sqlsqlToRun = this.$refs.editor.editor.getSelectedText();
-      } else {
-        eventBus.$emit("runsql", this.value);
-        sqldata3.sqlsqlToRun = this.value;
-      }
-      eventBus.$emit("runsql3", sqldata3);
-    },
     //---------------------------------------------------
     emitSQLToRun2(sqltoRun) {
       //alert("ok");
@@ -319,6 +337,37 @@ export default {
 
       eventBus.$emit("runsql3", sqldata3);
     },
+      //---------------------------------------------------
+      emitSQLToRun3(seletedOnly) {
+
+          let sqlToRun =""
+          if (seletedOnly) {
+
+              sqlToRun = this.monacoEditor.getModel().getValueInRange(this.monacoEditor.getSelection())
+
+          } else {
+
+               sqlToRun =  this.monacoEditor.getModel().getLineContent(this.monacoEditor.getPosition().lineNumber)
+
+          }
+          this.emitSQLToRun2(sqlToRun)
+
+      },
+      //---------------------------------------------------
+      emitSQLToRun4() {
+
+          let sqlToRun =""
+
+
+              sqlToRun = this.monacoEditor.getModel().getValueInRange(this.monacoEditor.getSelection())
+
+          if(sqlToRun.trim().length==0) {
+
+              sqlToRun =  this.monacoEditor.getModel().getLineContent(this.monacoEditor.getPosition().lineNumber)
+          }
+
+         this.emitSQLToRun2(sqlToRun)
+      },
     //-----------------------------------------run selected----------
     monaocEditorInit: function() {
       var vm2 = this;
@@ -415,49 +464,7 @@ export default {
       });
     },
     //---------------------------------------------------
-    editorInit: function() {
-      require("brace/ext/language_tools"); //language extension prerequsite...
-      require("brace/mode/sql");
 
-      require("brace/theme/crimson_editor");
-      require("brace/snippets/javascript"); //snippet
-
-      var vm2 = this;
-      this.$refs.editor.editor.commands.addCommand({
-        name: "runSelected",
-        bindKey: {
-          win: "Alt-R",
-          mac: "Command-R"
-        },
-        exec: function(editor) {
-          vm2.emitSQLToRun(true);
-        }
-      });
-
-      this.$refs.editor.editor.commands.addCommand({
-        name: "runAll",
-        bindKey: {
-          win: "Alt-A",
-          mac: "Command-A"
-        },
-        exec: function(editor) {
-          vm2.emitSQLToRun(false);
-        }
-      });
-
-      this.$refs.editor.editor.commands.addCommand({
-        name: "save",
-        bindKey: {
-          win: "Alt-S",
-          mac: "Command-S"
-        },
-        exec: function(editor) {
-          vm2.selectedSQL = editor.getSelectedText();
-          vm2.modalErrorMessage = "";
-          vm2.showSaveQueryDialog = true;
-        }
-      });
-    }
   }
 };
 </script>

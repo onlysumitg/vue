@@ -7,8 +7,8 @@
       <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
         <md-icon>keyboard_arrow_left</md-icon>
       </md-button>
-      <span class="md-title">{{getConnectedServerName()}}</span>
 
+      <menu00></menu00>
       <menu01></menu01>
     </md-app-toolbar>
 
@@ -85,11 +85,13 @@
 
 <script>
 import menu01 from "@/components/headers/menu01.vue";
+import menu00 from "@/components/headers/menu00.vue";
 
 export default {
   name: "dbdoc",
   components: {
-    menu01
+    menu01,
+      menu00
   },
   beforeRouteLeave(to, from, next) {
     this.beforeChangeRoute(to, from, next);

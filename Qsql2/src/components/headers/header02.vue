@@ -6,7 +6,7 @@
     <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
       <md-icon>keyboard_arrow_left</md-icon>
     </md-button>
-    <span class="md-title">{{getConnectedServerName()}}</span>
+    <span class="md-title">{{getConnectedServerName}}</span>
     <div class="md-toolbar-section-end">
       <md-button class="md-icon-button">
         <md-icon>refresh</md-icon>
@@ -17,8 +17,8 @@
     </div>
   </md-app-toolbar>
 </template>
- 
- 
+
+
 <style lang="scss" scoped>
 .md-app {
   min-height: 100vh;

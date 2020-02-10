@@ -159,9 +159,10 @@ export default {
         "/" +
         this.table.trim() +
         " a where rrn(a) = " +
-        this.rrn;
+        this.rrn + " ;";
 
       // insertSQL += columneValues.trim() + ")";
+
       this.sqlToRun = insertSQL;
       this.runSQL(false);
       //console.log(insertSQL);
@@ -259,24 +260,53 @@ export default {
         function(responce) {
           vm.loading = false;
           switch (responce.data.status) {
-            case "s": {
+            case "s":
+            case "S":
+              {
               // vm.alertMessage = responce.data.message;
               var sqldata =
                 responce.data.data.sqldata[
                   Object.keys(responce.data.data.sqldata)[0]
                 ];
-              vm.alertMessage = sqldata.error;
+             // vm.alertMessage = sqldata.error;
+                  let notificationType = "success"
+                  let notificationTitle = "Done"
+                  if(sqldata.status =="e" || sqldata.status =="E" )
+                  {
+                      notificationType="danger"
+                      notificationTitle="Error"
+                  }
+                  vm.$notify({
+                      type: notificationType,
+                      title: notificationTitle,
+                      message: sqldata.error,
+                      timeout:10000
+                  });
               break;
             }
-            case "e": {
+            case "e":
+              case "E":    {
               vm.alertMessage = responce.data.message;
               vm.hasMoreData = false;
+                  vm.hasMoreData = false;
+                  vm.$notify({
+                      type: "danger",
+                      title: "Error",
+                      message: responce.data.message
+                  });
               break;
             }
 
-            case "u": {
-              vm.alertMessage = responce.data.message;
+            case "u":
+              case "U":     {
+             // vm.alertMessage = responce.data.message;
               vm.hasMoreData = false;
+
+                  vm.$notify({
+                      type: "success",
+                      title: "Done",
+                      message: responce.data.message
+                  });
               break;
             }
           }

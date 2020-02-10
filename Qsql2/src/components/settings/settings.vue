@@ -74,7 +74,17 @@
       </v-list-tile-content>
     </v-list-tile>
     <v-divider></v-divider>
+    <v-list-tile avatar ripple router :to="{ name: 'documents'}">
+      <v-list-tile-avatar>
+        <v-icon left>mdi-alpha-d</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>Documents</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-divider></v-divider>
   </v-list>
+
 </template>
 
 <script>

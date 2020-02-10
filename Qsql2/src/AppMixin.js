@@ -1,17 +1,21 @@
 export const AppMixin = {
   beforeMount() {
     this.turnOffListeners();
+
   },
   mounted() {
     this.initialize();
     this.setupListeners();
 
+
   },
   beforeDestroy() {
     this.turnOffListeners();
+
   },
   deactivated() {
     this.turnOffListeners();
+
   },
 
   //----------------------------------------------------------------------------
@@ -24,6 +28,7 @@ export const AppMixin = {
       xIsAdmin: false,
       menuVisible: true,
       menuVisibleBackup: true,
+      serverChangedCounter: 0
 
     }
   },
@@ -35,7 +40,13 @@ export const AppMixin = {
       }
       this.checkIfAdmin()
       return this.xIsAdmin
-    }
+    },
+    getConnectedServerName() {
+
+
+      return this.$session.get("currentservername")
+
+    },
   },
   //----------------------------------------------------------------------------
   //
@@ -47,12 +58,28 @@ export const AppMixin = {
     setupListeners() {
 
     },
-    turnOffListeners() {},
+    turnOffListeners() {
+
+    },
+
     beforeChangeRoute(to, from, next, emitEvent, eventValue) {
+
+      console.log(to)
+      console.log(from)
+      console.log(next)
+
+
       if (typeof emitEvent !== 'undefined' &&
         emitEvent.length > 0) {
         eventBus.$emit(emitEvent, eventValue);
       }
+
+      if(to.name=="loginentry" || to.path=="/login")
+      {
+        next();
+        return;
+      }
+
       this.$dialog
         .confirm("Do you really want to leave?")
         .then(function () {
@@ -87,23 +114,8 @@ export const AppMixin = {
 
     //----------------------------------------------------------------------------
 
-    notifyReloginRequied(message) {
-      var vm = this;
-      var errorMessage = message;
-      if (errorMessage.trim().length <= 0) {
-        errorMessage = "Please login again"
-      }
-      var notification = {
-        message: errorMessage,
-        onClose: function () {
-          vm.$router.push({
-            path: "/"
-          });
-        }
-      };
 
-      eventBus.$emit("notification", notification);
-    },
+
     //----------------------------------------------------------------------------
     setupAxios() {
       // const sToken =  window.$cookies.get("QSQL_TOKEN");
@@ -141,8 +153,11 @@ export const AppMixin = {
 
     },
 
-    getConnectedServerName() {
+    getConnectedServerName2() {
       return this.$session.get("currentservername")
+    },
+    getConnectedServerID() {
+      return this.$session.get("currentserver")
     },
     getCurrentUserName() {
       return this.$session.get("currentuser")
@@ -173,7 +188,7 @@ export const AppMixin = {
     },
     //---------------------------------------------------------------
     isEmpty(value) {
-      return _.isUndefined(value) || _.isEmpty(value.trim())
+      return _.isUndefined(value) || _.isEmpty(value.toString().trim())
     },
     //---------------------------------------------------------------
     isNotEmpty(value) {
@@ -206,7 +221,7 @@ export const AppMixin = {
             try {
 
               if (response.data.status == 401) {
-                this.notifyReloginRequied(response.data.message)
+                notifyReloginRequied(vm,response.data.message)
                 throw new Error(response.data.message);
               }
             } catch (e) {
@@ -219,23 +234,20 @@ export const AppMixin = {
           })
           .catch(err => {
             vm.xloading = false
-            //  alert(err);
-            console.log("err>>")
-            console.log(err)
+            console.log('Errorred '+ err);
+
             if (axios.isCancel(err)) {
               console.log('Request canceled', err.message);
             } else {
 
               try {
-                if (err.response.status !== undefined && (err.response.status == 401 || err.response.data.status == 401)) {
+                if (err.response !== undefined && err.response.status !== undefined && (err.response.status == 401 || err.response.data.status == 401)) {
 
-                  this.notifyReloginRequied(err.response.data.message)
-                  // vm.$router.push({
-                  //   path: "/login"
-                  // });
+                  notifyReloginRequied(vm,err.response.data.message)
+
                 }
               } catch (e) {
-
+                onError(err);
                 throw e;
               }
 

@@ -54,10 +54,12 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, "../dist/index.html"),
+   // index: path.resolve(__dirname, "../dist/index.html")  //sumit --> default
+    index: path.resolve("C:\\ideaProjects\\localHost2_javalin\\out\\artifacts\\qsql\\view\\index.html"),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, "../dist"),
+    //assetsRoot: path.resolve(__dirname, "../dist") //sumit --> default
+    assetsRoot:path.resolve("C:\\ideaProjects\\localHost2_javalin\\out\\artifacts\\qsql\\view"),
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
 

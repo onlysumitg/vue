@@ -301,7 +301,7 @@ export default {
         return;
       }
 
-      var vm = this;
+      let vm = this;
       this.runWebService(
         "r/sqlupdate",
         {
@@ -320,20 +320,27 @@ export default {
         },
         function(responce) {
           vm.showMessage = true;
-          var XData = JSON.parse(responce.config.data);
+          let XData = JSON.parse(responce.config.data);
           //  var colIndex = XData.colindex;
-          var rowIndex2 = XData.rowindex;
+          let rowIndex2 = XData.rowindex;
           //console.log(responce);
           // alert(responce.data.status);
           switch (responce.data.status) {
+
+
+
+
             case "e": {
               vm.dataRowSucess[rowIndex2] = false;
               vm.dataRowError[rowIndex2] = true;
 
-              vm.mainMessage = responce.data.data.sqldata.error.substring(
-                0,
-                100
-              );
+              vm.mainMessage = responce.data.data.sqldata.error
+
+                vm.$notify({
+                    type: "danger",
+                    title: "Error",
+                    message:vm.mainMessage
+                });
               var backup = vm.dataRow[rowIndex2];
               vm.dataRow[rowIndex2] = vm.dataRow[rowIndex2] + " ";
               vm.dataRow[rowIndex2] = backup;
@@ -347,14 +354,22 @@ export default {
               vm.dataRowError[rowIndex2] = false;
               vm.dataRowSucess[rowIndex2] = true;
 
-              vm.mainMessage = responce.data.data.sqldata.error.substring(
-                0,
-                100
-              );
+              vm.mainMessage = responce.data.data.sqldata.error ;
+                vm.$notify({
+                    type: "success",
+                    title: "Done",
+                    message: vm.mainMessage
+                });
+
               break;
             }
             default: {
-              vm.mainMessage = "Somthing is not right";
+              vm.mainMessage = "Something is not right";
+                vm.$notify({
+                    type: "danger",
+                    title: "Error",
+                    message:vm.mainMessage
+                });
             }
           }
         },

@@ -18,15 +18,15 @@
         <md-menu-item>
           <v-btn flat :to="{ name: 'loginentry'}">
             <v-icon color="red">mdi-power</v-icon>
-            <span class="red--text">&nbsp Signoff</span>
+            <span class="red--text"> &nbsp Signoff</span>
           </v-btn>
         </md-menu-item>
       </md-menu-content>
     </md-menu>
   </div>
 </template>
- 
- 
+
+
 <style lang="scss" scoped>
 .md-menu-content {
   max-height: 85vh;

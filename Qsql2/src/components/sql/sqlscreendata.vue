@@ -2,15 +2,26 @@
   <div style="padding:10px; " class="h-100">
     <md-progress-bar class="md-accent" v-if="xloading" md-mode="indeterminate"></md-progress-bar>
 
+
+
     <md-toolbar v-if="queryId>0" class="md-transparent" md-elevation="0">
+
       <div class="md-toolbar-section-start">
+
+
         <v-chip @click="loadQuery(queryId)" label large color="transparent" text-color="black">
-          <span class="title font-weight-light">{{queryId}}. {{queryHeading}}</span>
+          <span class="title font-weight-light">   <div    class="md-body-2">{{queryCategory}}</div>{{queryHeading}}<div style="margin-top: 2px" class="md-body-2">{{queryDesc}}</div></span>
+
           <v-icon right>mdi-refresh</v-icon>
         </v-chip>
+
       </div>
+
     </md-toolbar>
-    <br />
+
+
+
+
     <form>
       <div class="row" style="margin:5px">
         <div class="col-sm-3" v-for="(parameter,indx) in getParameterList" :key="'requireeed'+indx">
@@ -167,7 +178,9 @@ export default {
       sqlToProcess: "",
       queryHeading: "",
       valueData: {},
-      requiredRule: [v => !!v || "required"]
+      requiredRule: [v => !!v || "required"],
+        queryDesc: "",
+        queryCategory:"",
     };
   },
   //------------------------------------------------------------------------------------------
@@ -201,6 +214,8 @@ export default {
             vm.queryHeading = response.data.data.screensql.name;
 
             vm.sqlToProcess = response.data.data.screensql.query;
+              vm.queryDesc = response.data.data.screensql.desc;
+              vm.queryCategory = response.data.data.screensql.category;
             //vm.groups = respons.data.groups;
           } else {
             vm.$notify({

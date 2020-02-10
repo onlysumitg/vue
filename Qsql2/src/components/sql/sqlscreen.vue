@@ -7,7 +7,8 @@
       <md-button class="md-icon-button" @click="toggleMenu" v-if="menuVisible">
         <md-icon>keyboard_arrow_left</md-icon>
       </md-button>
-      <span class="md-title">{{getConnectedServerName()}}</span>
+
+      <menu00></menu00>
       <menu01></menu01>
     </md-app-toolbar>
 
@@ -16,7 +17,7 @@
         <md-tab md-label="SQL List" id="t0">
           <sqlscreenquerylist></sqlscreenquerylist>
         </md-tab>
-        <md-tab v-if="isAdmin" md-label="Edit/Add SQL" id="t1">
+        <md-tab  md-label="Edit/Add SQL" id="t1">
           <sqlscreenedit :queryId="sqlEditId"></sqlscreenedit>
         </md-tab>
       </md-tabs>
@@ -38,13 +39,14 @@ import sqlscreendata from "./sqlscreendata";
 import sqlscreenedit from "./sqlscreenedit";
 
 import menu01 from "@/components/headers/menu01.vue";
-
+import menu00 from "@/components/headers/menu00.vue";
 export default {
   components: {
     sqlscreenquerylist,
     sqlscreenedit,
     sqlscreendata,
-    menu01
+    menu01,
+      menu00
   },
   updated() {},
   mounted() {},

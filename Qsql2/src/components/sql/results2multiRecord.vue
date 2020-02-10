@@ -20,8 +20,7 @@
     </md-card>
 
     <md-card
-      md-with-hover
-      v-if="(typeof sqldata.downloadLocation !== 'undefined') && (sqldata.downloadLocation.length > 0)"
+       v-if="(typeof sqldata.downloadLocation !== 'undefined') && (sqldata.downloadLocation.length > 0)"
     >
       <md-card-header>
         <div class="md-title">File is ready to download</div>
